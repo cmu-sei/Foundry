@@ -1,0 +1,151 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<form #terrainForm="ngForm">
+    <div class="row pt-4">
+        <div class="col">
+            <span class="pb-2">
+                <h4>Scenario</h4>
+                <p class="text-muted"><small>Describe the desired scenario.</small></p>
+            </span>
+            <div>
+                <mat-form-field class="w-75">
+                    <mat-select placeholder="Classification Level" [(ngModel)]="order.classificationId" name="classificationId" (change)=" getClassificationText(order.classificationId)">
+                        <mat-option *ngFor="let level of classificationLevels" [value]="level.id">
+                            {{ level.name }}
+                        </mat-option> 
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="selectedClassification == 'Other'" class="pb-2">
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Other (please specify)" [(ngModel)]="order.classificationOther" name="classificationOther">
+                </mat-form-field>   
+            </div>
+            <div class="pb-2">
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Theater/Command/Area of Responsibility" [(ngModel)]="order.theater" name="theater">
+                </mat-form-field>   
+            </div>
+            <div class="pb-2">
+                <mat-form-field class="w-75">
+                    <textarea matInput matTextareaAutosize 
+                        matAutosizeMinRows="2"
+                        matAutosizeMaxRows="10" 
+                        placeholder="Geopolitical Situation / Storyline "
+                        [(ngModel)]="order.storyline"
+                        name="storyline"
+                        maxlength="1500">
+                    </textarea>
+                    <mat-hint align="end">{{order.storyline?.length || 0}}/1500</mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="pb-2">
+                <mat-form-field class="w-75" hintLabel="i.e. Commander’s intent, Reporting procedures, etc.">
+                    <textarea matInput matTextareaAutosize 
+                        matAutosizeMinRows="2"
+                        matAutosizeMaxRows="10" 
+                        placeholder="Mission CONOPS"
+                        [(ngModel)]="order.missionProcedures"
+                        name="missionProcedures"
+                        maxlength="500">
+                    </textarea>
+                    <mat-hint align="end">{{order.missionProcedures?.length || 0}}/500</mat-hint>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field class="w-75">
+                    <mat-select placeholder="Threat Actors / Adversary" [(ngModel)]="order.threats" name="threats" multiple>
+                        <mat-option *ngFor="let threat of threatActors" [value]="threat.id">
+                            {{ threat.name }}
+                        </mat-option> 
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="pb-2">
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Other Threat Actors / Adversaries (please specify)" [(ngModel)]="order.threatOther" name="threatOther">
+                </mat-form-field>   
+            </div>
+            <div>
+                <mat-form-field class="w-75">
+                    <mat-select placeholder="Exercise Support" [(ngModel)]="order.supports" name="supports" multiple>
+                        <mat-option *ngFor="let type of supportTypes" [value]="type.id">
+                            {{ type.name }}
+                        </mat-option> 
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="pb-2">
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Other Support (please specify)" [(ngModel)]="order.supportOther" name="supportOther">
+                </mat-form-field>   
+            </div>
+            <div class="pb-2">
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="MSEL Input / Cyber Threats" [(ngModel)]="order.cyberThreats" name="cyberThreats">
+                    <mat-hint>APT, Exfiltration, DOS, etc</mat-hint>
+                </mat-form-field>   
+            </div>
+        </div>
+        <div class="col">
+            <span class="pb-2">
+                    <h4>Intel</h4>
+                </span>
+                <div class="pb-2">
+                    <mat-form-field class="w-75">
+                        <mat-select placeholder="Embedded analyst(s)?" [(ngModel)]="order.isEmbeddedTeam" name="isEmbeddedTeam">
+                            <mat-option [value]="true">
+                                Yes
+                            </mat-option> 
+                            <mat-option [value]="false">
+                                No
+                            </mat-option> 
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="pb-2">
+                    <mat-form-field class="w-75">
+                        <mat-select placeholder="Intel Types" [(ngModel)]="order.embeddedTeams" name="embeddedTeams" multiple>
+                            <mat-option *ngFor="let type of embeddedTeamTypes" [value]="type.id">
+                                {{ type.name }}
+                            </mat-option> 
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="pb-2">
+                    <mat-form-field class="w-75">
+                        <input matInput placeholder="Other Intel Requirements" [(ngModel)]="order.embeddedTeamOther" name="embeddedTeamOther">
+                    </mat-form-field>   
+                </div>
+                <hr>
+                <span class="pb-2">
+                        <h4>Assessment</h4>
+                    </span>
+                <div class="pb-2">
+                    <mat-form-field class="w-75">
+                        <mat-select placeholder="Assessment Types" [(ngModel)]="order.assessmentTypes" name="assessmentTypes" multiple>
+                            <mat-option *ngFor="let type of assessmentTypes" [value]="type.id">
+                                {{ type.name }}
+                            </mat-option> 
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="pb-2">
+                    <mat-form-field class="w-75">
+                        <input matInput placeholder="Other Assessment Requirements" [(ngModel)]="order.assessmentTypeOther" name="assessmentTypeOther">
+                    </mat-form-field>   
+                </div>                
+        </div>
+    </div>    
+</form>
+

@@ -1,0 +1,113 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<section class="container-fluid chapter" *ngIf="isAdministrator">
+  <div class="box box-default p-4">
+    <h4>Manage People</h4>
+    <div class="">
+      <div class="row data-filter pb-2">
+        <div class="col-lg-3">
+          <mat-form-field appearance="standard">
+            <mat-select [(value)]="dataFilter.sort" placeholder="Sort by">
+              <mat-option value="alphabetic" (click)="sort('alphabetic')">Name (Asc)</mat-option>
+              <mat-option value="-alphabetic" (click)="sort('-alphabetic')">Name (Desc)</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-3">
+          <mat-form-field appearance="standard">
+            <input matInput placeholder="Search" [(ngModel)]="dataFilter.term" (keyup.enter)="search()">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="row">
+        <div class="col-lg-1">
+          <button type="button" mat-raised-button class="btn-sm btn-block btn-info" [disabled]="working || selected.length == 0" (click)="openGroupSelectorDialog()" matTooltip="Add Selected Profiles To Group">
+            Add To Group <i class="fa fa-spinner fa-spin" *ngIf="working"></i>
+          </button>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div *ngIf="result">
+        <div class="table-responsive">
+          <table class="table table-light table-striped">
+            <colgroup>
+              <col style="width: 5%" />
+              <col style="width: 15%" />
+              <col style="width: 15%" />
+              <col style="width: 5%" />
+              <col style="width: 5%" />
+              <col style="width: 20%" />
+              <col style="width: 10%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th colspan="8">
+                  <small class="text-danger">
+                    {{ (addToGroupCount == 0 ? 'No selection made' : 'Selected ' + addToGroupCount + ' profiles') }}
+                  </small>
+                </th>
+              </tr>
+            </thead>
+            <thead>
+              <tr>
+                <th><input type="checkbox" value="all" [disabled]="working" (change)="onAllChange('all', $event)" [checked]="all" /></th>
+                <th>Profile</th>
+                <th>Organization</th>
+                <th>Groups</th>
+                <th>Contributions</th>
+                <th>Roles</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let profile of result.results; let i = index">
+                <td><input [disabled]="working" type="checkbox" value="{{profile.id}}" (change)="onChange(profile, $event)" [checked]="selected.includes(profile)" /></td>
+                <td>
+                  <i class="fa fa-remove text-danger mr-2" *ngIf="profile.isDisabled"></i>
+                  <a [routerLink]="['/profile', profile.id, profile.slug]" id="table-content-name" [innerHTML]="applyTerm(profile.name)"></a>
+                  <div class="text-muted">
+                    <small>{{ profile.globalId }}</small>
+                  </div>
+                </td>
+                <td>{{ profile.organization }}</td>
+                <td>{{ profile.membershipCount }}</td>
+                <td>{{ profile.contributionCount }}</td>
+                <td>
+                  <button type="button" class="btn btn-sm mr-2" [disabled]="working || profile.id == profileId" (click)="toggleAdministrator(profile, i)" [ngClass]="profile.isAdministrator ? 'btn-success' : 'btn-dark'" matTooltip="Toggle Administrator">
+                    <i class="fa fa-superpowers"></i>
+                  </button>
+                  <button type="button" class="btn btn-sm mr-2" [disabled]="working || profile.id == profileId" (click)="togglePowerUser(profile, i)" [ngClass]="profile.isPowerUser ? 'btn-success' : 'btn-dark'" matTooltip="Toggle Power User">
+                    <i class="fa fa-shield"></i>
+                  </button>
+                  <button type="button" class="btn btn-sm" [disabled]="working || profile.id == profileId" (click)="toggleDisabled(profile, i)" [ngClass]="profile.isDisabled ? 'btn-danger' : 'btn-dark'" matTooltip="Toggle Disabled">
+                    <i class="fa fa-remove"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot *ngIf="result && result.results.length == 0 && !spin">
+              <tr><td colspan="3">There are no profiles matching this search</td></tr>
+            </tfoot>
+          </table>
+        </div>
+        <pager [pagedResult]="result" [dataFilter]="dataFilter" (onPageChanged)="search()" (onPageSizeChanged)="reset()"></pager>
+      </div>
+      <mat-progress-bar mode="indeterminate" *ngIf="spin"></mat-progress-bar>
+    </div>
+  </div>
+</section>
+
+<ng-container *ngIf="!isAdministrator">
+  <app-unauthorized></app-unauthorized>
+</ng-container>
+

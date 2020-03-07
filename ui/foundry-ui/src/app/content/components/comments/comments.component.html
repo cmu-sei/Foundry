@@ -1,0 +1,72 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div *ngIf="content">
+    <!--<hr/>
+    <h4>Comments
+        <small *ngIf="comments.length > 1" class="pull-right">[
+            <a (click)="sortScore()" class="">Score</a> |
+            <a style="margin-left:5px" (click)="sortDate()">Date</a> ]
+        </small>
+    </h4>-->
+    <ul *ngIf="showComments">
+        <li *ngFor="let comment of comments; let i = index;" class="comment-container">
+            <div class="row">
+                <div class="float-left text-center col-md-1">
+                        <ul class="list-unstyled">
+                            <li><i (click)="upvote(comment)" class="fa fa-caret-up fa-2x vote-icon" [class.text-success]="comment.authorVote == 1"></i></li>
+                            <li><div class="text-center">{{comment.votes }}</div></li>
+                            <li><i (click)="downvote(comment)" class="fa fa-caret-down fa-2x vote-icon" [class.text-danger]="comment.authorVote == -1"></i></li>
+                        </ul>
+                </div>
+                <div class="col-md-11">
+                    <p style="margin-bottom: 10px;" [innerHtml]="toHtml(comment.text)" class="mat-line comment-text"></p>
+                    <div class="comment-author">
+                        <div class="row">
+                            <div class="col">
+                                 {{comment.author}} <span class="badge badge-warning pr-1">{{comment.created | date:'shortDate'}}</span>
+                            </div>
+                            <div *ngIf="comment.canEdit" class="col text-right">
+                                <button (click)="openEdit(comment)" mat-icon-button color="primary">
+                                        <mat-icon>edit</mat-icon>
+                                </button>
+                                <button (click)="openDelete(comment, i)"mat-icon-button color="warn">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="divider comment-solid divider-sm"></div>
+        </li>
+    </ul>
+    <button *ngIf="showMore" class="btn btn-link" (click)="searchMore()">More</button>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <mat-form-field class="full-width">
+                    <textarea matInput maxlength="512" class="form-control" rows="10" [(ngModel)]="newCommentText" placeholder="Add a comment..."></textarea>
+                    <mat-hint align="end"><span>{{newCommentText.length}}</span> / 512</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+            <div class="col text-right">
+                <button type="button" mat-raised-button class="btn-w-md" color="accent" [disabled]="btnDisabled" (click)="addComment()">
+                        Add Comment
+                </button>
+            </div>
+        </div>
+</div>
+

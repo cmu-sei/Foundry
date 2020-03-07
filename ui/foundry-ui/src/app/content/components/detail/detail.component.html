@@ -1,0 +1,250 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div *ngIf="errorMsg" class="alert alert-danger">{{errorMsg}}</div>
+<mat-progress-spinner *ngIf="loading && !content" style="margin:0 auto;" color="primary" mode="indeterminate">
+</mat-progress-spinner>
+<div *ngIf="!loading && content">
+  <div class="callout callout-danger" *ngIf="content.isDisabled">
+    <h4>Disabled</h4>
+    <p>{{ content.name }} has been disabled.</p>
+  </div>
+  <div *ngIf="content.canEdit && content.flags.length > 0">
+    <div class="row">
+      <div class="col" *ngIf="pendingFlags && pendingFlags.length > 0">
+        <div class="callout callout-danger">
+          <h4>Pending Flags</h4>
+          <p>{{ content.name }} has {{ content.flagCount }} pending flags.</p>
+          <div *ngFor="let flag of pendingFlags">
+            <hr />
+            <strong>{{ flag.profileName }} wrote:</strong>
+            <div>{{ flag.comment}}</div>
+            <div *ngIf="isPowerUser">
+              <div>&nbsp;</div>
+              <button type="button" class="btn btn-sm btn-danger mr-1" (click)="acceptFlag(flag)">Accept</button>
+              <button type="button" class="btn btn-sm" (click)="rejectFlag(flag)">Reject</button>
+              <span *ngIf="flag.flagStatus != 'Pending'" class="badge badge-primary">{{ flag.flagStatus }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="callout callout-warning" *ngIf="historyFlags && historyFlags.length > 0">
+          <h4>Flag History</h4>
+          <div *ngFor="let flag of historyFlags">
+            <hr />
+            <strong>{{ flag.profileName }} wrote:</strong>
+            <div>{{ flag.comment}}</div>
+            <div>&nbsp;</div>
+            <span *ngIf="flag.flagStatus" class="badge badge-primary">{{ flag.flagStatus }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card card-white">
+    <div class="row">
+      <div *ngIf="!showTrailer" class="col-lg-4 col-xxl-3">
+        <img class="img-fluid" [src]="content.logoUrl" style="width:100%;">
+        <div class="card-content pb-0">
+          <div class="action-container">
+            <span class="card-button float-left" *ngIf="content.url">
+              <a [href]="customUrl()" target="_blank" matTooltip="{{content.url}}" mat-raised-button color="accent"
+                class="btn-launch" (click)="launchContent()">Launch</a>
+            </span>
+            <span class="card-button float-right" *ngIf="content.canEdit && content.isFlagged">
+              <button [routerLink]="['/content', 'edit', content.id]"
+                matTooltip="This has been flagged {{ content.flagCount }} times"
+                class="btn btn-icon btn-icon-round btn-warning"><i class="material-icons mdi-sm">flag</i></button>
+            </span>
+            <span class="card-button float-right" *ngIf="!content.isBookmarked">
+              <button *ngIf="content.type != 'Event'" [disabled]="btnDisabled" (click)="addBookmark()"
+                matTooltip="Add Bookmark" class="btn btn-icon btn-icon-round btn-success"><i
+                  class="material-icons mdi-sm">bookmark_border</i></button>
+              <button *ngIf="content.type == 'Event'" [disabled]="btnDisabled" (click)="addBookmark()"
+                matTooltip="Watch Event" class="btn btn-icon btn-icon-round btn-success"><i
+                  class="material-icons mdi-sm">event_available</i></button>
+            </span>
+            <span class="card-button float-right" *ngIf="content.isBookmarked">
+              <button *ngIf="content.type != 'Event'" [disabled]="btnDisabled" (click)="removeBookmark()"
+                matTooltip="Remove Bookmark" class="btn btn-icon btn-icon-round btn-success"><i
+                  class="material-icons mdi-sm">bookmark</i></button>
+              <button *ngIf="content.type == 'Event'" [disabled]="btnDisabled" (click)="removeBookmark()"
+                matTooltip="Stop Watching Event" class="btn btn-icon btn-icon-round btn-success"><i
+                  class="material-icons mdi-sm">event_busy</i></button>
+            </span>
+            <span class="card-button float-right" *ngIf="content.canEdit">
+              <button [routerLink]="['/content/edit', content.id]" matTooltip="Edit Content"
+                class="btn btn-icon btn-icon-round btn-danger"><i class="material-icons mdi-sm">settings</i></button>
+            </span>
+            <span class="card-button float-right">
+              <button (click)="openSelectDialog()" class="btn btn-icon btn-icon-round" matTooltip="Add To Playlist">
+                <i class="material-icons">playlist_add_check</i>
+              </button>
+            </span>
+
+          </div>
+        </div>
+      </div>
+      <div *ngIf="showTrailer" class="col-lg-6 col-xxl-4">
+        <app-video-player [item]="content"></app-video-player>
+        <div class="card-content">
+          <div class="action-container text-right">
+            <span class="float-left" *ngIf="content.url">
+              <a [href]="customUrl()" target="_blank" matTooltip="{{content.url}}" mat-raised-button color="accent"
+                (click)="launchContent()">Launch</a>
+            </span>
+            <span class="float-right" *ngIf="content.canEdit && content.isFlagged">
+              <button [routerLink]="['/content', 'edit', content.id]"
+                matTooltip="This has been flagged {{ content.flagCount }} times"
+                class="btn btn-icon btn-icon-round btn-warning"><i class="material-icons mdi-sm">flag</i></button>
+            </span>
+            <span class="float-right" *ngIf="!content.isBookmarked">
+              <button *ngIf="content.type != 'Event'" [disabled]="btnDisabled" (click)="addBookmark()"
+                matTooltip="Add Bookmark" class="btn btn-icon btn-icon-round btn-success"><i
+                  class="material-icons mdi-sm">bookmark_border</i></button>
+              <button *ngIf="content.type == 'Event'" [disabled]="btnDisabled" (click)="addBookmark()"
+                matTooltip="Watch Event" class="btn btn-icon btn-icon-round btn-success"><i
+                  class="material-icons mdi-sm">event_available</i></button>
+            </span>
+            <span class="float-right" *ngIf="content.isBookmarked">
+              <button *ngIf="content.type != 'Event'" [disabled]="btnDisabled" (click)="removeBookmark()"
+                matTooltip="Remove Bookmark" class="btn btn-icon btn-icon-round btn-success"><i
+                  class="material-icons mdi-sm">bookmark</i></button>
+              <button *ngIf="content.type == 'Event'" [disabled]="btnDisabled" (click)="removeBookmark()"
+                matTooltip="Stop Watching Event" class="btn btn-icon btn-icon-round btn-success"><i
+                  class="material-icons mdi-sm">event_busy</i></button>
+            </span>
+            <span class="float-right" *ngIf="content.canEdit">
+              <button [routerLink]="['/content/edit', content.id]" matTooltip="Edit Content"
+                class="btn btn-icon btn-icon-round btn-danger"><i class="material-icons mdi-sm">settings</i></button>
+            </span>
+            <span class="float-right">
+              <button (click)="openSelectDialog()" class="btn btn-icon btn-icon-round" matTooltip="Add To Playlist">
+                <i class="material-icons">playlist_add_check</i>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div [ngClass]="(showTrailer) ? 'col-lg-6 col-xxl-8' : 'col-lg-8 col-xxl-9'">
+        <div class="card-content">
+          <h3>{{ content.name }}</h3>
+          <ng-container *ngIf="content.type == 'Event'">
+            <span *ngIf="!content.start" class="text-muted"><strong>Added:
+              </strong>{{content.created | date: 'MMMM d, y' }}</span>
+            <span *ngIf="content.start" class="text-muted"><strong>Starts </strong>{{content.startDate }} - <strong>Ends
+              </strong>{{content.endDate}}</span>
+          </ng-container>
+          <ng-container *ngIf="content.type != 'Event'">
+            <span class="text-muted"><strong>Added: </strong>{{content.created | date: 'MMMM d, y' }}</span>
+          </ng-container>
+          <div class="row pt-3">
+            <div class="col-auto">
+              <a *ngIf="content.authorId" [routerLink]="[ '/profile', content.authorId, content.authorSlug]"
+                matTooltip="Author">
+                <i class="nav-icon tile-icon material-icons">account_box</i>
+                <span *ngIf="content.authorName">{{ content.authorName }}</span>
+                <span *ngIf="!content.authorName">View Author</span>
+              </a>
+            </div>
+            <div class="col-auto" *ngIf="content.publisherId">
+              <a *ngIf="content.publisherId" [routerLink]="['/group', content.publisherId, content.publisherSlug]">
+                <i class="nav-icon tile-icon material-icons">group</i>
+                {{ content.publisherName }}
+              </a>
+            </div>
+            <div class="col-auto" *ngIf="!isSidebarBrowser && content.playlists.length > 0">
+              <div *ngFor="let playlist of content.playlists">
+                <a [routerLink]="['/playlist', playlist.id, playlist.slug]" matTooltip="Playlist"><i
+                    class="fa fa-th-list"></i> {{ playlist.name }}</a>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="pt-2 pb-2" [innerHtml]="renderedDescription()"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-content pt-0">
+      <div class="divider divider-solid divider-md"></div>
+      <div class="row margin-top-2">
+        <div class="col-8">
+          <div class="row">
+            <div class="col">
+              <span *ngIf="content.type" class="badge badge-default text-uppercase content-badge"
+                [routerLink]="['/content']" [queryParams]="{type: content.type.toLowerCase()}">{{content.type}}</span>
+              <span *ngFor="let tag of tags">
+                <span class="badge badge-primary text-uppercase link-badge mr-1" [routerLink]="['/tag']"
+                  [queryParams]="{tag: tag.name}"> {{ tag.name }} </span>
+              </span>
+            </div>
+          </div>
+          <div *ngIf="niceTags.length" class="row mt-2">
+            <div class="col">
+                <p class="d-inline-block mr-2">NICE Framework Tags
+                  <a href="https://niccs.us-cert.gov/workforce-development/cyber-security-workforce-framework"  target="_blank">
+                    <i class="fa fa-info-circle"></i>
+                  </a>
+                </p>
+              <span *ngFor="let tag of niceTags">
+                <span class="badge badge-primary text-uppercase link-badge mr-1" [routerLink]="['/tag']"
+                  [queryParams]="{tag: tag.name}"> {{ tag.name }} </span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 text-right">
+          <button *ngIf="!contentFlag && !tempFlag" type="button" class="btn btn-sm btn-link pl-0"
+            (click)="openFlagDialog()"><i class="fa fa-flag"></i> Flag Content</button>
+          <p *ngIf="contentFlag" class="text-muted"><i class="fa fa-flag"></i> You flagged this content as:
+            <strong>{{contentFlag.comment }}</strong></p>
+          <p *ngIf="tempFlag" class="text-muted"><i class="fa fa-flag"></i> You flagged this content as:
+            <strong>{{tempFlag}}</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-white">
+    <div class="card-content">
+      <div class="row">
+        <div class="col-xl-6 text-center">
+          <ratings-display [average]="content.rating.average" [total]="content.rating.total"></ratings-display>
+        </div>
+        <div class="col-xl-6 text-center">
+          <difficulty-display [average]="content.difficulty.average" [total]="content.difficulty.total">
+          </difficulty-display>
+        </div>
+      </div>
+      <content-ratings [content]="[content]"></content-ratings>
+    </div>
+  </div>
+  <div class="card card-white">
+    <div class="card-content">
+      <content-comments [content]="content"></content-comments>
+    </div>
+  </div>
+  <div class="row" *ngIf="content.copyright">
+    <div class="col">
+      <div class="card card-white">
+        <div class="card-content">
+          <div class="pt-2 pb-2" [innerHtml]="renderedCopyright()"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

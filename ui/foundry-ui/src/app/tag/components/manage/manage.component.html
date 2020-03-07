@@ -1,0 +1,90 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<section class="container-fluid chapter" *ngIf="isPowerUser">
+  <div class="box box-default p-4">
+    <h4>Manage Tags</h4>
+    <div class="">
+      <div class="row data-filter pb-2">
+        <div class="col-lg-3">
+          <mat-form-field appearance="standard">
+            <mat-select [(value)]="dataFilter.sort" placeholder="Sort">
+              <mat-option value="alphabetic" (click)="sort('alphabetic')">Name (Asc)</mat-option>
+              <mat-option value="-alphabetic" (click)="sort('-alphabetic')">Name (Desc)</mat-option>
+              <mat-option value="popular" (click)="sort('popular')">Count (Desc)</mat-option>
+              <mat-option value="-popular" (click)="sort('-popular')">Count (Asc)</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-3">
+          <mat-form-field appearance="standard">
+            <input matInput placeholder="Search" [(ngModel)]="dataFilter.term" (keyup.enter)="search()">
+          </mat-form-field>
+        </div>
+        <div class="col-lg-3">
+          <mat-form-field appearance="standard">
+            <mat-select [(value)]="dataFilter.filter" placeholder="Filter">
+              <mat-option value="type=" (click)="reset()">Default</mat-option>
+              <mat-option value="type=nice" (click)="reset()">NICE</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div *ngIf="result">
+        <div class="table-responsive">
+          <table class="table table-light table-striped">
+            <colgroup>
+              <col style="width: 25%;" />
+              <col style="width: 25%;" />
+              <col style="width: 25%;" />
+              <col style="width: 15%;" />
+              <col style="width: 10%;" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Tag</th>
+                <th>Type</th>
+                <th>Sub Type</th>
+                <th>Occurs</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let tag of result.results; let i = index">
+                <td><a class="text-primary" [routerLink]="['/content']" [queryParams]="{ filter: 'tag=' + tag.name }">{{ tag.name }}</a></td>
+                <td>{{ tag.tagType }}</td>
+                <td>{{ tag.tagSubType }}</td>
+                <td>{{ tag.count }}</td>
+                <td class="text-right">
+                  <button class="btn btn-sm btn-danger" (click)="edit(tag)"><i class="fa fa-cog" matTooltip="Edit Tag"></i></button>
+                  &nbsp;
+                  <button class="btn btn-sm btn-danger" (click)="confirmDelete(tag)" matTooltip="Delete Tag"><i class="fa fa-remove"></i></button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot *ngIf="result && result.results.length == 0 && !spin">
+              <tr><td colspan="3">There are no tags matching this search</td></tr>
+            </tfoot>
+          </table>
+          <pager [pagedResult]="result" [dataFilter]="dataFilter" (onPageChanged)="search()" (onPageSizeChanged)="reset()"></pager>
+        </div>
+      </div>
+      <mat-progress-bar mode="indeterminate" *ngIf="spin"></mat-progress-bar>
+    </div>
+  </div>
+</section>
+
+<ng-container *ngIf="!isPowerUser">
+  <app-unauthorized></app-unauthorized>
+</ng-container>
+

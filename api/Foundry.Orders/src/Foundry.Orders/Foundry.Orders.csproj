@@ -1,0 +1,115 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</SourceRevisionId>
+    <Version>2.0.0</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>..\..\Foundry.Orders.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="AppMailClient" Version="2.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Cmu.Sei.Cwd.Stack.DomainEvents" Version="1.0.0" />
+    <PackageReference Include="Cmu.Sei.Cwd.Stack.Communication.Notifications" Version="1.0.0" />
+    <PackageReference Include="Cmu.Sei.Cwd.Stack.Data" Version="1.1.0" />
+    <PackageReference Include="Cmu.Sei.Cwd.Stack.Validation" Version="3.0.0" />
+    <PackageReference Include="Cmu.Sei.Cwd.Stack.Http" Version="1.1.0" />
+    <PackageReference Include="Cmu.Sei.Cwd.Stack.Http.Identity" Version="2.0.1" />
+    <PackageReference Include="Cmu.Sei.Cwd.Stack.Patterns.Service" Version="2.0.0" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.6.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
+    <Content Remove="ClientApp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\app\ui\order\assessment.component.ts" />
+    <None Remove="ClientApp\app\ui\order\audience.component.ts" />
+    <None Remove="ClientApp\app\ui\order\orderreview.component.ts" />
+    <None Remove="ClientApp\app\ui\order\range.component.ts" />
+    <None Remove="ClientApp\app\ui\order\startorder.component.ts" />
+    <None Remove="ClientApp\app\ui\order\trainingcontent.component.ts" />
+    <None Remove="order.portal.db" />
+    <None Remove="OrderPortal.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\ui\order\orderreview.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\ui\order\trainingcontent.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\app\api\gen\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Foundry.Orders.Data.PostgreSQL\Foundry.Orders.Data.PostgreSQL.csproj" />
+    <ProjectReference Include="..\Foundry.Orders.Data.Sqlite\Foundry.Orders.Data.Sqlite.csproj" />
+    <ProjectReference Include="..\Foundry.Orders.Data.SqlServer\Foundry.Orders.Data.SqlServer.csproj" />
+    <ProjectReference Include="..\Foundry.Orders.Data\Foundry.Orders.Data.csproj" />
+  </ItemGroup>
+
+  <Target Name="WebpackInit" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+
+    <!-- In development, the dist files won't exist on the first run or when cloning to
+         a different machine, so rebuild them if not already present. -->
+    <Message Importance="high" Text="Performing first-run Webpack build..." />
+    <Exec Command="npm install" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js" />
+  </Target>
+
+  <Target Name="WebpackDev">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec Command="npm install" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js" />
+  </Target>
+
+  <Target Name="Webpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec Command="npm install" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --env.prod" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="wwwroot\dist\**; ClientApp\dist\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="ApiGen">
+    <Exec Command="node swagger-ng.js -u http://localhost:5004/docs/v1/api.json -o ClientApp/app/api -m TermSkipTakeFilterSort:DataFilter" />
+  </Target>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+</Project>

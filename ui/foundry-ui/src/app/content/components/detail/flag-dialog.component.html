@@ -1,0 +1,41 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div mat-dialog-content>
+    <h1 matDialogTitle>I am flagging this content as: </h1>
+    <mat-radio-group class="flag-radio-group" [(ngModel)]="comment">
+        <mat-radio-button class="flag-radio-button"(change)="inputVisible = false" value="Spam">
+          Spam <br><small>This content only exists to promote a product or service.</small>
+        </mat-radio-button>
+        <mat-radio-button class="flag-radio-button" (change)="inputVisible = false" value="Inappropriate">
+          Inappropriate<br> <small>A reasonable person would find this content inappropriate.</small>
+        </mat-radio-button>
+        <mat-radio-button class="flag-radio-button" (change)="inputVisible = false" value="Not Accurate">
+          Not Accurate <br><small>The content is not what it purports to be.</small>
+        </mat-radio-button>
+        <mat-radio-button class="flag-radio-button" (change)="inputVisible = false" value="Low Quality">
+          Low Quality<br> <small>This content has many errors or omissions.</small>
+        </mat-radio-button>
+        <mat-radio-button class="flag-radio-button" (change)="inputVisible = true" value="Other">
+           Other
+        </mat-radio-button>
+      </mat-radio-group>
+  <mat-form-field style="width: 100%;" *ngIf="inputVisible == true">
+    <input matInput maxlength="50" [(ngModel)]="otherComment" placeholder="Add an explanation">
+    <mat-hint align="end"><span *ngIf="otherComment">{{otherComment.length}}</span><span *ngIf="!otherComment">0</span> / 50</mat-hint>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions class="pull-right">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="submitFlag(data.id, comment)" cdkFocusInitial>Ok</button>
+</div>
+

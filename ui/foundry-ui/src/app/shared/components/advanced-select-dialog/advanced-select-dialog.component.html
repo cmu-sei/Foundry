@@ -1,0 +1,39 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<div class="dialog-body">
+  <mat-form-field class="full-width">
+    <input matInput placeholder="Search" [(ngModel)]="term" name="term"
+    type="text" #searchTerm="ngModel" (keydown.enter)="search(searchTerm.value);false">
+  </mat-form-field>
+  <div class="item-container">
+    <mat-radio-group class="radio-group" [(ngModel)]="data.selected[0]" *ngIf="items && !data.multiselect">
+      <mat-radio-button class="radio-button" *ngFor="let item of items" [value]="item.id">
+        {{item.name}}
+      </mat-radio-button>
+    </mat-radio-group>
+    <mat-list dense *ngIf="items && data.multiselect">
+      <mat-list-item>{{ data.title }}</mat-list-item>
+      <mat-list-item *ngFor="let i of items">
+        <mat-checkbox [checked]="isChecked(i)" (change)="onChange(i)" [value]="i.id">{{ i.name }}</mat-checkbox>
+      </mat-list-item>
+    </mat-list>
+    <p *ngIf="more" class="text-right"><button class="btn btn-sm btn-link" (click)="showMore()">Load More...</button></p>
+    <p *ngIf="items.length == 0"> No items found.</p>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">{{ data.noText }}</button>
+  <button [disabled]="data.selected.length < 1" mat-button [mat-dialog-close]="data.selected" cdkFocusInitial>{{ data.yesText }}</button>
+</div>
+

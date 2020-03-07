@@ -1,0 +1,45 @@
+{
+  "branding": {
+      "applicationName": "Buckets",
+      "identityLogoBaseUrl": "http://localhost:5000",
+      "commit": "##COMMIT##"
+    },
+    "errorHandling": {
+      "showDeveloperExceptions": false
+    },
+    "clientSettings": {
+      "oidc": {
+        "authority": "http://localhost:5000",
+        "client_id": "stack-buckets",
+        "redirect_uri": "http://localhost:5003/auth",
+        "silent_redirect_uri": "http://localhost:5003/silent.html",
+        "post_logout_redirect_uri": "http://localhost:5003",
+        "response_type": "id_token token",
+        "scope": "openid profile email sketch-common organization",
+        "automaticSilentRenew": false,
+        "filterProtocolClaims": true,
+        "loadUserInfo": false,
+        "monitorSession": false,
+        "checkSessionInterval": 10000,
+        "accessTokenExpiringNotificationTime": 120
+      }
+    },
+    "corsPolicy": {
+      "origins": [],
+      "methods": [],
+      "headers": [],
+      "allowAnyOrigin": true,
+      "allowAnyMethod": true,
+      "allowAnyHeader": true,
+      "supportsCredentials": false
+    },
+    "logging": {
+      "includeScopes": false,
+      "logLevel": {
+        "default": "Warning"
+      }
+    },
+    "urls": {
+      "apiUrl": "http://localhost:5055/api"
+    }
+  }

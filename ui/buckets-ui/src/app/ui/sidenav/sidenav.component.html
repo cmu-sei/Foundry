@@ -1,0 +1,67 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<ul class="list-unstyled pt-4">
+    <li class="text-center p-3">
+        <button mat-raised-button color="accent" [matMenuTriggerFor]="menu">
+            <mat-icon class="mr-2" aria-label="Add a new item...">add</mat-icon>New
+        </button>
+        <mat-menu #menu="matMenu" class="buckets-menu-panel">
+            <a mat-menu-item (click)="openUploadDialog()"><mat-icon class="mr-2">insert_drive_file</mat-icon>File</a>
+            <a mat-menu-item (click)="openBucketDialog()"><mat-icon class="mr-2">folder</mat-icon>Bucket</a>
+        </mat-menu>
+    </li>
+    <li class="p-3" *ngIf="isAdministrator">
+        <button mat-flat-button [routerLink]="['/import']" routerLinkActive="link-active" (click)="setBucket(0)">
+            <mat-icon class="mr-2">refresh</mat-icon>
+            <span>Import</span>
+        </button>
+    </li>
+    <li class="p-3" *ngIf="isAdministrator">
+        <button mat-flat-button [routerLink]="['/account']" routerLinkActive="link-active">
+            <mat-icon class="mr-2">perm_identity</mat-icon>
+            <span>Accounts</span>
+        </button>
+    </li>
+    <li class="p-3">
+        <button mat-flat-button [routerLink]="['/file']" routerLinkActive="link-active" (click)="setBucket(0)">
+            <mat-icon class="mr-2">insert_drive_file</mat-icon>
+            <span>Files</span>
+        </button>
+    </li>
+    <li class="p-2">
+        <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon class="mr-2">folder</mat-icon>
+                    <span>Buckets</span>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngFor="let b of buckets">
+                <a [routerLink]="['/bucket', b.id, b.slug]" class="link" routerLinkActive="active" (click)="setBucket(b.id)">
+                    <span>{{b.name}}</span>
+                    <span style="float: right;">
+                        <mat-icon style="font-size: 8pt;" *ngIf="b.bucketSharingType == 'Private'">lock</mat-icon>
+                        <mat-icon style="font-size: 8pt;" *ngIf="b.isDefault">check_circle</mat-icon>
+                    </span>
+                </a>
+            </div>
+        </mat-expansion-panel>
+    </li>
+    <!--<li class="p-3">
+        <button mat-flat-button [routerLink]="['/file']" routerLinkActive="link-active">
+            <mat-icon class="mr-2">query_builder</mat-icon>
+            <span>Recent</span>
+        </button>
+    </li>-->
+</ul>
+

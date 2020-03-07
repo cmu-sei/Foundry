@@ -1,0 +1,46 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div *ngIf="content">
+    <div class="row">
+        <div class="col-xl-6 text-center">
+            <h6>How would you rate this content?</h6>
+            <mat-spinner *ngIf="ratingSpin" diameter="50" style="margin:0 auto;"></mat-spinner>
+            <div *ngIf="!ratingSpin" class="btn-group btn-group-sm action-buttons" role="group" aria-label="Rating">
+                <button *ngFor="let rating of ratings; let i = index" (click)="setRating(rating)" [ngClass]="content.userRating == rating ? 'btn-danger' : 'btn-default'" type="button" class="btn">
+                    {{ rating }}
+                    <div>
+                        <i class="fa" [ngClass]="i >= 0 ? 'fa-star' : 'fa-star-o'"></i>
+                        <i class="fa" [ngClass]="i >= 1 ? 'fa-star' : 'fa-star-o'"></i>
+                        <i class="fa" [ngClass]="i >= 2 ? 'fa-star' : 'fa-star-o'"></i>
+                        <i class="fa" [ngClass]="i >= 3 ? 'fa-star' : 'fa-star-o'"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <div class="col-xl-6 text-center">
+            <h6>How challenging is this content?</h6>
+            <mat-spinner *ngIf="difficultySpin" diameter="50" style="margin:0 auto;"></mat-spinner>
+            <div *ngIf="!difficultySpin" class="btn-group btn-group-sm action-buttons" role="group" aria-label="Difficulty">
+                <button *ngFor="let difficulity of difficulties; let i = index" (click)="setDifficulty(difficulity)" [ngClass]="content.userDifficulty == difficulity ? 'btn-danger' : 'btn-default'" type="button" class="btn">
+                    {{ difficulity }}
+                    <div>
+                        <i class="fa" [ngClass]="i >= 0 ? 'fa-circle' : 'fa-circle-o'"></i>
+                        <i class="fa" [ngClass]="i >= 1 ? 'fa-circle' : 'fa-circle-o'"></i>
+                        <i class="fa" [ngClass]="i >= 2 ? 'fa-circle' : 'fa-circle-o'"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+

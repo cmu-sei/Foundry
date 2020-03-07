@@ -1,0 +1,71 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<app-browser-scroll (more)="showMore()" [moreFlag]="more" [spinFlag]="spin">
+  <div class="card card-white">
+    <div class="card-content">
+      <div class="row data-filter">
+        <div class="col-auto">
+          <div class="btn-group" role="group" aria-label="View Modes">
+            <button type="button" matTooltip="Grid View" class="btn" (click)="setProfileViewMode('tile')" [ngClass]="viewMode == 'tile' ? 'btn-dark' : 'btn-secondary'"><i class="fa fa-sliders"></i></button>
+            <button type="button" matTooltip="List View" class="btn" (click)="setProfileViewMode('list')" [ngClass]="viewMode == 'list' ? 'btn-dark' : 'btn-secondary'"><i class="fa fa-list"></i></button>
+          </div>
+        </div>
+        <div class="col-auto">
+          <mat-chip-list>
+            <mat-chip>{{ total }} {{ total == 1 ? 'Result' : 'Results' }}</mat-chip>
+            <mat-chip *ngIf="playlistTerm" color="secondary" selected>Showing results for "{{playlistTerm}}"<mat-icon (click)="clearSearch()" class="remove-filter ml-2">clear</mat-icon></mat-chip>
+          </mat-chip-list>
+        </div>
+        <div class="col-auto ml-auto">
+          <mat-form-field>
+            <mat-select [(value)]="dataFilter.sort" placeholder="Sort by">
+              <mat-option value="alphabetic" (click)="sort('alphabetic')">Name (Asc)</mat-option>
+              <mat-option value="-alphabetic" (click)="sort('-alphabetic')">Name (Desc)</mat-option>
+              <mat-option value="-recent" (click)="sort('-recent')">Newest</mat-option>
+              <mat-option value="recent" (click)="sort('recent')">Oldest</mat-option>
+              <mat-option value="-top" (click)="sort('top')">Highest Rated</mat-option>
+              <mat-option value="top" (click)="sort('-top')">Lowest Rated</mat-option>
+              <mat-option value="-popular" (click)="sort('-popular')">Most Popular</mat-option>
+              <mat-option value="popular" (click)="sort('popular')">Least Popular</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-auto">
+          <mat-form-field>
+            <mat-select [(value)]="dataFilter.filter" placeholder="Filter by">
+              <mat-option (click)="filter('')"></mat-option>
+              <mat-option value="following" (click)="filter('following')">Following</mat-option>
+              <mat-option value="!following" (click)="filter('!following')">Available</mat-option>
+              <mat-option value="managed" (click)="filter('managed')">Managed</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="viewMode=='tile'">
+    <div class="d-flex flex-wrap align-items-center justify-content-center">
+      <div class="p-2" *ngFor="let playlist of playlists; let i =index" style="width:320px;">
+        <playlist-tile [playlist]="playlist" [index]="i" [viewMode]="viewMode"></playlist-tile>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="viewMode=='list'">
+    <div *ngFor="let playlist of playlists; let i =index">
+      <playlist-tile [playlist]="playlist" [index]="i" [viewMode]="viewMode"></playlist-tile>
+    </div>
+  </div>
+  <mat-progress-bar mode="indeterminate" *ngIf="spin"></mat-progress-bar>
+</app-browser-scroll>
+<mat-card *ngIf="playlists && playlists.length == 0 && !spin" class="text-center m-2">There are no playlists matching this search</mat-card>
+

@@ -1,0 +1,41 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div class="extension-list">
+  <div class="row">
+    <spinner *ngIf="spin"></spinner>
+    <div class="d-flex flex-wrap align-items-center justify-content-center">
+        <div *ngFor="let app of applications" class="extension card card-white m-2" style="width:350px;">
+            <div class="card-content">
+              <img *ngIf="app.logoUri" [src]="app.logoUri">
+              <i *ngIf="!app.logoUri" class="material-icons">widgets</i>
+              <span class="app-name">
+                <a *ngIf="app.clientUri" [href]="app.clientUri" target="_blank">
+                  {{ app.displayName }}
+                </a>
+                <span *ngIf="!app.clientUri">{{ app.displayName }}</span>
+              </span>
+              <div class="border-bottom mb-2"></div>
+              <p class="desc"><small>{{ app.description }}</small></p>
+              <i class="fa fa-retweet pull-left text-muted" *ngIf="app.webHookUrl" title="Subscribes to Web Hooks"></i>
+              <button *ngIf="!app.isBookmarked" class="m-2 btn btn-icon btn-icon-round btn-success pull-right" (click)="add(app)" title="Bookmark this app">
+                <i class="material-icons mdi-sm">bookmark_border</i>
+              </button>
+              <button *ngIf="app.isBookmarked" class="m-2 btn btn-icon btn-icon-round btn-success pull-right" (click)="remove(app)" title="Remove bookmark" >
+                <i class="material-icons mdi-sm">bookmark</i>
+              </button>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+

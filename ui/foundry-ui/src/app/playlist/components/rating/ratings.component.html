@@ -1,0 +1,39 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div *ngIf="data.playlist">
+    <div *ngIf="data.playlist.isFollowing || data.playlist.canEdit" class="row">
+        <div class="col-xl-12 text-center">
+            <p class="pb-1">How would you rate this playlist?</p>
+            <div class="btn-group btn-group-sm action-buttons" role="group" aria-label="Rating">
+                <button (click)="setRating('Poor')" [ngClass]="data.playlist.userRating == 'Poor' ? 'btn-danger' : 'btn-default'" type="button" class="btn">
+                    Poor<div><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></div>
+                </button>
+                <button (click)="setRating('Fair')" [ngClass]="data.playlist.userRating == 'Fair' ? 'btn-danger' : 'btn-default'" type="button" class="btn">
+                    Fair<div><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></div>
+                </button>
+                <button (click)="setRating('Good')" [ngClass]="data.playlist.userRating == 'Good' ? 'btn-danger' : 'btn-default'" type="button" class="btn">
+                    Good<div><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
+                </button>
+                <button (click)="setRating('Great')" [ngClass]="data.playlist.userRating == 'Great' ? 'btn-danger' : 'btn-default'" type="button" class="btn">
+                    Great<div><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!data.playlist.isFollowing && !data.playlist.canEdit" class="row">
+            <div class="col-xl-12 text-center">
+                <p>Follow this playlist to rate it.</p>
+            </div>
+        </div>
+</div>
+

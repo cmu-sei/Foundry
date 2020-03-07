@@ -1,0 +1,74 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div class="row data-filter pb-2">
+    <div class="col-lg-3">
+        <div class="card card-white">
+            <div class="card-body">
+                <mat-select [(value)]="dataFilter.filter" placeholder="Filter">
+                        <mat-option value="contenttype=event" (click)="filter('contenttype=event')">All Events</mat-option>
+                        <mat-option value="contenttype=event|myevents" (click)="filter('contenttype=event|myevents')">My Events</mat-option>
+                        <mat-option value="contenttype=event|!myevents" (click)="filter('contenttype=event|!myevents')">Available</mat-option>
+                </mat-select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-white">
+    <div class="card-content">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="btn-group">
+                    <div class="btn btn-danger" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="activeDayIsOpen = false">
+                        Previous
+                    </div>
+                    <div class="btn btn-primary" mwlCalendarToday [(viewDate)]="viewDate">
+                        Today
+                    </div>
+                    <div class="btn btn-danger" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="activeDayIsOpen = false">
+                        Next
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+            </div>
+            <div class="col-md-4">
+                <div class="btn-group">
+                    <div class="btn btn-danger" (click)="view = 'month'" [class.active]="view === 'month'">
+                        Month
+                    </div>
+                    <div class="btn btn-danger" (click)="view = 'week'" [class.active]="view === 'week'">
+                        Week
+                    </div>
+                    <div class="btn btn-danger" (click)="view = 'day'" [class.active]="view === 'day'">
+                        Day
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div [ngSwitch]="view">
+            <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen"
+                                     (dayClicked)="dayClicked($event.day)"
+                                     (eventClicked)="eventClicked($event)">
+            </mwl-calendar-month-view>
+            <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+                                    (eventClicked)="eventClicked($event)">
+            </mwl-calendar-week-view>
+            <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+                                   (eventClicked)="eventClicked($event)">
+            </mwl-calendar-day-view>
+        </div>
+    </div>
+</div>
+

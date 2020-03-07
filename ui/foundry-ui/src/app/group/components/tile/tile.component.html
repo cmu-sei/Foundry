@@ -1,0 +1,75 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div *ngIf="viewMode == 'tile'">
+    <div class="card card-white">
+        <div class="card-image" [routerLink]="['/group', group.id, group.slug]" [ngStyle]="{'background-image': 'url(' + encodedLogoUrl + ')'}">
+            <span class="card-title">
+                <a [routerLink]="['/group', group.id, group.slug]">{{group.name}}</a>
+            </span>
+        </div>
+        <div class="card-content">
+            <span *ngIf="group.actions.join" class="card-button float-right">
+                <button [disabled]="btnDisabled" (click)="join()" matTooltip="Request Membership" class="btn-hover btn btn-icon btn-icon-round btn-success mr-1"><i class="material-icons mdi-sm">person_add</i></button>
+            </span>
+            <span *ngIf="group.actions.leave" class="card-button float-right">
+                <button [disabled]="btnDisabled" (click)="leave()" matTooltip="Leave" class="btn btn-icon btn-icon-round btn-warning mr-1"><i class="material-icons mdi-sm">clear</i></button>
+            </span>
+            <span *ngIf="group.actions.edit" class="card-button float-right">
+                <button [routerLink]="['/group', 'edit', group.id]" matTooltip="Manage" class="btn-hover btn btn-icon btn-icon-round btn-danger mr-1"><i class="material-icons mdi-sm">settings</i></button>
+            </span>
+            <small class="text-muted">{{group.created | date: 'MMM d, y' }}</small>
+            <p *ngIf="group.description" class="desc pt-2">
+                {{group.summary}}
+            </p>
+        </div>
+        <div class="divider divider-solid divider-sm ml-2 mr-2"></div>
+        <div class="card-action">
+
+            <div class="row">
+                <div class="col-auto">
+                    <span class="badge badge-primary">{{group.counts.members}} {{ group.counts.members == 1 ? 'Member' : 'Members' }}</span>
+                </div>
+                <div class="col-auto ml-auto" *ngIf="status != null">
+                    <span *ngIf="status === 'Pending'" class="badge badge-primary">Request Pending</span>
+                    <span *ngIf="status === 'Approved'" class="badge badge-success">Member</span>
+                    <span *ngIf="status === 'Denied'" class="badge badge-danger">Request Denied</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="viewMode == 'list'" class="list-items">
+    <div class="row list-item p-4" [ngClass]="{ 'even' : index % 2 == 0, 'odd' : index % 2 == 1, 'first': index == 0 }">
+        <div class="col-sm-6">
+            <img class="list-item-thumbnail pr-2" *ngIf="group.logoUrl" [src]="group.logoUrl" />
+            <a href="#" [routerLink]="['/group', group.id, group.slug]">{{ group.name }}</a>
+            <ng-container *ngIf="status != null">
+                    <span *ngIf="status === 'Pending'" class="badge badge-primary ml-2">Request Pending</span>
+                    <span *ngIf="status === 'Approved'" class="badge badge-success ml-2">Member</span>
+                    <span *ngIf="status === 'Denied'" class="badge badge-danger ml-2">Request Denied</span>
+            </ng-container>
+        </div>
+        <div class="col-sm-2">
+            <mat-chip>{{ group.counts.members }} {{ group.counts.members == 1 ? 'Member' : 'Members' }}</mat-chip>
+        </div>
+        <div class="col-sm-2">
+            <span class="text-muted">{{group.created | date: 'MMMM d, y' }}</span>
+        </div>
+        <div class="col-sm-2 text-right">
+            <button *ngIf="group.actions.join" [disabled]="btnDisabled" (click)="join()" matTooltip="Request Membership" class="btn-hover btn btn-icon btn-icon-round btn-success mr-1"><i class="material-icons mdi-sm">person_add</i></button>
+            <button *ngIf="group.actions.leave" [disabled]="btnDisabled" (click)="leave()" matTooltip="Leave" class="btn-hover btn btn-icon btn-icon-round btn-warning mr-1"><i class="material-icons mdi-sm">clear</i></button>
+            <button *ngIf="group.actions.edit" [routerLink]="['/group', 'edit', group.id]" matTooltip="Manage" class="btn-hover btn btn-icon btn-icon-round btn-danger mr-1"><i class="material-icons mdi-sm">settings</i></button>
+        </div>
+    </div>
+</div>
+

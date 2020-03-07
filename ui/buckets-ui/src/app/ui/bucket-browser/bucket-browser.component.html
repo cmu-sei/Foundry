@@ -1,0 +1,59 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div class="row pb-2">
+    <div class="col">
+        <h3>Buckets</h3>
+    </div>
+    <div class="col text-right">
+        <mat-button-toggle-group #group="matButtonToggleGroup" class="pr-2">
+            <mat-button-toggle value="left">
+                Can Access
+            </mat-button-toggle>
+            <mat-button-toggle value="center">
+                Can Manage
+            </mat-button-toggle>
+            <mat-button-toggle value="right">
+                Pending Access
+            </mat-button-toggle>
+            <mat-button-toggle value="right">
+                Available
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+        <button mat-mini-fab (click)="openEditDialog()">
+            <mat-icon aria-label="Add a bucket...">add</mat-icon>
+        </button>
+    </div>
+</div>
+<div class="row" *ngIf="pagedResult">
+    <div class="col">
+        <mat-card>
+            <mat-list>
+                <mat-list-item *ngFor="let bucket of pagedResult.results">
+                    <span class="mr-1">
+                        {{ bucket.name }}
+                    </span> <span *ngIf="bucket.isDefault" matTooltip="Click To Change Default Bucket" class="badge badge-secondary default-badge" (click)="openDefaultSelectDialog()">default</span>
+                    <div class="flex-spacer"></div>
+                    <button mat-icon-button>
+                        <mat-icon color="primary" aria-label="Join this bucket">check_circle</mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                        <mat-icon color="warn" (click)="openEditDialog()" aria-label="Edit this bucket">edit</mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                        <mat-icon color="accent" (click)="openManageDialog()" aria-label="Manage bucket settings">settings</mat-icon>
+                    </button>
+                </mat-list-item>
+            </mat-list>
+        </mat-card>
+    </div>
+</div>

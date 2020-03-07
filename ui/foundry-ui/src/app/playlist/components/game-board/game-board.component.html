@@ -1,0 +1,37 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div *ngIf="playlist">
+  <div class="board">
+      <mat-toolbar class="game-toolbar"
+        [style.opacity]="showNav? '1' : '0'"
+        (mouseenter)="showNav = true" (mouseleave)="showNav = false">
+        <button (click)="back()" class="back-btn" mat-icon-button aria-label="Back">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+      </mat-toolbar>
+    <div class="row categories">
+      <div *ngFor="let category of categories" class="tile title-tile">{{category.name}}</div>
+    </div>
+    <div *ngFor="let row of rows" class="row clues">
+      <div *ngFor="let question of row" class="tile" (click)="select(question)" [class.active]="question == selected">
+        <div class="question-value">${{question.value}}</div>
+        <div class="question-answer">
+          <div *ngIf="question.content">{{question.content.name}}</div>
+          <button *ngIf="question.content" mat-button color="primary" (click)="launch(question.content); $event.stopPropagation();" class="mt-5">Launch</button>
+          <div *ngIf="question.content" class="question-hint">{{question.content.summary}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

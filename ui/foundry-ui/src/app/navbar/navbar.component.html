@@ -1,0 +1,223 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<header *ngIf="profile" class="bd-navbar" [ngStyle]="{'background-color': navColor}">
+  <nav class="navbar navbar-expand flex-column flex-md-row pb-md-0">
+    <a class="navbar-brand mr-4" *ngIf="!loggedIn()" [routerLink]="['/']">
+      {{appName}}
+    </a>
+    <a class="navbar-brand mr-4" *ngIf="loggedIn()" [routerLink]="['/dashboard']" (click)="term = ''">
+      <!-- <img class="seal" [src]="appLogo" alt="CERT Seal" width="50" height="50">  -->
+      {{appName}}
+    </a>
+    <ul class="navbar-nav bd-navbar-nav d-md-none d-xl-flex">
+      <li class="nav-item mr-2">
+        <a matTooltip="Content" class="btn btn-link nav-link" [routerLink]="['/content']"
+          [routerLinkActive]="['btn-active']" (click)="term = ''">
+          <i class="nav-icon mat-icon-5x material-icons">library_books</i></a>
+      </li>
+      <li class="nav-item mr-2">
+        <a matTooltip="Playlists" class="btn btn-link nav-link" [routerLink]="['/playlist']"
+          [routerLinkActive]="['btn-active']" (click)="term = ''">
+          <i class="fa-1-5x fa fa-th-list"></i></a>
+      </li>
+      <li class="nav-item mr-2">
+        <a matTooltip="Groups" class="btn btn-link nav-link" [routerLink]="['/group']"
+          [routerLinkActive]="['btn-active']" (click)="term = ''">
+          <i class="nav-icon mat-icon-5x material-icons">group</i></a>
+      </li>
+      <li class="nav-item mr-2">
+        <a matTooltip="Leaderboards" class="btn btn-link nav-link" [routerLink]="['/leaderboard']"
+          [routerLinkActive]="['btn-active']" (click)="term = ''">
+          <i class="fa-1-5x fa fa-trophy"></i></a>
+      </li>
+      <li class="nav-item mr-2">
+        <a matTooltip="Apps" class="btn btn-link nav-link" [routerLink]="['/apps']" [routerLinkActive]="['btn-active']"
+          (click)="term = ''">
+          <i class="nav-icon mat-icon-5x material-icons">widgets</i>
+        </a>
+      </li>
+      <li class="nav-item mr-2">
+        <a matTooltip="People" class="btn btn-link nav-link" [routerLink]="['/profiles']"
+          [routerLinkActive]="['btn-active']" (click)="term = ''">
+          <i class="nav-icon mat-icon-5x material-icons">account_box</i>
+        </a>
+      </li>
+      <li class="nav-item mr-2">
+        <a matTooltip="Event Calendar" class="btn btn-link nav-link" [routerLink]="['/calendar']"
+          [routerLinkActive]="['btn-active']" (click)="term = ''">
+          <i class="nav-icon material-icons">event_note</i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a matTooltip="Order Portal" class="btn btn-link nav-link" [href]="requestUrl" target="_blank">
+          <i class="nav-icon material-icons">mode_edit</i>
+        </a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-md-auto d-md-flex mr-xl-4">
+      <li class="nav-item mr-xl-4">
+        <app-search></app-search>
+      </li>
+    </ul>
+    <ul class="navbar-nav d-xl-flex d-md-none ml-xl-0">
+      <page-view-metrics *ngIf="profile.isPowerUser" [lastUrl]="lastUrl"></page-view-metrics>
+      <li class="nav-item">
+        <a matTooltip="Notifications" class="btn btn-link nav-link" [routerLink]="['/notification']">
+          <i class="nav-icon material-icons" *ngIf="notificationCount == 0">notifications_none</i>
+          <i class="nav-icon material-icons" *ngIf="notificationCount > 0">notifications</i>
+          <span class="badge" *ngIf="notificationCount > 0">{{ notificationCount }}</span>
+        </a>
+      </li>
+      <li class="nav-item mr-2" ngbDropdown>
+        <a ngbDropdownToggle class="btn btn-link nav-link">
+          <i class="material-icons">playlist_add</i>
+        </a>
+        <div ngbDropdownMenu>
+          <span (click)="term = ''; addVisible = false">
+            <button class="dropdown-item" [routerLink]="['/content/add']">Content</button>
+            <button class="dropdown-item" [routerLink]="['/group/add']">Group</button>
+            <button class="dropdown-item" [routerLink]="['/playlist/add']">Playlist</button>
+          </span>
+        </div>
+      </li>
+      <li class="nav-item" ngbDropdown>
+        <a ngbDropdownToggle class="btn btn-link nav-link">
+          <img class="rounded mr-1" height="25" width="25" [src]="profileInfo?.avatar || defaultImage()">
+          <span class="hidden-lg-down">{{ profile.name|limitTo : 23  }} </span>
+        </a>
+        <div ngbDropdownMenu class="profile-panel">
+          <button class="dropdown-item" [routerLink]="['/profile']">Profile</button>
+          <button class="dropdown-item" [routerLink]="['/help']">Help</button>
+          <hr style="border-top: 1px solid #ccc;">
+          <span *ngIf="profile.isAdministrator">
+            <button class="dropdown-item" [routerLink]="['/reports']">Reports</button>
+            <button class="dropdown-item" [routerLink]="['/settings']">Manage Settings</button>
+            <button class="dropdown-item" [routerLink]="['/profile/manage']">Manage People</button>
+            <hr style="border-top: 1px solid #ccc;">
+          </span>
+          <span *ngIf="profile.isPowerUser">
+            <button class="dropdown-item" [routerLink]="['/apps/manage']">Manage Applications</button>
+            <button class="dropdown-item" [routerLink]="['/content/manage']">Manage Content</button>
+            <button class="dropdown-item" [routerLink]="['/playlist/manage']">Manage Playlists</button>
+            <button class="dropdown-item" [routerLink]="['/tag/manage']">Manage Tags</button>
+            <hr style="border-top: 1px solid #ccc;">
+          </span>
+          <button class="dropdown-item" (click)="logout()">Logout</button>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <nav class="navbar navbar-expand flex-column flex-md-row d-none d-md-flex d-xl-none">
+    <ul class="navbar-nav bd-navbar-nav d-md-flex">
+      <li class="nav-item mr-2">
+        <a matTooltip="Content" class="btn btn-link nav-link" [routerLink]="['/content']"
+          [routerLinkActive]="['btn-active']" (click)="term = ''">
+          <i class="nav-icon mat-icon-5x material-icons">library_books</i></a>
+      </li>
+      <li class="nav-item mr-2">
+        <a matTooltip="Playlists" class="btn btn-link nav-link" [routerLink]="['/playlist']"
+          [routerLinkActive]="['btn-active']" (click)="term = ''">
+          <i class="fa-1-5x fa fa-th-list"></i></a>
+      </li>
+      <li class="nav-item mr-2">
+        <a matTooltip="Groups" class="btn btn-link nav-link" [routerLink]="['/group']"
+          [routerLinkActive]="['btn-active']" (click)="term = ''">
+          <i class="nav-icon mat-icon-5x material-icons">group</i></a>
+      </li>
+      <li class="nav-item mr-2">
+        <a matTooltip="Leaderboards" class="btn btn-link nav-link" [routerLink]="['/leaderboard']"
+          [routerLinkActive]="['btn-active']" (click)="term = ''">
+          <i class="fa-1-5x fa fa-trophy"></i></a>
+      </li>
+      <li class="nav-item mr-2">
+        <a matTooltip="Apps" class="btn btn-link nav-link" [routerLink]="['/apps']" [routerLinkActive]="['btn-active']"
+          (click)="term = ''">
+          <i class="nav-icon mat-icon-5x material-icons">widgets</i>
+        </a>
+      </li>
+      <li class="nav-item mr-2">
+        <a matTooltip="People" class="btn btn-link nav-link" [routerLink]="['/profiles']"
+          [routerLinkActive]="['btn-active']" (click)="term = ''">
+          <i class="nav-icon mat-icon-5x material-icons">account_box</i>
+        </a>
+      </li>
+      <li class="nav-item mr-2">
+        <a matTooltip="Event Calendar" class="btn btn-link nav-link" [routerLink]="['/calendar']"
+          [routerLinkActive]="['btn-active']" (click)="term = ''">
+          <i class="nav-icon material-icons">event_note</i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a matTooltip="Order Portal" class="btn btn-link nav-link" [href]="requestUrl" target="_blank">
+          <i class="nav-icon material-icons">mode_edit</i>
+        </a>
+      </li>
+    </ul>
+    <!-- <ul class="navbar-nav ml-md-auto d-md-flex">
+      <page-view-metrics [lastUrl]="lastUrl"></page-view-metrics>
+      <li class="nav-item mr-2" ngbDropdown>
+        <a id="notificationsDropdown" ngbDropdownToggle class="btn btn-link nav-link">
+          <i class="material-icons">notifications_none</i>
+          <span class="badge" *ngIf="notificationCount > 0">{{ notificationCount }}</span>
+        </a>
+        <div ngbDropdownMenu class="notifications-panel">
+          <notification-preview></notification-preview>
+        </div>
+      </li>
+      <li class="nav-item mr-2" ngbDropdown>
+        <a ngbDropdownToggle class="btn btn-link nav-link">
+          <i class="material-icons">playlist_add</i>
+        </a>
+        <div ngbDropdownMenu>
+          <span (click)="term = ''; addVisible = false">
+            <button class="dropdown-item" [routerLink]="['/content/add']">Content</button>
+            <button class="dropdown-item" [routerLink]="['/group/add']">Group</button>
+            <button class="dropdown-item" [routerLink]="['/playlist/add']">Playlist</button>
+          </span>
+        </div>
+      </li>
+      <li class="nav-item" ngbDropdown>
+        <a ngbDropdownToggle class="btn btn-link nav-link" *ngIf="profileInfo">
+          <img class="rounded mr-1" height="25" width="25" [src]="profileInfo?.avatar || defaultImage()">
+          <span class="hidden-lg-down">{{ profileInfo?.name|limitTo : 23  }} </span>
+        </a>
+        <div ngbDropdownMenu class="profile-panel">
+          <button class="dropdown-item" [routerLink]="['/profile']">Profile</button>
+          <button class="dropdown-item" [routerLink]="['/help']">Help</button>
+          <hr style="border-top: 1px solid #ccc;">
+          <span *ngIf="profile.isAdministrator">
+            <button class="dropdown-item" [routerLink]="['/reports']">Reports</button>
+            <button class="dropdown-item" [routerLink]="['/settings']">Manage
+              Settings</button>
+            <button class="dropdown-item" [routerLink]="['/profile/manage']">Manage
+              People</button>
+            <hr style="border-top: 1px solid #ccc;">
+          </span>
+          <span *ngIf="profile.isPowerUser">
+            <button class="dropdown-item" [routerLink]="['/apps/manage']">Manage
+              Applications</button>
+            <button class="dropdown-item" [routerLink]="['/content/manage']">Manage
+              Content</button>
+            <button class="dropdown-item" [routerLink]="['/playlist/manage']">Manage
+              Playlists</button>
+            <button class="dropdown-item" [routerLink]="['/tag/manage']">Manage
+              Tags</button>
+            <hr style="border-top: 1px solid #ccc;">
+          </span>
+          <button class="dropdown-item" (click)="logout()">Logout</button>
+        </div>
+      </li>
+    </ul> -->
+  </nav>
+</header>
+

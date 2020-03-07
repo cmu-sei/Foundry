@@ -1,0 +1,95 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+
+  <nav class="breadcrumb mb-2 pt-0" *ngIf="report">
+          <a class="breadcrumb-item" href="" [routerLink]="['/reports']">Reports</a>
+          <span class="breadcrumb-item active">{{ report.name }}</span>
+  </nav>
+
+<section class="container-fluid chapter" *ngIf="isAdministrator && report">
+  <div class="box box-default p-4">
+    <h4>{{ report.name }}</h4>
+    <div>
+      <div class="row data-filter pb-2">
+        <div class="col-lg-6 text-right">
+          <mat-chip-list>
+            <mat-chip (click)="export('csv')"><i class="fa fa-file"></i>&nbsp;&nbsp;Export .CSV</mat-chip>
+            <!--<mat-chip (click)="export('xls')"><i class="fa file"></i> Export Excel</mat-chip>-->
+            <!--<mat-chip (click)="export('pdf')"><i class="fa file"></i> Export .PDF</mat-chip>-->
+          </mat-chip-list>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div *ngIf="result">
+        <div class="data-set table-responsive">
+          <table class="table table-light table-striped">
+            <thead>
+              <tr>
+                <th *ngFor="let column of result.dataSet.columns;" [style.width.%]="100/result.dataSet.columns.length">
+                  {{ column.name }}
+                  <button class="btn btn-sm" *ngIf="column.sort"
+                    [ngClass]="{'btn-danger': column.isSortedBy, '': !column.isSortedBy}"
+                    (click)="sort(column.sortDirection == 'Ascending' ? '-' + column.sort : column.sort)">
+                    <i class="fa" [ngClass]="{'fa-sort': !column.isSortedBy, 'fa-sort-asc': column.sortDirection == 'Ascending', 'fa-sort-desc': column.sortDirection == 'Descending'}"></i>
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of result.dataSet.rows;">
+                <td *ngFor="let value of row.values;">
+                  <a *ngIf="value.link && value.link.slug" [routerLink]="['/' + value.link.type, value.link.id, value.link.slug]">{{ value.value }}</a>
+                  <span *ngIf="!value.link || !value.link.slug">{{ value.value }}</span>
+                </td>
+              </tr>
+              <tr [hidden]="!spin && result.total > 0">
+                <td class="text-center" [attr.colspan]="result.dataSet.columns.length">
+                  This report contains no data.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-auto mr-auto">
+            <mat-chip-list>
+              <mat-chip>{{ result.total }} {{ result.total == 1 ? 'Result' : 'Results' }}</mat-chip>
+            </mat-chip-list>
+          </div>
+          <div class="col-auto">
+            <mat-form-field>
+              <mat-select placeholder="Records To Show" [(ngModel)]="dataFilter.take" name="take" (selectionChange)="reset()">
+                <mat-option *ngFor="let t of takes" [value]="t">{{ t }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-auto">
+            <mat-chip-list>
+              <mat-chip (click)="action('start')" [disabled]="isDisabled('start')"><i class="fa fa-fast-backward"></i></mat-chip>
+              <mat-chip (click)="action('previous')" [disabled]="isDisabled('previous')"><i class="fa fa-backward"></i></mat-chip>
+              <mat-chip>{{ text }}</mat-chip>
+              <mat-chip (click)="action('next')" [disabled]="isDisabled('next')"><i class="fa fa-forward"></i></mat-chip>
+              <mat-chip (click)="action('end')" [disabled]="isDisabled('end')"><i class="fa fa-fast-forward"></i></mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+      </div>
+      <mat-progress-bar mode="indeterminate" *ngIf="spin"></mat-progress-bar>
+    </div>
+  </div>
+</section>
+
+<ng-container *ngIf="!isAdministrator">
+  <app-unauthorized></app-unauthorized>
+</ng-container>
+

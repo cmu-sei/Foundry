@@ -1,0 +1,230 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div class="row mt-3 mb-3">
+    <div class="col">
+        <h4 *ngIf="order">Review Order 000{{order.id}}<small *ngIf="order.isPrivate">Private</small></h4>
+    </div>
+    <div class="col">
+        
+    </div>
+</div>
+
+<div *ngIf="order" class="box box-default">
+    <div class="box-body">
+        <h5 class="detail-title">Define Request</h5>
+        <div class="row">
+            <div class="col">
+                <p class="detail-sub-title">Request:</p>
+
+                <ul class="list-unstyled pl-4">
+                    <li>{{order.requestor}}</li>
+                    <li>{{order.branchName}}</li>
+                    <li>{{order.rankName}}</li>
+                    <li *ngIf="order.unit"><strong>Unit/Team Number: </strong>{{order.unit}}</li>
+                    <li><strong>Email: </strong>{{order.email}}</li>
+                    <li>{{order.phone}}</li>
+                </ul>
+            </div>
+            <div class="col">
+                <p *ngIf="order.audienceName" class="detail-sub-title">Audience:</p>
+                <ul class="list-unstyled pl-4">
+                    <li>{{order.audienceName}}</li>
+                    <li *ngIf="order.audienceItems && order.audienceItems.length && order.audienceId == 1"><strong>Units/Teams:</strong></li>
+                    <li *ngIf="order.audienceId == 2 && order.audienceItemOther">
+                        <strong>Roles: </strong>{{order.audienceItemOther}}
+                    </li>
+                    <li *ngIf="order.audienceId == 2 && order.audienceItemOther">
+                        <strong *ngIf="order.participantCount">Number of Participants: </strong>{{order.participantCount}}
+                    </li>
+                    <li *ngIf="order.audienceItems">
+                        <span class="badge badge-light mr-1" *ngFor="let audienceItem of order.audienceItems;">{{ audienceItem.name }}</span>
+                    </li>                    
+                    <li *ngIf="order.due"><strong>Requested Due Date: </strong>{{order.due | date: 'MM/dd/yyyy'}}</li>
+                </ul>
+            </div>
+        </div>
+
+        <h5 class="detail-title">Define Content</h5>
+        <div class="row">
+            <div class="col">
+                <p class="detail-sub-title">Content:</p>
+                <ul class="list-unstyled pl-4">
+                    <li *ngIf="order.contentType"><strong>Content Type: </strong>{{order.contentType}}</li>
+                    <li *ngIf="order.trainingDescription">
+                        <p><strong>Training Description:</strong></p>
+                        <p>{{order.trainingDescription}}</p>
+                    </li>
+                    <li *ngIf="order.objectives">
+                        <p><strong>Learning Objectives:</strong></p>
+                        <p>{{order.objectives}}</p>
+                    </li>
+                    <li>
+                        <span *ngIf="order.eventStart"><strong>Start Date: </strong> {{order.eventStart | date: 'MM/dd/yyyy'}} </span>
+                        <span *ngIf="order.eventEnd"><strong>End Date: </strong>{{order.eventEnd | date: 'MM/dd/yyyy'}}</span>
+                    </li>
+                    <li *ngIf="order.duration">
+                        <strong>Event Duration: </strong> {{order.duration}} {{order.durationType}}
+                    </li>
+
+                </ul>
+            </div>
+            <div class="col">
+                <p class="detail-sub-title">Preparation:</p>
+                <ul class="list-unstyled pl-4">
+                    <li *ngIf="order.prerequisites">
+                        <p><strong>Prerequisites:</strong></p>
+                        <p>{{order.prerequisites}}</p>
+                    </li>
+                </ul>
+                <p class="detail-sub-title">Assessment:</p>
+                <ul class="list-unstyled pl-4">
+                    <li *ngIf="order.assessmentTypes">
+                        <p><strong>Assessment Types:</strong></p>
+                        <p *ngFor="let assessmentType of order.assessmentTypes">
+                            {{assessmentType.name}}<span *ngIf="assessmentType.name == 'Other'">: {{order.assessmentTypeOther}}</span>
+                        </p>
+                    </li>
+                    <li *ngIf="order.successIndicators">
+                        <p><strong>Success Indicators:</strong></p>
+                        <p>{{order.successIndicators}}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <h5 class="detail-title">Terrain</h5>
+        <div class="row">
+            <div class="col">
+                <p class="detail-sub-title">Terrain Details:</p>
+                <ul class="list-unstyled pl-4" *ngIf="order.operatingSystemTypes">
+                    <li>
+                        <p><strong>Operating Systems:</strong></p>
+                        <p *ngFor="let operatingSystemType of order.operatingSystemTypes">
+                            {{operatingSystemType.name}}<span *ngIf="operatingSystemType.name == 'Other'">: {{order.operatingSystemOther}}</span>
+                        </p>
+                    </li>
+                </ul>
+                <ul class="list-unstyled pl-4" *ngIf="order.services">
+                    <li>
+                        <p><strong>Desired Services:</strong></p>
+                        <p *ngFor="let service of order.services">
+                            {{service.name}}<span *ngIf="service.name == 'Other'">: {{order.serviceOther}}</span>
+                        </p>
+                    </li>
+                </ul>
+                <ul class="list-unstyled pl-4" *ngIf="order.securityTools">
+                    <li>
+                        <p><strong>Desired Tools:</strong></p>
+                        <p *ngFor="let securityTool of order.securityTools">
+                            {{securityTool.name}}<span *ngIf="securityTool.name == 'Other'">: {{order.securityToolOther}}</span>
+                        </p>
+                    </li>
+                </ul>
+                <ul class="list-unstyled pl-4">
+                    <li>
+                        <p><strong>Desired Simulators:</strong></p>
+                        <div *ngIf="order.simulators">
+                            <p *ngFor="let simulator of order.simulators">
+                                {{simulator.name}}<span *ngIf="simulator.name == 'Other'">: {{order.simulatorOther}}</span>
+                            </p>                            
+                        </div>
+                    </li>
+                </ul>
+                <ul class="list-unstyled pl-4">
+                    <li>
+                        <p><strong>Malicious Terrain:</strong></p>
+                        <div *ngIf="order.terrains">
+                            <p *ngFor="let terrain of order.terrains">
+                                {{terrain.name}}<span *ngIf="terrain.name == 'Other'">: {{order.terrainOther}}</span>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col">
+                <div *ngIf="order.files">
+                    <p class="detail-sub-title">Supporting Files:</p>
+                    <ul class="list-unstyled pl-4">
+                        <li *ngFor="let file of order.files"><a href="{{file.url}}" target="_blank">{{file.name}}</a></li>
+                    </ul>
+                </div>
+                <div *ngIf="order.networkDiagramUrl">
+                    <p class="detail-sub-title">
+                        Network Diagram:
+                        <a href="{{order.networkDiagramUrl}}" target="_blank">download</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="detail-title">Scenario</h5>
+        <div class="row">
+            <div class="col">
+                <p class="detail-sub-title">Desired Scenario:</p>
+                <p *ngIf="order.classificationName"><strong>Classification Level: </strong>{{order.classificationName}}</p>
+                <p *ngIf="order.classificationOther"><strong>Classification Level: </strong>{{order.classificationOther}}</p>
+                <span *ngIf="order.theater">
+                    <p class="detail-sub-title">Theater/Command/Area of Responsibility:</p>
+                    <p>{{order.theater}}</p>
+                </span>
+                <span *ngIf="order.storyline">
+                    <p class="detail-sub-title">Geopolitical Situation / Storyline:</p>
+                    <p>{{order.storyline}}</p>
+                </span>
+                <span *ngIf="order.missionProcedures">
+                    <p class="detail-sub-title">Mission CONOPS:</p>
+                    <p>{{order.missionProcedures}}</p>
+                </span>
+                <ul class="list-unstyled pl-4">
+                    <li>
+                        <p><strong>Threat Actors / Adversary:</strong></p>
+                        <div *ngIf="order.threats">
+                            <p *ngFor="let threat of order.threats">
+                                {{threat.name}}<span *ngIf="threat.name == 'Other'">: {{order.threatOther}}</span>
+                            </p>                            
+                        </div>                        
+                    </li>
+                </ul>
+                <ul class="list-unstyled pl-4">
+                    <li>
+                        <p><strong>Exercise Support:</strong></p>
+                        <div *ngIf="order.supports">
+                            <p *ngFor="let support of order.supports">
+                                {{support.name}}<span *ngIf="support.name == 'Other'">: {{order.supportOther}}</span>
+                            </p>
+                        </div>                        
+                    </li>
+                </ul>
+                <span *ngIf="order.cyberThreats">
+                    <p class="detail-sub-title">MSEL Input/Cyber Threats:</p>
+                    <p>{{order.cyberThreats}}</p>
+                </span>
+            </div>
+            <div class="col">
+                <p class="detail-sub-title">Intel Integration:</p>
+                <p><strong>Embedded with Team?</strong> {{order.isEmbeddedTeam}}</p>
+                <ul class="list-unstyled pl-4" *ngIf="order.embeddedTeams">
+                    <li>
+                        <p><strong>Intel Types:</strong></p>
+                        <p *ngFor="let embeddedTeam of order.embeddedTeams">{{embeddedTeam.name}}</p>
+                    </li>
+                </ul>
+                <ul class="list-unstyled pl-4" *ngIf="order.assessmentTypes">
+                    <li>
+                        <p><strong>Assessment Methods:</strong></p>
+                        <p *ngFor="let assessmentType of order.assessmentTypes">{{assessmentType.name}}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

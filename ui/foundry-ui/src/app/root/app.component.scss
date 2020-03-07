@@ -1,0 +1,316 @@
+/*
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+*/
+
+@import "~bootstrap/scss/bootstrap-grid.scss";
+
+.main-container {
+  padding-bottom: 65px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.profile-info {
+  color: #FFF;
+  background-color: #003277;
+}
+.profile-info a {
+  color: white;
+}
+.profile-info a:hover {
+  text-decoration: underline;
+}
+.media {
+  padding: 10px;
+}
+/* Sidebar Styles */
+.sidebar-footer {
+  height: auto;
+}
+.seperator {
+  border-top: 2px solid #f8f8f8;
+}
+
+#playlist-sub,
+#group-sub {
+  background-color: white;
+}
+.top-nav-left a:hover {
+  text-decoration: none;
+}
+// .search-form {
+//   padding-top: 2px;
+// }
+.slimScrollDiv {
+  height: 100%;
+  overflow: auto;
+}
+.app-content-wrapper {
+  min-height: 100vh;
+}
+
+.app-footer {
+  background-color: #000;
+}
+
+// .mat-menu-panel {
+//   top: 60px;
+//   width: auto;
+//   position: absolute;
+//   background-color: rgba(0, 0, 0, 0.75);
+//   border-bottom: 1px solid white;
+//   border-right: 1px solid white;
+//   border-left: 1px solid white;
+//   max-width: 510px;
+// }
+// .mat-menu-item {
+//   opacity: 1;
+//   -webkit-user-select: none;
+//   -moz-user-select: none;
+//   -ms-user-select: none;
+//   user-select: none;
+//   cursor: pointer;
+//   outline: 0;
+//   border: none;
+//   -webkit-tap-highlight-color: transparent;
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+//   display: block;
+//   line-height: 36px;
+//   height: 36px;
+//   padding: 0 12px;
+//   text-align: left;
+//   text-decoration: none;
+//   position: relative;
+//   color: white;
+// }
+// .mat-menu-item .mat-icon {
+//   color: white;
+// }
+// .mat-list-item {
+//   color: white;
+// }
+// .mat-menu-item:hover {
+//   text-decoration: underline;
+// }
+// .mat-menu-panel {
+//   padding: 10px;
+// }
+
+.dropdown-menu {
+  padding: 10px;
+  background-color: black;
+  color: white;
+  border-bottom: 1px solid white;
+  border-left: 1px solid white;
+  border-right: 1px solid white;
+}
+
+.dropdown-item {
+  color: white;
+}
+.dropdown-item:hover {
+  color: white;
+  text-decoration: underline;
+  background-color: black;
+}
+
+.analytics-preview {
+  min-width: 300px;
+  max-width: 400px;
+}
+
+#profile-menu {
+  right: 0;
+}
+.seal {
+  margin-bottom: 5px;
+}
+.unitmark {
+  padding-right: 10px;
+}
+div.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 1001;
+  text-align: center;
+}
+.vcenter {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  padding: 40px;
+  background-color: #b00;
+  color: white;
+  transform: perspective(1px) translateX(-50%) translateY(-50%);
+}
+::ng-deep .mat-snack-bar-container {
+  background-color: #333C44;
+  color: white;
+}
+::ng-deep .mat-simple-snackbar {
+  justify-content: center !important;
+}
+.unread-badge {
+  font-size: 50%;
+}
+@media (max-width: 1320px) {
+  .md-down-padding {
+    margin-left: 60px !important;
+  }
+}
+@media (max-width: 1340px) {
+  .hidden-ms-down {
+    display: none !important;
+  }
+}
+@media (min-width: 1340px) {
+  .hidden-ms-up {
+    display: none !important;
+  }
+}
+@media (max-width: 860px) {
+  .hidden-sm-down {
+    display: none !important;
+  }
+}
+
+@media (max-width: 710px) {
+  .hidden-xs-down {
+    display: none !important;
+  }
+}
+@media (max-width: 1140px) {
+  .hidden-lg-down {
+    display: none !important;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .nav-collapsed .app-sidebar {
+    width: 0px;
+  }
+  .nav-collapsed .app-page-container .app-content-wrapper .app-content {
+    padding-left: 0px;
+  }
+  .app-header .brand {
+    padding: 0 0 0 10px;
+    width: auto;
+  }
+  .nav-collapsed .app-page-container .app-content-wrapper .app-footer {
+    left: 0px;
+  }
+}
+@media (max-width: 1320px) {
+  .md-down-padding {
+    margin-left: 0px !important;
+  }
+  .md-down-header {
+    width: auto;
+  }
+}
+@media (max-width: 1000px) {
+}
+.app-header .brand {
+  text-align: left;
+}
+.app-header .brand :hover {
+  text-decoration: none;
+}
+.app-sidebar .sidebar-header a.brand {
+  font-size: 30px;
+}
+#sidebar-brand .brand {
+  padding: 0 0 0 10px;
+  margin-bottom: 5px;
+}
+.app-sidebar .sidebar-header {
+  padding: 0px !important;
+}
+.notifications-panel {
+  right: 10px;
+  min-width: 400px;
+}
+
+.profile-panel {
+  right: 10px;
+  min-width: 200px;
+}
+.fa-1-5x {
+  font-size: 24px;
+}
+.toggle-sidebar-btn {
+  color: #FFF;
+}
+
+.mat-icon-5x {
+  font-size: 26px;
+}
+
+
+.navbar-nav .nav-link {
+    color: white;
+    &.btn-active,
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.12);
+      color: rgba(255,255,255,0.7);
+    }
+}
+
+.navbar-brand {
+  color: white;
+  font-size: 1.75rem;
+  padding-top: 0px;
+}
+
+.bd-navbar {
+  min-height: 4rem;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1071;
+  color: white;
+
+  // @include media-breakpoint-down(md) {
+  //   padding-right: .5rem;
+  //   padding-left: .5rem;
+  //   .navbar-nav-scroll {
+  //     max-width: 100%;
+  //     height: 2.5rem;
+  //     margin-top: .25rem;
+  //     overflow: hidden;
+
+  //     .navbar-nav {
+  //       padding-bottom: 2rem;
+  //       overflow-x: auto;
+  //       white-space: nowrap;
+  //       -webkit-overflow-scrolling: touch;
+  //     }
+  //   }
+  // }
+
+  // @include media-breakpoint-up(md) {
+  //   @supports (position: sticky) {
+  //     position: sticky;
+  //     top: 0;
+  //     z-index: 1071;
+  //   }
+  // }
+
+  .navbar-nav {
+    .nav-link {
+      padding-right: .5rem;
+      padding-left: .5rem;
+    }
+  }
+}
+

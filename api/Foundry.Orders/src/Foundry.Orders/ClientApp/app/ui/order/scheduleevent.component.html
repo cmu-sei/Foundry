@@ -1,0 +1,111 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div class="row pt-4">
+    <div class="col">
+        <span class="pb-2">
+                <h4>Event</h4>
+                <p class="text-muted"><small>What type of event do you want to schedule?</small></p>
+            </span>
+            <div class="pb-3">
+                <mat-form-field class="w-75">
+                    <mat-select [(ngModel)]="order.eventTypeName" placeholder="Event type">
+                        <mat-option *ngFor="let type of eventTypes" [value]="type.value">
+                            {{ type.viewValue }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="pb-3" *ngIf="order.eventTypeName == 'Other'">
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Add event type">
+                </mat-form-field>
+            </div>
+            <div class="pb-3">
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Content description" [(ngModel)]="order.contentDescription" name="contentDescription">
+                    <mat-hint>What training content would you like to use for this?</mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="pb-2">
+                <mat-form-field class="w-75" hintLabel="Please provide a high-level description of the desired training content.">
+                    <textarea matInput matTextareaAutosize
+                        matAutosizeMinRows="2"
+                        matAutosizeMaxRows="10"
+                        placeholder="Training description"
+                        [(ngModel)]="order.trainingDescription"
+                        name="trainingDescription"
+                        maxlength="500">
+                    </textarea>
+                    <mat-hint align="end">{{order.trainingDescription?.length || 0}}/500</mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="pb-3">
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Event participants" [(ngModel)]="order.eventParticipants" name="eventParticipants">
+                    <mat-hint> Who do you want to participate in this event?</mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="pb-3">
+                <mat-form-field class="w-75">
+                    <mat-select placeholder="Classification level" [(ngModel)]="order.classificationId" name="classificationId">
+                        <mat-option *ngFor="let class of classifications" [value]="class.id">
+                            {{ class.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-hint>At what classification level would you like to conduct the event?</mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="pb-3">
+                <mat-form-field class="w-75">
+                    <mat-select placeholder="Facility" [(ngModel)]="order.facilityId" name="facilityId">
+                        <mat-option *ngFor="let facility of facilities" [value]="facility.id">
+                            {{ facility.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-hint>In what facility do you want to conduct the event?</mat-hint>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field class="w-75">
+                    <!-- <input matInput placeholder="Reporting requirements" [(ngModel)]="reportingInfo" name="reportingInfo">
+                    <mat-hint>What type of information/reports do you want after the event?</mat-hint> -->
+                </mat-form-field>
+            </div>
+
+    </div>
+    <div class="col">
+        <span class="pb-2">
+            <h4>Event Dates</h4>
+            <p class="text-muted"><small>Does the event have a start and end date?</small></p>
+        </span>
+        <div>
+            <mat-form-field class="w-40">
+                <input matInput [matDatepicker]="pickerStart" placeholder="Choose a start date" [(ngModel)]="order.eventStart" name="start">
+                <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                <mat-datepicker #pickerStart></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="w-35">
+                <input matInput [matDatepicker]="pickerEnd" placeholder="Choose an end date" [(ngModel)]="order.eventEnd" name="end">
+                <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                <mat-datepicker #pickerEnd></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

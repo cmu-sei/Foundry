@@ -1,0 +1,117 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<mat-tab-group [dynamicHeight]="true">
+  <mat-tab label="Buckets Library">
+    <form>
+      <div class="row">
+        <div class="col-sm-8">
+          <mat-form-field class="w-100 pt-4">
+            <input matInput placeholder="Search Images" [(ngModel)]="term" name="term" type="text" #searchTerm="ngModel"
+              placeholder="Search ..." (keyup.enter)="searchByType(searchTerm.value, searchType)">
+            <mat-icon class="clear-btn" (click)="reset()" *ngIf="term" matSuffix>clear</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4">
+          <mat-form-field class="w-100 pt-4">
+            <mat-select placeholder="Search By" (selectionChange)="searchByType(searchTerm.value, searchType)"
+              [(value)]="searchType" name="searchType">
+              <mat-option value="name">File Name</mat-option>
+              <mat-option value="tag">Tags</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+    <ng-container *ngIf="images">
+      <div class="row pr-2">
+        <div *ngIf="data.currentImage" class="col-sm-3">
+          <span class="p-2">
+            <img class="img-thumbnail current-image" src="{{data.currentImage}}" />
+            <p class="text-center"><strong>Current Image</strong></p>
+          </span>
+        </div>
+        <div class="col-sm-3" *ngFor="let i of images">
+          <span class="p-2" (click)="selectFile(i)">
+            <img class="img-thumbnail" src="{{imagePath}}{{i.urlWithExtension}}" />
+            <p class="text-center image-name">{{i.name}}</p>
+          </span>
+        </div>
+      </div>
+      <p *ngIf="more" class="text-right"><button class="btn btn-sm btn-link" (click)="showMore()">Load More...</button>
+      </p>
+      <p *ngIf="images.length == 0">No images match your search....</p>
+    </ng-container>
+  </mat-tab>
+  <mat-tab label="Upload a File">
+    <div class="form-group row margin-b-lg">
+      <div class="col text-center">
+        <div class="upload-ui">
+          <div *ngIf="filesQueued()" class="pt-4 row">
+            <div class="col">
+              <p *ngFor="let f of queuedFiles">
+                <i class="fa fa-image"></i>
+                {{f.name}}
+                <i (click)="removeFile()" class="remove-file fa fa-times"></i>
+              </p>
+            </div>
+            <div class="col">
+              <span [hidden]="hideBtn" (click)="upload()" class="btn btn-danger">Upload</span>
+            </div>
+          </div>
+        </div>
+        <div id="imageUploadItem">
+          <div class="input-container">
+            <label>
+              <input id="fileUploadInput" type="file" style="display:none;" (change)="fileSelectorChanged($event)">
+              <a *ngIf="!filesQueued()" class="btn btn-primary mt-5" (click)="initCroppie()" style="color:white;">Select
+                an Image</a>
+              <p>Optimal dimension is 570 X 300</p>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Image Url">
+    <div class="form-group row margin-b-lg pt-4">
+      <div class="col-sm-12">
+        <p>Add an image url, then press tab or enter to preview the image....</p>
+        <mat-form-field class="w-100 hidden">
+          <input matInput placeholder="Poster Image Url" name="logoUrl" [(ngModel)]="logoUrl" ngModel
+            [ngModelOptions]="{updateOn: 'blur'}" (blur)="resetError()">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-10 text-right" *ngIf="logoUrl">
+        <img style="height:300px" src="{{ logoUrl }}" (error)="imgError()">
+      </div>
+      <div *ngIf="logoUrl" class="col-sm-2 text-left">
+        <button class="btn btn-link" (click)="logoUrl = null">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="brokenImage" class="row">
+      <div class="col">
+        <p>Invalid link. Please try again.</p>
+      </div>
+    </div>
+    <div *ngIf="showUrlButton()" class="row pt-4">
+      <div class="col text-center">
+        <span (click)="selectFileUrl(logoUrl)" class="btn btn-danger">Add Image</span>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>
+

@@ -1,0 +1,39 @@
+﻿*Name
+[User]
+tester@step.local
+joe@group.tests
+jack@group.tests
+jill@group.tests
+joe@channel.tests
+joe@leaderboard.tests
+jack@leaderboard.tests
+jill@leaderboard.tests
+joe@content.tests
+jack@content.tests
+jill@content.tests
+
+*Owner, Name
+[Group]
+tester@step.local,Test Group
+tester@step.local,Test Group2
+
+*Person, Group, Permissions
+[Membership]
+joe@group.tests,Test Group,None
+jack@group.tests,Test Group,None
+jill@group.tests,Test Group,Manage_Members|Run_Reports
+
+*Name, Description, Access, Owner
+[Channel]
+Channel 1, Test channel, unrestricted, tester@step.local
+Channel 2, Another test channel, archived, tester@step.local
+
+*Person, Channel, Permissions
+[Subscription]
+joe@channel.tests, Channel 1, Edit_Content|Edit_Channel
+joe@channel.tests, Channel 2, Public
+
+*Name, Channel
+[Content]
+My Content 1, Channel 1
+My Content 2, Channel 1

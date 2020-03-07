@@ -1,0 +1,59 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div *ngIf="searchTerm" class="row pb-3"><div class="col breadcrumb-item active">Showing results for "{{searchTerm}}"</div></div>
+<app-browser-scroll (more)="showMore()" [moreFlag]="more" [spinFlag]="spin">
+<div class="card card-white">
+    <div class="card-content">
+        <div class="row data-filter">
+            <div class="col-lg-2">
+                <div class="btn-group mt-1" role="group" aria-label="View Modes">
+                    <button type="button" matTooltip="Grid View" class="btn" (click)="setProfileViewMode('tile')" [ngClass]="viewMode == 'tile' ? 'btn-dark' : 'btn-secondary'"><i class="fa fa-sliders"></i></button>
+                    <button type="button" matTooltip="List View" class="btn" (click)="setProfileViewMode('list')" [ngClass]="viewMode == 'list' ? 'btn-dark' : 'btn-secondary'"><i class="fa fa-list"></i></button>
+                </div>
+            </div>
+            <div class="col-lg-2 offset-lg-7">
+                <mat-form-field>
+                    <mat-select placeholder="Filter by" [(value)]="selectedFilter">
+                        <mat-option value ="all" (click)="filter('all')">All</mat-option>
+                        <mat-option value ="content" (click)="filter('content')">Content</mat-option>
+                        <mat-option value ="playlists" (click)="filter('playlists')">Playlists</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-1">
+                <mat-chip-list>
+                    <mat-chip class="mt-3">{{ total }} {{ total == 1 ? 'Result' : 'Results' }}</mat-chip>
+                </mat-chip-list>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div *ngIf="viewMode=='tile'">
+        <div class="d-flex flex-wrap align-items-center justify-content-center">
+            <div class="p-2" *ngFor="let item of items; let i =index" style="width:320px;">
+                <content-tile *ngIf="item.objectType=='content'" [content]="item" [index]="i"  [viewMode]="viewMode"></content-tile>
+                <playlist-tile *ngIf="item.objectType=='playlist'" [playlist]="item" [index]="i" [viewMode]="viewMode"></playlist-tile>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="viewMode=='list'">
+        <div *ngFor="let item of items; let i =index">
+            <content-tile *ngIf="item.objectType=='content'" [content]="item" [index]="i"  [viewMode]="viewMode"></content-tile>
+            <playlist-tile *ngIf="item.objectType=='playlist'" [playlist]="item" [index]="i" [viewMode]="viewMode"></playlist-tile>
+        </div>
+    </div>
+    <mat-progress-bar mode="indeterminate" *ngIf="spin"></mat-progress-bar>
+</app-browser-scroll>
+<mat-card *ngIf="items && items.length == 0 && !spin" class="text-center m-2">There are no items matching this search</mat-card>
+

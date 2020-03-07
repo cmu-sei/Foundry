@@ -1,0 +1,44 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<form (ngSubmit)="submit()" #tagForm="ngForm">
+    <div class="row">
+        <div class="col">
+            <mat-form-field class="example-chip-list w-100">
+                <mat-chip-list #tagList>
+                    <mat-chip *ngFor="let tag of tags" [selectable]="selectable" [removable]="removable" (removed)="removeTag(tag)">
+                        {{tag}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input matInput [formControl]="tagControl" required #tagInput placeholder="Enter Tags..." [matChipInputFor]="tagList"
+                           [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                           (matChipInputTokenEnd)="addTag($event)" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                        <mat-option *ngFor="let tag of filteredTagOptions | async" [value]="tag">
+                            {{ tag }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-chip-list>
+                <mat-hint>
+                    Enter at least one tag. Add multiple tags by seprating words with <strong>
+                        commas
+                    </strong> or hit the <strong>enter</strong> key.
+                </mat-hint>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row pt-3">
+        <div class="col">
+            <button type="submit" mat-flat-button color="accent">Submit</button>
+        </div>
+    </div>
+</form>

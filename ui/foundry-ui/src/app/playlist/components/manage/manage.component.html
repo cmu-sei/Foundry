@@ -1,0 +1,123 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<section class="container-fluid chapter" *ngIf="isPowerUser">
+  <div class="box box-default p-4">
+    <h4>Manage Playlists</h4>
+    <div class="">
+      <div class="row data-filter pb-2">
+        <div class="col-lg-3">
+          <mat-form-field appearance="standard">
+            <mat-select [(value)]="dataFilter.sort" placeholder="Sort by">
+              <mat-option value="alphabetic" (click)="sort('alphabetic')">Name (Asc)</mat-option>
+              <mat-option value="-alphabetic" (click)="sort('-alphabetic')">Name (Desc)</mat-option>
+              <mat-option value="-recent" (click)="sort('-recent')">Newest</mat-option>
+              <mat-option value="recent" (click)="sort('recent')">Oldest</mat-option>
+              <mat-option value="-top" (click)="sort('top')">Highest Rated</mat-option>
+              <mat-option value="top" (click)="sort('-top')">Lowest Rated</mat-option>
+              <mat-option value="-popular" (click)="sort('-popular')">Most Popular</mat-option>
+              <mat-option value="popular" (click)="sort('popular')">Least Popular</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-3">
+          <mat-form-field appearance="standard">
+            <input matInput placeholder="Search" [(ngModel)]="dataFilter.term" (keyup.enter)="search()">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="row">
+        <div class="col-lg-1">
+          <button type="button" mat-raised-button class="btn-sm btn-block btn-info" [disabled]="working || selected.length == 0" (click)="export()" matTooltip="Export Selected Playlists">
+            {{ working && exporting ? 'Exporting...' : 'Export' }} <i class="fa fa-spinner fa-spin" *ngIf="working && exporting"></i>
+          </button>
+        </div>
+        <div class="col-lg-1">
+          <button type="button" mat-raised-button class="btn-sm btn-block btn-primary" [disabled]="working || importing" onclick="document.getElementById('file').click()" matTooltip="Import Playlists">
+            {{ working && importing ? 'Importing...' : 'Import' }} <i class="fa fa-spinner fa-spin" *ngIf="working && importing"></i>
+          </button>
+          <input id="file" mat-raised-button class="btn-sm btn-primary" #file type="file" style="display: none;" (change)="import(file.files)" />
+        </div>
+      </div>
+      <div>&nbsp;</div>
+      <small class="hint">Playlists without Content will not be exported or imported.</small>
+      <style>
+        .highlight {
+          background-color: yellow;
+        }
+      </style>
+      <div class="divider"></div>
+      <div *ngIf="result">
+        <div class="table-responsive">
+          <table class="table table-light table-striped">
+            <colgroup>
+              <col style="width: 5%" />
+              <col style="width: 25%" />
+              <col style="width: 10%" />
+              <col style="width: 10%" />
+              <col style="width: 10%" />
+              <col style="width: 10%" />
+              <col style="width: 5%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th colspan="8">
+                  <small class="text-danger">
+                    {{ (exportPlaylistCount == 0 ? 'No selection made' : 'Selected ' + exportPlaylistCount + ' playlists and ' + exportContentCount + ' content') }}
+                  </small>
+                </th>
+              </tr>
+            </thead>
+            <thead>
+              <tr>
+                <th><input type="checkbox" value="all" [disabled]="working" (change)="onAllChange('all', $event)" [checked]="all" /></th>
+                <th>Playlist</th>
+                <th>Created</th>
+                <th>Imported</th>
+                <th>Sections</th>
+                <th>Content</th>
+                <th>Rating</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let playlist of result.results; let i = index">
+                <td><input [disabled]="working" type="checkbox" value="{{playlist.id}}" (change)="onChange(playlist, $event)" [checked]="selected.includes(playlist)" /></td>
+                <td>
+                  <a [routerLink]="['/playlist', playlist.id, playlist.slug]" id="table-content-name" [innerHTML]="applyTerm(playlist.name)"></a>
+                  <div class="text-muted">
+                    <small>{{ playlist.globalId }}</small>
+                  </div>
+                </td>
+                <td>{{playlist.created | date: 'short' }}</td>
+                <td>{{playlist.imported == null ? '' : playlist.imported | date: 'short' }}</td>
+                <td>{{ playlist.sectionCount }}</td>
+                <td>{{ playlist.contentCount }}</td>
+                <td><ratings-display [average]="playlist.rating.average" [total]="playlist.rating.total"></ratings-display></td>
+              </tr>
+            </tbody>
+            <tfoot *ngIf="result && result.results.length == 0 && !spin">
+              <tr><td colspan="3">There are no playlists matching this search</td></tr>
+            </tfoot>
+          </table>
+        </div>
+        <pager [pagedResult]="result" [dataFilter]="dataFilter" (onPageChanged)="search()" (onPageSizeChanged)="reset()"></pager>
+      </div>
+      <mat-progress-bar mode="indeterminate" *ngIf="spin"></mat-progress-bar>
+    </div>
+  </div>
+</section>
+
+<ng-container *ngIf="!isPowerUser">
+  <app-unauthorized></app-unauthorized>
+</ng-container>
+

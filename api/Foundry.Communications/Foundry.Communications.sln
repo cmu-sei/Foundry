@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2015
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundry.Communications", "src\Foundry.Communications\Foundry.Communications.csproj", "{1E996EDC-5150-4F94-B061-EEF516DA0F95}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundry.Communications.Data", "src\Foundry.Communications.Data\Foundry.Communications.Data.csproj", "{7775ED30-F7FE-4FFB-96C9-A08E1163B2E7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundry.Communications.Data.PostgreSQL", "src\Foundry.Communications.Data.PostgreSQL\Foundry.Communications.Data.PostgreSQL.csproj", "{2FFF99BA-D65B-4909-966D-6895927FB872}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundry.Communications.Data.Sqlite", "src\Foundry.Communications.Data.Sqlite\Foundry.Communications.Data.Sqlite.csproj", "{3A47B050-3061-4AF7-A31E-A057CAC19C18}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundry.Communications.Data.SqlServer", "src\Foundry.Communications.Data.SqlServer\Foundry.Communications.Data.SqlServer.csproj", "{BCD93468-046C-4D51-9BF4-5D3992B61502}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{B83AE085-636D-413D-9519-B0C7F8CB6AFB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E996EDC-5150-4F94-B061-EEF516DA0F95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E996EDC-5150-4F94-B061-EEF516DA0F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E996EDC-5150-4F94-B061-EEF516DA0F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E996EDC-5150-4F94-B061-EEF516DA0F95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7775ED30-F7FE-4FFB-96C9-A08E1163B2E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7775ED30-F7FE-4FFB-96C9-A08E1163B2E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7775ED30-F7FE-4FFB-96C9-A08E1163B2E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7775ED30-F7FE-4FFB-96C9-A08E1163B2E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FFF99BA-D65B-4909-966D-6895927FB872}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FFF99BA-D65B-4909-966D-6895927FB872}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FFF99BA-D65B-4909-966D-6895927FB872}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FFF99BA-D65B-4909-966D-6895927FB872}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A47B050-3061-4AF7-A31E-A057CAC19C18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A47B050-3061-4AF7-A31E-A057CAC19C18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A47B050-3061-4AF7-A31E-A057CAC19C18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A47B050-3061-4AF7-A31E-A057CAC19C18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCD93468-046C-4D51-9BF4-5D3992B61502}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCD93468-046C-4D51-9BF4-5D3992B61502}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCD93468-046C-4D51-9BF4-5D3992B61502}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCD93468-046C-4D51-9BF4-5D3992B61502}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7775ED30-F7FE-4FFB-96C9-A08E1163B2E7} = {B83AE085-636D-413D-9519-B0C7F8CB6AFB}
+		{2FFF99BA-D65B-4909-966D-6895927FB872} = {B83AE085-636D-413D-9519-B0C7F8CB6AFB}
+		{3A47B050-3061-4AF7-A31E-A057CAC19C18} = {B83AE085-636D-413D-9519-B0C7F8CB6AFB}
+		{BCD93468-046C-4D51-9BF4-5D3992B61502} = {B83AE085-636D-413D-9519-B0C7F8CB6AFB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F9A9EBAB-DB3D-472A-827D-E650DBC0EAC7}
+	EndGlobalSection
+EndGlobal

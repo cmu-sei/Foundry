@@ -1,0 +1,333 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div class="row pl-3">
+  <div class="col-md-9">
+    <div *ngIf="systemNotifications">
+      <div *ngFor="let n of systemNotifications">
+        <div class="callout callout-danger">
+          <button class="btn btn-sm btn-danger pull-right" (click)="deleteNotification(n)"><i class="fa fa-remove"></i></button>
+          <h4>{{ n.subject }}</h4>
+          <p>{{ n.body }}</p>
+          <span class="text-muted">{{n.created | date: 'MMM d, y' }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row pb-4" *ngIf="featuredItems">
+      <ngb-carousel class="col-md-12" *ngIf="featuredItems.length > 1" lazy-load-images>
+        <ng-template ngbSlide *ngFor="let content of featuredItems">
+          <div class="feature-callout feature-content-left card-white image-pull clearfix">
+            <div *ngIf="!content.isRecommended" class="sash sash-triangle-right sash-info">
+              <div>
+                <i class="material-icons">star</i>
+                <span class="sash-text">Featured</span>
+              </div>
+            </div>
+            <div *ngIf="content.isRecommended" class="sash sash-triangle-right sash-mixed">
+                <div>
+                  <i class="material-icons">stars</i>
+                  <span class="sash-text">Recommended/Featured</span>
+                </div>
+              </div>
+            <div class="container-fluid with-maxwidth">
+              <div class="col-12 col-md-6">
+                <div class="callout-feature-content">
+                  <h2>{{ content.name }}</h2>
+                  <p>
+                    <ng-container *ngIf="content.summary">{{ content.summary}}</ng-container>
+                  </p>
+                  <p class="mb-2"><small *ngIf="content.publisherName"> by {{ content.publisherName }}</small></p>
+                  <button *ngIf="content.objectType =='playlist'" mat-raised-button [routerLink]="['/playlist', content.id, content.slug]" color="accent" class="btn-lg mb-3">View Details</button>
+                  <button *ngIf="content.objectType =='content'" mat-raised-button [routerLink]="['/content', content.id, content.slug]" color="accent" class="btn-lg mb-3">View Details</button>
+                  <ratings-display [average]="content.rating.average" [total]="content.rating.total"></ratings-display>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 offset-md-6 feature-callout-image-pull" [ngStyle]="{'background-image': 'url(' + content.encodedLogo + ')'}"></div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+      <div *ngIf="featuredItems.length == 1" class="col-md-12">
+        <div class="feature-callout feature-content-left card-white image-pull clearfix">
+          <div *ngIf="!featuredItems[0].isRecommended" class="sash sash-triangle-right sash-info">
+            <div>
+              <i class="material-icons">star</i>
+              <span class="sash-text">Featured</span>
+            </div>
+          </div>
+          <div *ngIf="featuredItems[0].isRecommended" class="sash sash-triangle-right sash-mixed">
+              <div>
+                <i class="material-icons">stars</i>
+                <span class="sash-text">Recommended/Featured</span>
+              </div>
+            </div>
+          <div class="container-fluid with-maxwidth">
+            <div class="col-12 col-md-6">
+              <div class="callout-feature-content">
+                <h2>{{ featuredItems[0].name }}</h2>
+                <p>
+                  <ng-container *ngIf="featuredItems[0].summary">{{ featuredItems[0].summary }}</ng-container>
+                </p>
+                <p class="mb-2" *ngIf="featuredItems[0].publisherName"><small> by {{ featuredItems[0].publisherName }}</small></p>
+                <button *ngIf="featuredItems[0].objectType =='playlist'" mat-raised-button [routerLink]="['/playlist', featuredItems[0].id, featuredItems[0].slug]" color="accent" class="btn-lg mb-3">View Details</button>
+                <button *ngIf="featuredItems[0].objectType =='content'" mat-raised-button [routerLink]="['/content', featuredItems[0].id, featuredItems[0].slug]" color="accent" class="btn-lg mb-3">View Details</button>
+                <ratings-display [average]="featuredItems[0].rating.average" [total]="featuredItems[0].rating.total"></ratings-display>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 offset-md-6 feature-callout-image-pull" [ngStyle]="{'background-image': 'url(' + featuredItems[0].logoUrl + ')'}" style="right: 10px;"></div>
+      </div>
+    </div>
+    <div class="row" infiniteScroll
+         [infiniteScrollDistance]="2"
+         [infiniteScrollThrottle]="50"
+         (scrolled)="onScroll()">
+      <div class="col-md-12">
+        <mat-progress-spinner *ngIf="spin" style="margin:0 auto;" color="primary" mode="indeterminate"></mat-progress-spinner>
+        <div *ngFor="let item of items; let i = index;">
+          <div *ngIf="item.state == 'loaded'">
+            <div class="row">
+              <div class="col-sm-12">
+                <div *ngIf="i == 0" class="btn-group btn-group-sm view-mode-btns pull-right" role="group" aria-label="View Mode">
+                  <button type="button" class="btn" [ngClass]="viewMode == 'tile' ? 'btn-dark' : 'btn-secondary'" (click)="setProfileViewMode('tile')"><i class="fa fa-sliders"></i></button>
+                  <button type="button" class="btn" [ngClass]="viewMode == 'list' ? 'btn-dark' : 'btn-secondary'" (click)="setProfileViewMode('list')"><i class="fa fa-list"></i></button>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="item.result && item.result.total > 0">
+              <div class="col-sm-12">
+                <h5 *ngIf="item.state =='loaded'" [class.hover-margin]="viewMode=='tile'" class="category-title" [routerLink]="['/content']" [queryParams]="item.queryParams">
+                  {{ item.title }}
+                </h5>
+              </div>
+            </div>
+            <div *ngIf="item.result && item.result.total > 0">
+              <div class="scroll-box" *ngIf="viewMode =='tile'">
+                <div class="scroll-row">
+                  <div class="scroll-row-inner" horizontalScrollDirective lazy-load-images>
+                    <div class="scroll-tile" *ngFor="let content of item.result.results; let i = index;">
+                      <dashboard-tile (updateBookmarks)="updateEventsAndBookmarks($event)" (updatePlaylists)="updatePlaylists($event)" [content]="content" [index]="i" [viewMode]="viewMode" [itemType]="item.type"></dashboard-tile>
+                    </div>
+                    <ng-container *ngIf="item.result.total > 10">
+                      <a *ngIf="item.type == 'content'" class="scroll-tile more-slider-btn" [routerLink]="['/content']" [queryParams]="item.queryParams">View All..</a>
+                      <a *ngIf="item.type == 'playlist'" class="scroll-tile more-slider-btn" [routerLink]="['/playlist']" [queryParams]="item.queryParams">View All..</a>
+                    </ng-container>
+                    <div class="scroll-controls">
+                      <div class="scroll-left">
+                        <span aria-hidden="true" class="carousel-control-prev-icon"></span>
+                      </div>
+                      <div class="scroll-right">
+                        <span aria-hidden="true" class="carousel-control-next-icon"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row pb-3 pt-3" *ngIf="viewMode =='list'">
+                <div class="col-md-12" *ngFor="let content of item.result.results; let i = index" lazy-load-images>
+                  <dashboard-tile (updateBookmarks)="updateEventsAndBookmarks($event)" (updatePlaylists)="updatePlaylists($event)" [content]="content" [index]="i" [viewMode]="viewMode" [itemType]="item.type"></dashboard-tile>
+                </div>
+                <div *ngIf="item.result.total > 10" class="col-md-12">
+                    <a *ngIf="item.type == 'content'" class="pull-right pt-1" [routerLink]="['/content']" [queryParams]="item.queryParams">View All..</a>
+                    <a *ngIf="item.type == 'playlist'" class="pull-right pt-1" [routerLink]="['/playlist']" [queryParams]="item.queryParams">View All..</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div *ngIf="myApps" class="row page-dashboard">
+      <div class="col-md-12">
+        <div class="box box-default">
+          <div class="box-top">
+            <i class="material-icons color-success">widgets</i>
+          </div>
+          <div class="box-info">
+            <span>My Apps</span>
+          </div>
+          <div *ngIf="myApps.length > 0" class="box-bottom">
+            <mat-list>
+              <mat-list-item (mouseenter)="showRemoveApp[app.id] = !showRemoveApp[app.id]" (mouseleave)="showRemoveApp[app.id] = !showRemoveApp[app.id]" *ngFor="let app of myApps;">
+                  <img *ngIf="app.logoUri" class="logo-thumbnail" mat-list-avatar [src]="app.logoUri">
+                <h3 matLine>
+                  <span class="app-name">
+                    <a *ngIf="app.clientUri" [href]="app.clientUri" target="_blank">
+                      {{ app.displayName }}
+                    </a>
+                    <span *ngIf="!app.clientUri">{{ app.displayName }}</span>
+                  </span>
+                  <a [hidden]="!showRemoveApp[app.id]" (click)="removeApp(app)" class="remove-app"><i class="fa fa-times" aria-hidden="true"></i></a>
+                </h3>
+              </mat-list-item>
+            </mat-list>
+            <a class="all-link" [routerLink]="['/apps']">View All..</a>
+          </div>
+          <div *ngIf="myApps.length == 0" class="box-bottom">
+            <p class="text-center">You don't have any apps. <a [routerLink]="['/apps']">Add apps to this list.</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="myBookmarks" class="row page-dashboard">
+      <div class="col-md-12">
+        <div class="box box-default">
+          <div class="box-top">
+            <i class="material-icons color-success">bookmark</i>
+          </div>
+          <div class="box-info">
+            <span>My Bookmarks</span>
+          </div>
+          <div *ngIf="myBookmarks.length > 0" class="box-bottom">
+            <mat-list>
+              <mat-list-item (mouseenter)="showRemoveBookmark[bookmark.id] = !showRemoveBookmark[bookmark.id]" (mouseleave)="showRemoveBookmark[bookmark.id] = !showRemoveBookmark[bookmark.id]" *ngFor="let bookmark of myBookmarks;">
+                <img class="logo-thumbnail" mat-list-avatar [src]="bookmark.logoUrl">
+                <h3 matLine>
+                  <a [routerLink]="['/content', bookmark.id, bookmark.slug]">
+                    {{bookmark.name}}
+                  </a>
+                  <a [hidden]="!showRemoveBookmark[bookmark.id]" (click)="removeBookmark(bookmark)" class="remove-bookmark"><i class="fa fa-times" aria-hidden="true"></i></a>
+                </h3>
+                <p *ngIf="bookmark.start" matLine>
+                  <span class="text-muted">{{bookmark.startDate }} - {{bookmark.endDate}}</span>
+                </p>
+              </mat-list-item>
+            </mat-list>
+            <a class="all-link" [routerLink]="['/content']" [queryParams]="{ filter: 'bookmarked' }">View All..</a>
+          </div>
+          <div *ngIf="myBookmarks.length == 0" class="box-bottom">
+            <p class="text-center">You don't have any content bookmarked. Bookmark content to add it to this list.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="myEvents" class="row page-dashboard">
+      <div class="col-md-12">
+        <div class="box box-default">
+          <div class="box-top">
+            <i class="material-icons color-success">event_available</i>
+          </div>
+          <div class="box-info">
+            <span>My Events</span>
+          </div>
+          <div *ngIf="myEvents.length > 0" class="box-bottom">
+            <mat-list>
+              <mat-list-item (mouseenter)="showRemoveBookmark[bookmark.id] = !showRemoveBookmark[bookmark.id]" (mouseleave)="showRemoveBookmark[bookmark.id] = !showRemoveBookmark[bookmark.id]" *ngFor="let bookmark of myEvents;">
+                <img class="logo-thumbnail" mat-list-avatar [src]="bookmark.logoUrl">
+                <h3 matLine>
+                  <a [routerLink]="['/content', bookmark.id, bookmark.slug]">
+                    {{bookmark.name}}
+                  </a>
+                  <a [hidden]="!showRemoveBookmark[bookmark.id]" (click)="removeBookmark(bookmark)" class="remove-bookmark"><i class="fa fa-times" aria-hidden="true"></i></a>
+                </h3>
+                <p *ngIf="bookmark.start" matLine>
+                  <span class="text-muted">{{bookmark.startDate }} - {{bookmark.endDate}}</span>
+                </p>
+              </mat-list-item>
+            </mat-list>
+            <a class="all-link" [routerLink]="['/content']" [queryParams]="{ filter: 'myevents' }">View All..</a>
+          </div>
+          <div *ngIf="myEvents.length == 0" class="box-bottom">
+            <p class="text-center">You are not watching any events. Watch events to add it to this list.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="myPlaylists" class="row page-dashboard">
+      <div class="col-md-12">
+        <div class="box box-default">
+          <div class="box-top">
+            <i class="material-icons color-success">playlist_play</i>
+          </div>
+          <div class="box-info">
+            <span>My Playlists</span>
+          </div>
+          <div *ngIf="myPlaylists.length > 0" class="box-bottom">
+            <mat-list>
+              <mat-list-item *ngFor="let playlist of myPlaylists">
+                <img class="logo-thumbnail" mat-list-avatar [src]="playlist.logoUrl">
+                <h3 matLine>
+                  <a [routerLink]="['/playlist', playlist.id, playlist.slug]">
+                    {{playlist.name}}
+                  </a>
+                </h3>
+                <p matLine>
+                  <span>{{playlist.organization}}</span>
+                </p>
+              </mat-list-item>
+            </mat-list>
+            <a class="all-link" [routerLink]="['/playlist']" [queryParams]="{ filter: 'managed' }">View All..</a>
+          </div>
+          <div *ngIf="myPlaylists.length == 0" class="box-bottom">
+            <p>You don't have any playlists <a [routerLink]="['/playlist/add']">Create</a> a playlist to add it to the list</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="myGroups" class="row page-dashboard">
+      <div class="col-md-12">
+        <div class="box box-default">
+          <div class="box-top">
+            <i class="material-icons color-success">group</i>
+          </div>
+          <div class="box-info">
+            <span>My Groups</span>
+          </div>
+          <div *ngIf="myGroups.length > 0" class="box-bottom">
+            <mat-list>
+              <mat-list-item *ngFor="let group of myGroups">
+                <img class="logo-thumbnail" mat-list-avatar [src]="group.logoUrl">
+                <h3 matLine>
+                  <a [routerLink]="['/group', group.id, group.slug]">
+                    {{group.name}}
+                  </a>
+                </h3>
+                <!-- <p matLine>
+                  <span> <ratings-display [average]="group.rating.average" [total]="group.rating.total"></ratings-display></span>
+                </p> -->
+              </mat-list-item>
+            </mat-list>
+            <a class="all-link" [routerLink]="['/group']" [queryParams]="{ filter: 'membership' }">View All..</a>
+          </div>
+          <div *ngIf="myGroups.length  == 0" class="box-bottom">
+            <p>You are not a member of any groups. <a [routerLink]="['/group']">Browse </a> groups to join some.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="tags" class="row page-dashboard">
+      <div class="col-md-12">
+        <div class="box box-default">
+          <div class="box-top">
+            <i class="fa fa-tag color-success"></i>
+          </div>
+          <div class="box-info">
+            <span>Popular Tags</span>
+          </div>
+          <div class="box-bottom text-center">
+            <button mat-raised-button color="accent" *ngFor="let tag of tags" [routerLink]="['/tag']" [queryParams]="{tag: tag.name}" class="btn-sm mb-1" style="margin-right: 1em;">
+              {{ tag.name }}
+            </button>
+            <p><a *ngIf="!hideLoadMoreTags" class="all-link pt-3" (click)="loadMoreTags()">Load More...</a></p>
+          </div>
+          <div *ngIf="tags.length == 0" class="box-bottom">
+            <p>There are currently no tags.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

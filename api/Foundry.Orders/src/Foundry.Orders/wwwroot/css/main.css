@@ -1,0 +1,118 @@
+/*
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+*/
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    background-color:#000;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 60px;
+}
+
+@media (max-width: 767px) {
+    /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
+    .body-content {
+        padding-top: 50px;
+    }
+}
+
+.body-content {
+    padding-top: 60px;
+}
+
+.navbar {
+    background-color: #b00;
+    color: #fff;
+}
+
+.navbar a {
+    color: #fff;
+}
+
+.navbar-toggler {
+    color: #fff;
+}
+
+.navbar a:hover {
+    color: #DCDCDC;
+}
+
+.box {
+    position: relative;
+    margin-bottom: 1.5rem;
+    border: 0;
+    border-radius: .2rem;
+    box-shadow: 0 0 2px rgba(0,0,0,.15);
+}
+
+.box-default {
+    background-color: #2a2a2b !important;
+}
+
+.box-body {
+    padding: 1.25rem;
+}
+
+.app-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px; 
+    line-height: 60px;
+}
+
+.mat-table, .mat-paginator-container {
+    background-color: #2a2a2b;
+}
+
+.mat-table a {
+    color: rgba(255,255,255,0.7);
+}
+
+.mat-table a:hover {
+    text-decoration: underline;
+}
+
+.page-title {
+    color: #868e96;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(103,103,103,0.7);
+}
+
+
+.detail-text {
+    padding-left: 10px;
+}
+
+.detail-title {
+    background-color: #3c3c3c;
+    padding: 10px 10px 10px;
+}
+
+.detail-sub-title {
+    padding: 10px 10px 0px;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+}
+
+.sub-heading {
+    padding-left: 10px;
+    text-transform: uppercase;
+}

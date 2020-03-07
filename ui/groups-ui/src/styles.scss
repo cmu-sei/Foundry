@@ -1,0 +1,108 @@
+/*
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+*/
+
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';
+@import "./styles/sketch-theme.scss";
+
+@include mat-core();
+
+
+$primary: mat-palette($sketch-red, 500);
+$accent: mat-palette($sketch-blue, 500, A200, A400);
+$warn: mat-palette($sketch-green, 500);
+
+$theme: sketch-dark-theme($primary, $accent, $warn);
+$config: mat-typography-config();
+@include angular-material-theme($theme);
+
+$panel-color: #343a40;
+
+
+html, body {
+    height: 100%;
+}
+
+.flex-spacer {
+    flex-grow: 1;
+}
+
+/* Dark Theme */
+body {
+    background-color: #000;
+    color: rgba(255,255,255,.7);
+    font-size: 10pt;
+}
+
+.theme-dark .theme-dark-panel {
+    background-color: #2a2a2b;
+    border: none;
+}
+
+.theme-dark .page-header {
+    border-bottom: 1px solid #616161;
+}
+
+.theme-dark .form-control {
+    background-color: #cbcbcb;
+    color: black;
+}
+
+.theme-dark .btn-default {
+    background-color: #cbcbcb;
+}
+
+.theme-dark #fileList li {
+    background-color: #2a2a2b;
+    border-color: #616161;
+}
+
+a:hover {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.app-container {
+    padding-top: 60px;
+}
+
+
+.buckets-menu-panel {
+    background-color: $panel-color;
+    width: 200px;
+
+    a:hover {
+        color: white;
+    }
+}
+
+.divider {
+    color: #495057;
+    border: 1px solid;
+}
+
+.card-dark {
+    background-color: #2a2a2b;
+    color: rgba(255,255,255,.7);
+}
+
+.group-card {
+    position: relative;
+    overflow: hidden;
+    margin: 10px 0 20px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 2px;
+}
+
+.group-card .card-content {
+    padding: 20px;
+    border-radius: 0 0 2px 2px;
+}
+

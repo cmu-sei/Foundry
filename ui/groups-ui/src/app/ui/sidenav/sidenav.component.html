@@ -1,0 +1,60 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<ul class="list-unstyled pt-4 mb-0">
+    <li class="text-center pt-2">
+        <mat-form-field appearance="outline" class="mb-0">
+            <mat-label>Search groups...</mat-label>
+            <input matInput #term (keyup)="filter(term.value)">
+        </mat-form-field>
+    </li>
+    <li class="text-center pb-2">
+            <mat-form-field>
+                <mat-select [(value)]="dataFilter.filter" placeholder="Filter by">
+                    <mat-option (click)="loadTree()"></mat-option>
+                    <mat-option value="membership" (click)="listFilter('membership')">Membership</mat-option>
+                    <mat-option value="managed" (click)="listFilter('managed')">Managed</mat-option>
+                    <mat-option value="available" (click)="listFilter('available')">Available</mat-option>
+                </mat-select>
+            </mat-form-field>
+    </li>
+</ul>
+<mat-divider></mat-divider>
+<mat-tree *ngIf="groupList && !groupList.length" [dataSource]="dataSource" [treeControl]="treeControl">
+    <!--leaf nodes -->
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+        <button mat-icon-button disabled></button>
+        <a [routerLink]="['/detail', node.id, node.slug]" class="link" routerLinkActive="active">
+            <span>{{node.name}}</span>
+        </a>
+    </mat-tree-node>
+    <!--expandable nodes -->
+    <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.name">
+            <mat-icon class="mat-icon-rtl-mirror">
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+        </button>
+        <a [routerLink]="['/detail', node.id, node.slug]" class="link" routerLinkActive="active">
+            <span>{{node.name}}</span>
+        </a>
+    </mat-tree-node>
+</mat-tree>
+
+<mat-list *ngIf="groupList && groupList.length" role="list">
+    <mat-list-item  *ngFor="let g of groupList" role="listitem">
+        <a [routerLink]="['/detail', g.id, g.slug]" class="link" routerLinkActive="active">
+            <span>{{g.name}}</span>
+        </a>
+    </mat-list-item>
+</mat-list>
+

@@ -1,0 +1,105 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<section class="container-fluid chapter" *ngIf="isPowerUser">
+  <div class="box box-default p-4">
+    <h4>Manage Applications</h4>
+    <div class="">
+      <div class="row data-filter pb-2">
+        <div class="col-lg-3">
+          <mat-form-field appearance="standard">
+            <mat-select [(value)]="dataFilter.sort" placeholder="Sort by">
+              <mat-option value="alphabetic" (click)="sort('alphabetic')">Name (Asc)</mat-option>
+              <mat-option value="-alphabetic" (click)="sort('-alphabetic')">Name (Desc)</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-3">
+          <mat-form-field appearance="standard">
+            <input matInput placeholder="Search" [(ngModel)]="dataFilter.term" (keyup.enter)="search()">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="row">
+        <div class="col-lg-1">
+          <button type="button" mat-raised-button class="btn-sm btn-block btn-info" [disabled]="working" (click)="synchronize()" matTooltip="Synchronize Applications with Identity">
+            {{ working && synchronizing ? 'Synchronizing...' : 'Synchronize' }} <i class="fa fa-spinner fa-spin" *ngIf="working && synchronizing"></i>
+          </button>
+        </div>
+        <div class="col-lg-1">
+          <button type="button" mat-raised-button class="btn-sm btn-block btn-info" [disabled]="working || selected.length == 0" (click)="push()" matTooltip="Push Applications To All Users">
+            {{ working && pushing ? 'Pushing...' : 'Push' }} <i class="fa fa-spinner fa-spin" *ngIf="working && pushing"></i>
+          </button>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div *ngIf="result">
+        <div class="table-responsive">
+          <table class="table table-light table-striped">
+            <colgroup>
+              <col style="width: 5%" />
+              <col style="width: 20%" />
+              <col style="width: 20%" />
+              <col style="width: 20%" />
+              <col style="width: 5%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th><input type="checkbox" value="all" [disabled]="working" (change)="onAllChange('all', $event)" [checked]="all" /></th>
+                <th>Application</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Pinned</th>
+                <th>Hidden</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let app of result.results; let i = index">
+                <td><input [disabled]="working" type="checkbox" value="{{app.id}}" (change)="onChange(app, $event)" [checked]="selected.includes(app)" /></td>
+                <td>{{ app.displayName }}</td>
+                <td>{{ app.name }}</td>
+                <td>{{ app.description }}</td>
+                <td>
+                  <button type="button" mat-raised-button
+                          [ngClass]="{'mat-warn': app.isPinned}"
+                          [disabled]="working && updating"
+                          (click)="togglePinned(app, i)" [matTooltip]="app.isPinned ? 'Unpin Application For New Users' : 'Pin Application For New Users'">
+                    <i class="fa fa-map-pin"></i>
+                  </button>
+                </td>
+                <td>
+                  <button type="button" mat-raised-button
+                          [ngClass]="{'mat-warn': app.isHidden}"
+                          [disabled]="working && updating"
+                          (click)="toggleHidden(app, i)" [matTooltip]="app.isHidden ? 'Show Application To Users' : 'Hide Application From Users'">
+                    <i class="fa fa-check"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot *ngIf="result && result.results.length == 0 && !spin">
+              <tr><td colspan="3">There are no applications matching this search</td></tr>
+            </tfoot>
+          </table>
+        </div>
+        <pager [pagedResult]="result" [dataFilter]="dataFilter" (onPageChanged)="search()" (onPageSizeChanged)="reset()"></pager>
+      </div>
+      <mat-progress-bar mode="indeterminate" *ngIf="spin"></mat-progress-bar>
+    </div>
+  </div>
+</section>
+
+<ng-container *ngIf="!isPowerUser">
+  <app-unauthorized></app-unauthorized>
+</ng-container>
+

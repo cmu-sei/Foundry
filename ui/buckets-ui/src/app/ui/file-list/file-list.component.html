@@ -1,0 +1,68 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div *ngIf="pagedResult">
+    <div class="row">
+        <div class="col-auto mr-auto">
+            <mat-form-field>
+                <mat-select placeholder="Files To Show" [(ngModel)]="filter" name="filter" (selectionChange)="reset()" matTooltip="Files To Show">
+                    <mat-option value="">All Files</mat-option>
+                    <mat-option value="createdby=me">My Files</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <pager [pagedResult]="pagedResult" [dataFilter]="dataFilter" (onPageChanged)="search()" (onPageSizeChanged)="reset()" (onSearch)="search()"></pager>
+    <table class="table">
+        <colgroup>
+            <col style="width: 25%" />
+            <col *ngIf="!bucket" style="width: 15%" />
+            <col style="width: 10%" />
+            <col style="width: 10%" />
+            <col style="width: 20%" />
+            <col style="width: 10%" />
+            <col style="width: 10%" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Name <mat-icon aria-label="Sort" (click)="sort('name')" [ngClass]="getSortClass('name')">{{ getSortIcon('name') }}</mat-icon></th>
+                <th *ngIf="!bucket">Bucket <mat-icon aria-label="Sort" (click)="sort('bucket')" [ngClass]="getSortClass('bucket')">{{ getSortIcon('bucket') }}</mat-icon></th>
+                <th>Created By <mat-icon aria-label="Sort" (click)="sort('createdby')" [ngClass]="getSortClass('createdby')">{{ getSortIcon('createdby') }}</mat-icon></th>
+                <th>Created <mat-icon aria-label="Sort" (click)="sort('created')" [ngClass]="getSortClass('created')">{{ getSortIcon('created') }}</mat-icon></th>
+                <th>Tags</th>
+                <th>Size <mat-icon aria-label="Sort" (click)="sort('size')" [ngClass]="getSortClass('size')">{{ getSortIcon('size') }}</mat-icon></th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let file of pagedResult.results">
+                <td>{{file.name }}</td>
+                <td *ngIf="!bucket"><a [routerLink]="['/bucket', file.bucketId, file.bucketSlug]">{{ file.bucketName }}</a></td>
+                <td>{{file.createdByName}}</td>
+                <td>{{file.created | date: 'short'}}</td>
+                <td>
+                    <mat-chip-list #tagList>
+                        <mat-chip *ngFor="let tag of file.tags" [selectable]="false">{{tag}}</mat-chip>
+                    </mat-chip-list>
+                </td>
+                <td>{{ toFileSize(file.length) }}</td>
+                <td class="actions">
+                    <mat-icon class="mr-1" aria-label="View File Info" (click)="openFileInfoDialog(file)">info</mat-icon>
+                    <mat-icon class="mr-1" aria-label="Edit Tags" (click)="openTagInput(file)">local_offer</mat-icon>
+                    <mat-icon class="mr-1" (click)="download(file)" aria-label="Download File">cloud_download</mat-icon>
+                    <mat-icon class="mr-1 text-danger" *ngIf="hasAccess(file, 'delete')" aria-label="Delete File" (click)="confirmDelete(file)">delete</mat-icon>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

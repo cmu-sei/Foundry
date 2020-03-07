@@ -1,0 +1,135 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<form #terrainForm="ngForm">
+    <div class="row pt-4">
+        <div class="col">
+            <span class="pb-2">
+                <h4>Terrain</h4>
+                <p class="text-muted"><small>Describe the desired terrain.</small></p>
+            </span>
+            <div>
+                <mat-form-field class="w-75">
+                    <mat-select placeholder="Desired Operating Systems" [(ngModel)]="order.operatingSystemTypes" name="operatingSystemTypes" multiple (change)="checkForOtherOS(order.operatingSystemTypes)">
+                        <mat-option *ngFor="let type of operatingSystemTypes" [value]="type.id">
+                            {{ type.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="otherOSVisible == true" class="pb-2">
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Other Operating Systems (please specify)" [(ngModel)]="order.operatingSystemOther" name="operatingSystemOther">
+                </mat-form-field>
+            </div>
+            <div class="pb-2">
+                <mat-form-field class="w-75">
+                    <mat-select placeholder="Desired Services" [(ngModel)]="order.services" name="services" multiple (change)="checkForOtherServices(order.services)">
+                        <mat-option *ngFor="let type of servicesTypes" [value]="type.id">
+                            {{ type.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="otherServiceVisible == true" class="pb-2">
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Other Services (please specify)" [(ngModel)]="order.serviceOther" name="serviceOther">
+                </mat-form-field>
+            </div>
+            <div class="pb-2">
+                    <mat-form-field class="w-75">
+                        <mat-select placeholder="Desired Tools" [(ngModel)]="order.securityTools" name="securityTools" multiple (change)="checkForOtherTools(order.securityTools)">
+                            <mat-option *ngFor="let type of securityTools" [value]="type.id">
+                                {{ type.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+            </div>
+            <div *ngIf="otherToolVisible == true" class="pb-2">
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Other Tools (please specify)" [(ngModel)]="order.securityToolOther" name="securityToolOther">
+                </mat-form-field>
+            </div>
+            <div class="pb-2">
+                    <mat-form-field class="w-75">
+                        <mat-select placeholder="Desired Simulators" [(ngModel)]="order.simulators" name="simulators" multiple (change)="checkForOtherSimulators(order.simulators)">
+                            <mat-option *ngFor="let type of simulators" [value]="type.id">
+                                {{ type.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+            </div>
+            <div *ngIf="otherSimulatorVisible == true" class="pb-2">
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Other Simulators (please specify)" [(ngModel)]="order.simulatorOther" name="simulatorOther">
+                </mat-form-field>
+            </div>
+            <div class="pb-2">
+                    <mat-form-field class="w-75">
+                        <mat-select placeholder="Malicious Terrain" [(ngModel)]="order.terrains" name="terrains" multiple (change)="checkForOtherTerrains(order.terrains)">
+                            <mat-option *ngFor="let type of terrains" [value]="type.id">
+                                {{ type.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+            </div>
+            <div *ngIf="otherTerrainVisible == true" class="pb-2">
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Other Terrains (please specify)" [(ngModel)]="order.terrainOther" name="terrainOther">
+                </mat-form-field>
+            </div>
+            <div  class="pb-3">
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Other Requirements">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col">
+            <span class="pb-2">
+                    <h4>Network Diagrams</h4>
+                    <p class="text-muted"><small>Upload a network diagram if you have one.</small></p>
+                </span>
+                <div class="pb-3">
+                    <file-uploader [orderId]="order.id" (onUploaded)="networkDiagramUploadComplete($event)"></file-uploader>
+                </div>
+                <div class="pb-3">
+                    <div>Uploaded diagrams:</div>
+                    <ul>
+                        <li *ngFor="let file of filteredFiles('networkDiagram');">
+                            <a [href]="file.url" target="_blank">{{file.url}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <hr>
+                <h4>Would you like to create a network diagram?</h4>
+                <p class="text-muted"><small>You can use <a href="https://www.draw.io/" target="_blank">draw.io</a> to create one, then upload with your order.</small></p>
+                <hr>
+
+            <span class="pb-2">
+                <h4>Supporting Files</h4>
+                <p class="text-muted"><small>Upload any ancillary documents or images.</small></p>
+            </span>
+            <div class="pb-3">
+                <file-uploader [orderId]="order.id" (onUploaded)="fileUploadComplete($event)"></file-uploader>
+            </div>
+            <div class="pb-3">
+                <div>Uploaded Files:</div>
+                <ul>
+                    <li *ngFor="let file of filteredFiles('supportingFile');">
+                        <a [href]="file.url" target="_blank">{{file.url}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</form>
+

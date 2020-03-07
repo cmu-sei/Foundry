@@ -1,0 +1,170 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+<mat-progress-spinner *ngIf="!group" style="margin:0 auto;" color="primary" mode="indeterminate"></mat-progress-spinner>
+<section *ngIf="group">
+    <div class="card card-white">
+        <div class="row">
+            <div class="col-lg-4 col-xxl-3">
+                <img class="img-fluid" [src]="group.logoUrl" style="width:100%;">
+                <div class="card-content pb-0">
+                    <div class="action-container">
+                        <span class="card-button float-right">
+                            <button *ngIf="group.actions.join" matTooltip="Request Membership" [disabled]="btnDisabled" (click)="join()"
+                                class="btn btn-icon btn-icon-round btn-floating btn-success"><i
+                                    class="material-icons mdi-sm">person_add</i></button>
+                        </span>
+                        <span *ngIf="group.actions.leave" class="card-button float-right">
+                            <button matTooltip="Leave Group" [disabled]="btnDisabled" (click)="leave()"
+                                class="btn btn-icon btn-icon-round btn-floating btn-warning"><i
+                                    class="material-icons mdi-sm">clear</i></button>
+                        </span>
+                        <span *ngIf="group.actions.edit" matTooltip="Generate Invite Code" class="card-button float-right">
+                                <button class="btn btn-icon btn-icon-round btn-floating btn-danger" (click)="openInviteDialog()">
+                                        <i class="material-icons mdi-sm">cached</i>
+                                </button>
+                        </span>
+                        <span matTooltip="Enter Invite Code" class="card-button float-right">
+                                <button class="btn btn-icon btn-icon-round btn-floating btn-danger" (click)="openInviteInputDialog()">
+                                        <i class="material-icons mdi-sm">input</i>
+                                </button>
+                        </span>
+                        <span *ngIf="group.actions.edit" class="card-button float-right">
+                            <button matTooltip="Manage" [routerLink]="['/group', 'edit', group.id]"
+                                class="btn btn-icon btn-icon-round btn-floating btn-danger"><i
+                                    class="material-icons mdi-sm">settings</i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-xxl-9">
+                <div class="card-content">
+                    <h3>{{group.name}}</h3>
+                    <span class="text-muted"><strong>Added: </strong>{{group.created | date: 'MMMM d, y' }}</span>
+                    <div class="pt-2 pb-2" [innerHtml]="renderedDescription()"></div>
+                </div>
+            </div>
+        </div>
+        <div class="card-content pt-0">
+            <div class="divider divider-solid divider-md"></div>
+            <span class="badge badge-info mr-2">{{group.counts.members}} Members</span>
+            <ng-container *ngIf="checkForRequest()">
+                <span class="badge badge-primary">Membership Request Pending</span>
+            </ng-container>
+        </div>
+    </div>
+    <mat-tab-group>
+        <mat-tab *ngIf="contents.length != 0" label="Sponsored Content">
+            <section class="tab-container container-fluid">
+                <div class="card card-white">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col-auto sort-span">
+                                <div class="btn-group mt-1" role="group" aria-label="View Modes">
+                                    <button type="button" matTooltip="Grid View" class="btn" (click)="setContentViewMode('tile')"
+                                        [ngClass]="contentViewMode == 'tile' ? 'btn-dark' : 'btn-secondary'"><i
+                                            class="fa fa-sliders"></i></button>
+                                    <button type="button" matTooltip="List View" class="btn" (click)="setContentViewMode('list')"
+                                        [ngClass]="contentViewMode == 'list' ? 'btn-dark' : 'btn-secondary'"><i
+                                            class="fa fa-list"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-auto ml-auto">
+                                <mat-chip-list>
+                                    <mat-chip>{{ totalContent }} {{ totalContent == 1 ? 'Item' : 'Items' }}</mat-chip>
+                                </mat-chip-list>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <app-browser-scroll (more)="showMoreContent()" [moreFlag]="moreContent" [spinFlag]="spinContent">
+                            <div *ngIf="contentViewMode=='tile'">
+                                <div class="d-flex flex-wrap align-items-center justify-content-center">
+                                    <div class="p-2" *ngFor="let content of contents; let i = index"
+                                        style="width:320px;">
+                                        <content-tile [content]="content" [index]="i" [viewMode]="contentViewMode">
+                                        </content-tile>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="contentViewMode=='list'">
+                                <div *ngFor="let content of contents; let i = index">
+                                    <content-tile [content]="content" [index]="i" [viewMode]="contentViewMode">
+                                    </content-tile>
+                                </div>
+                            </div>
+                            <mat-progress-bar mode="indeterminate" *ngIf="spinContent"></mat-progress-bar>
+                            <mat-card *ngIf="contents && contents.length == 0 && !spin" class="text-center mt-1 mb-1">
+                                This group has not sponsored any content</mat-card>
+                        </app-browser-scroll>
+                    </div>
+
+                </div>
+            </section>
+        </mat-tab>
+        <mat-tab *ngIf="playlists.length != 0" label="Playlists">
+            <section class="tab-container container-fluid">
+                <div class="card card-white">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col-auto sort-span">
+                                <div class="btn-group mt-1" role="group" aria-label="View Modes">
+                                    <button type="button" matTooltip="Grid View" class="btn" (click)="setPlaylistViewMode('tile')"
+                                        [ngClass]="playlistViewMode == 'tile' ? 'btn-dark' : 'btn-secondary'"><i
+                                            class="fa fa-sliders"></i></button>
+                                    <button type="button" matTooltip="List View" class="btn" (click)="setPlaylistViewMode('list')"
+                                        [ngClass]="playlistViewMode == 'list' ? 'btn-dark' : 'btn-secondary'"><i
+                                            class="fa fa-list"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-auto ml-auto">
+                                <mat-chip-list>
+                                    <mat-chip>{{ totalPlaylists }} {{ totalPlaylists == 1 ? 'Item' : 'Items' }}</mat-chip>
+                                </mat-chip-list>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div *ngIf="playlistViewMode=='tile'">
+                            <div class="d-flex flex-wrap align-items-center justify-content-center">
+                                <div class="p-2" *ngFor="let playlist of playlists;" style="width:320px;">
+                                    <playlist-tile [playlist]="playlist" [groupId]="group.id" [canManageGroup]="group.actions.edit" [viewMode]="playlistViewMode">
+                                    </playlist-tile>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="playlistViewMode=='list'">
+                            <div *ngFor="let playlist of playlists;">
+                                <playlist-tile [playlist]="playlist" [groupId]="group.id" [canManageGroup]="group.actions.edit" [viewMode]="playlistViewMode">
+                                </playlist-tile>
+                            </div>
+                        </div>
+                        <mat-card *ngIf="playlists && playlists.length == 0" class="text-center mt-1 mb-1">
+                            This group doesn't have any playlists</mat-card>
+                    </div>
+                </div>
+            </section>
+        </mat-tab>
+        <mat-tab label="Members">
+                <group-members [canManage]="group.actions.edit" [groupId]="group.id"></group-members>
+        </mat-tab>
+        <mat-tab *ngIf="group.actions.edit" label="Member Requests">
+            <app-member-requests [groupId]="group.id"></app-member-requests>
+        </mat-tab>
+    </mat-tab-group>
+</section>
+

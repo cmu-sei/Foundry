@@ -1,0 +1,165 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<section class="container-fluid chapter" *ngIf="isPowerUser">
+  <div class="box box-default p-4">
+    <h4>Manage Content</h4>
+    <div class="">
+      <div class="row data-filter pb-2">
+        <div class="col-auto">
+          <mat-form-field appearance="standard">
+            <mat-select [(value)]="dataFilter.sort" placeholder="Sort" matTooltip="Sort">
+              <mat-option value="alphabetic" (click)="sort('alphabetic')">Name (Asc)</mat-option>
+              <mat-option value="-alphabetic" (click)="sort('-alphabetic')">Name (Desc)</mat-option>
+              <mat-option value="-recent" (click)="sort('-recent')">Newest</mat-option>
+              <mat-option value="recent" (click)="sort('recent')">Oldest</mat-option>
+              <mat-option value="-level" (click)="sort('-level')">Hardest</mat-option>
+              <mat-option value="level" (click)="sort('level')">Easiest</mat-option>
+              <mat-option value="-top" (click)="sort('top')">Highest Rated</mat-option>
+              <mat-option value="top" (click)="sort('-top')">Lowest Rated</mat-option>
+              <mat-option value="-popular" (click)="sort('-popular')">Popular</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-auto">
+          <mat-form-field  appearance="standard">
+            <mat-select [(value)]="dataFilter.filter" placeholder="Filter" matTooltip="Filter">
+              <mat-option value="" (click)="filter('')"></mat-option>
+              <mat-option value="flagged" (click)="filter('flagged')">Flagged</mat-option>
+              <mat-option value="featured" (click)="filter('featured')">Featured</mat-option>
+              <mat-option value="recommended" (click)="filter('recommended')">Recommended</mat-option>
+              <mat-optgroup label="Content Type">
+                <mat-option value="contenttype=challenge" (click)="filter('contenttype=challenge')">Challenges</mat-option>
+                <mat-option value="contenttype=course" (click)="filter('contenttype=course')">Courses</mat-option>
+                <mat-option value="contenttype=curriculum" (click)="filter('contenttype=curriculum')">Curriculum</mat-option>
+                <mat-option value="contenttype=document" (click)="filter('contenttype=document')">Documents</mat-option>
+                <mat-option value="contenttype=event" (click)="filter('contenttype=event')">Events</mat-option>
+                <mat-option value="contenttype=exercise" (click)="filter('contenttype=exercise')">Exercises</mat-option>
+                <mat-option value="contenttype=game" (click)="filter('contenttype=game')">Games</mat-option>
+                <mat-option value="contenttype=image" (click)="filter('contenttype=image')">Images</mat-option>
+                <mat-option value="contenttype=lab" (click)="filter('contenttype=lab')">Labs</mat-option>
+                <mat-option value="contenttype=quiz" (click)="filter('contenttype=quiz')">Quizzes</mat-option>
+                <mat-option value="contenttype=simulation" (click)="filter('contenttype=simulation')">Simulations</mat-option>
+                <mat-option value="contenttype=video" (click)="filter('contenttype=video')">Videos</mat-option>
+                <mat-option value="contenttype=webpage" (click)="filter('contenttype=webpage')">Web Pages</mat-option>
+              </mat-optgroup>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-auto ml-auto">
+          <mat-form-field  appearance="standard">
+            <input matInput placeholder="Search" [(ngModel)]="dataFilter.term" (keyup.enter)="search()" matTooltip="Search">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="row">
+        <div class="col-auto">
+          <button type="button" mat-raised-button class="btn-sm btn-block" [disabled]="working || selected.length == 0" (click)="openGroupSelectorDialog()" matTooltip="Change Sponsor">
+            <i class="fa fa-external-link"></i> Change Sponsor
+          </button>
+        </div>
+        <div class="col-auto">
+          <button type="button" mat-raised-button class="btn-sm btn-block" [disabled]="working || selected.length == 0" (click)="openAuthorSelectorDialog()" matTooltip="Change Author">
+            <i class="fa fa-external-link"></i> Change Author
+          </button>
+        </div>
+        <div class="col-auto">
+          <button type="button" mat-raised-button color="warn" class="btn-sm btn-danger mr-1" [disabled]="working || selected.length == 0" (click)="disable()" matTooltip="Disable selected Content"><i class="fa fa-times-circle-o"></i> Disable</button>
+          <button type="button" mat-raised-button color="accent" class="btn-sm" [disabled]="working || selected.length == 0" (click)="enable()" matTooltip="Enable selected Content"><i class="fa fa-check-circle-o"></i>  Enable</button>
+        </div>
+        <div class="col-auto ml-auto">
+          <button type="button" mat-raised-button color="primary" class="btn-sm btn-block" [disabled]="working || selected.length == 0" (click)="export()" matTooltip="Export Selected Content">
+            <i class="fa fa-download"></i> {{ working && exporting ? 'Exporting...' : 'Export' }} <i class="fa fa-spinner fa-spin" *ngIf="working && exporting"></i>
+          </button>
+        </div>
+        <div class="col-auto">
+          <button type="button" mat-raised-button color="primary" class="btn-sm btn-block" [disabled]="working || importing" onclick="document.getElementById('file').click()" matTooltip="Import Content">
+            <i class="fa fa-upload"></i> {{ working && importing ? 'Importing...' : 'Import' }} <i class="fa fa-spinner fa-spin" *ngIf="working && importing"></i>
+          </button>
+          <input id="file" mat-raised-button class="btn-sm btn-primary" #file type="file" style="display: none;" (change)="import(file.files)" />
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div *ngIf="result">
+        <div class="table-responsive">
+          <table class="table table-light table-striped">
+            <colgroup>
+              <col style="width: 5%" />
+              <col style="width: 30%" />
+              <col style="width: 10%" />
+              <col style="width: 10%" />
+              <col style="width: 10%" />
+              <col style="width: 10%" />
+              <col style="width: 10%" />
+              <col style="width: 10%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th colspan="8">
+                  <small class="text-danger">
+                    {{ (selected.length == 0 ? 'No selection made' : 'Selected ' + selected.length + ' content') }}
+                  </small>
+                </th>
+              </tr>
+            </thead>
+            <thead>
+              <tr>
+                <th><input type="checkbox" value="all" [disabled]="working" (change)="onAllContentChange('all', $event)" [checked]="all" /></th>
+                <th>Content</th>
+                <th>Created</th>
+                <th>Imported</th>
+                <th>Author</th>
+                <th>Sponsor</th>
+                <th>Rating</th>
+                <th>Difficulty</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let content of result.results; let i = index">
+                <td><input [disabled]="working" type="checkbox" value="{{content.id}}" (change)="onContentChange(content, $event)" [checked]="selected.includes(content)" /></td>
+                <td>
+                  <i class="fa fa-remove text-danger mr-2" *ngIf="content.isDisabled"></i>
+                  <i class="fa fa-flag text-warning mr-2" *ngIf="content.isFlagged"></i>
+                  <a [routerLink]="['/content', content.id, content.slug]" id="table-content-name" [innerHTML]="applyTerm(content.name)"></a>
+                  <div class="text-muted">
+                    <small>{{ content.globalId }}</small>
+                  </div>
+                </td>
+                <td>{{content.created | date: 'short' }}</td>
+                <td>{{content.imported == null ? '' : content.imported | date: 'short' }}</td>
+                <td>{{content.authorName }}</td>
+                <td>{{content.publisherName }}</td>
+                <td><ratings-display [average]="content.rating.average" [total]="content.rating.total"></ratings-display></td>
+                <td><difficulty-display [average]="content.difficulty.average" [total]="content.difficulty.total"></difficulty-display></td>
+                <td class="text-right">
+                  <button class="btn btn-sm btn-danger" (click)="openEditDialog(content.id)" matTooltip="Edit Content"><i class="fa fa-cog"></i></button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot *ngIf="result && result.results.length == 0 && !spin">
+              <tr><td colspan="3">This is no content matching this search</td></tr>
+            </tfoot>
+          </table>
+        </div>
+        <pager [pagedResult]="result" [dataFilter]="dataFilter" (onPageChanged)="search()" (onPageSizeChanged)="reset()"></pager>
+      </div>
+      <mat-progress-bar mode="indeterminate" *ngIf="spin"></mat-progress-bar>
+    </div>
+  </div>
+</section>
+
+<ng-container *ngIf="!isPowerUser">
+  <app-unauthorized></app-unauthorized>
+</ng-container>
+

@@ -1,0 +1,69 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<!-- <mat-progress-spinner *ngIf="!group" style="margin:0 auto;" color="primary" mode="indeterminate"></mat-progress-spinner> -->
+<section *ngIf="group">
+    <div class="group-card card-dark mt-4">
+        <div class="row">
+            <div class="col-lg-4 col-xxl-3">
+                <img class="img-fluid" [src]="group.logoUrl" style="width:100%;">
+                <div class="card-content pb-0">
+                    <div class="action-container text-right">
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-8 col-xxl-9">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-auto">
+                            <h3>{{group.name}}</h3>
+                        </div>
+                        <div class="col-auto ml-auto">
+                            <ng-container *ngIf="checkForRequest()">
+                                <span class="badge badge-primary">Membership Request Pending</span>
+                            </ng-container>
+                            <button *ngIf="group.counts.children || group.parentId" matTooltip="View Heirarchy" color="warn" mat-icon-button (click)="openTreeDialog()">
+                                <i class="fas fa-sitemap"></i>
+                            </button>
+                            <button *ngIf="group.actions.leave" matTooltip="Leave Group" color="secondary" mat-icon-button (click)="leave()">
+                                <mat-icon>remove_circle</mat-icon>
+                            </button>
+                            <button *ngIf="group.actions.join" matTooltip="Request Membership" color="warn" mat-icon-button (click)="sendRequest()">
+                                <mat-icon>add_circle</mat-icon>
+                            </button>
+                            <button *ngIf="group.actions.edit" matTooltip="Generate Invite Code" color="primary" mat-icon-button (click)="openInviteDialog()">
+                                <mat-icon>cached</mat-icon>
+                            </button>
+                            <button *ngIf="group.actions.edit" matTooltip="Manage Group" color="warn" mat-icon-button [routerLink]="['/edit', group.id]">
+                                <mat-icon>settings</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pt-2 pb-2">{{group.description}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<mat-tab-group *ngIf="group">
+    <mat-tab label="Members">
+        <app-group-members [canManage]="group.actions.edit" [groupId]="group.id"></app-group-members>
+    </mat-tab>
+    <mat-tab *ngIf="group.actions.edit" label="Member Requests">
+        <app-group-requests [groupId]="group.id"></app-group-requests>
+    </mat-tab>
+    <mat-tab *ngIf="groupRequests && groupRequests.length > 0 && group.actions.edit" label="Group Requests">
+        <app-child-requests [groupRequests]="groupRequests" [groupId]="group.id"></app-child-requests>
+    </mat-tab>
+</mat-tab-group>
+

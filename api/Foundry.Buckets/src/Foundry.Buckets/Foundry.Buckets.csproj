@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>Foundry.Buckets.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</SourceRevisionId>
+    <AssemblyVersion>1.4.2.0</AssemblyVersion>
+    <FileVersion>1.4.2.0</FileVersion>
+    <Version>1.4.2</Version>
+    <RepositoryUrl>https://code.sei.cmu.edu/bitbucket/projects/CWD/repos/stack.buckets/</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Authors>Hunter Daley</Authors>
+    <Company>CMU/SEI/CERT</Company>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="files\**" />
+    <Content Remove="files\**" />
+    <EmbeddedResource Remove="files\**" />
+    <None Remove="files\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="stack.buckets.db" />
+    <None Remove="Stack.Buckets.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="Cmu.Sei.Cwd.Stack.Http" Version="1.1.0" />
+    <PackageReference Include="Cmu.Sei.Cwd.Stack.Http.Identity" Version="2.0.1" />
+    <PackageReference Include="Cmu.Sei.Cwd.Stack.Patterns.Repository" Version="1.0.0" />
+    <PackageReference Include="Cmu.Sei.Cwd.Stack.Patterns.Service" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.4" />
+    <PackageReference Include="Mime-Detective" Version="0.0.5" />
+    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Foundry.Buckets.Data.PostgreSQL\Foundry.Buckets.Data.PostgreSQL.csproj" />
+    <ProjectReference Include="..\Foundry.Buckets.Data.Sqlite\Foundry.Buckets.Data.Sqlite.csproj" />
+    <ProjectReference Include="..\Foundry.Buckets.Data.SqlServer\Foundry.Buckets.Data.SqlServer.csproj" />
+    <ProjectReference Include="..\Foundry.Buckets.Data\Foundry.Buckets.Data.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+</Project>

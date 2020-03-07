@@ -1,0 +1,159 @@
+/*
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+*/
+
+/* For use in src/lib/core/theming/_palette.scss */
+
+$sketch-red: (
+    50 : #ffc5c5,
+    100 : #ff7979,
+    200 : #ff4141,
+    300 : #f80000,
+    400 : #da0000,
+    500 : #bb0000,
+    600 : #9c0000,
+    700 : #7e0000,
+    800 : #5f0000,
+    900 : #410000,
+    A100 : #ffbbbb,
+    A200 : #ff5555,
+    A400 : #ee0000,
+    A700 : #d40000,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #ffffff,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+$sketch-blue: (
+    50 : #b8cceb,
+    100 : #7ca2da,
+    200 : #5082cd,
+    300 : #305fa7,
+    400 : #29528f,
+    500 : #224477,
+    600 : #1b365f,
+    700 : #142947,
+    800 : #0e1b30,
+    900 : #070e18,
+    A100 : #a0c3f8,
+    A200 : #4288f0,
+    A400 : #1e58ae,
+    A700 : #234e8f,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #ffffff,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+$sketch-green: (
+    50 : #92ffd6,
+    100 : #46ffb9,
+    200 : #0effa4,
+    300 : #00c57b,
+    400 : #00a768,
+    500 : #008855,
+    600 : #006942,
+    700 : #004b2f,
+    800 : #002c1c,
+    900 : #000e08,
+    A100 : #88ffd2,
+    A200 : #22ffac,
+    A400 : #00bb75,
+    A700 : #00a165,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+// Background palette for dark themes.
+$sketch-dark-theme-background: (
+  status-bar: black,
+  app-bar:    map_get($mat-grey, 900),
+  background: #111,
+  hover:      rgba(white, 0.04),
+  card:       map_get($mat-grey, 900),
+  dialog:     map_get($mat-grey, 900),
+  disabled-button: rgba(white, 0.12),
+  raised-button: map-get($mat-grey, 900),
+  focused-button: $light-focused,
+  selected-button: map_get($mat-grey, 900),
+  selected-disabled-button: map_get($mat-grey, 900),
+  disabled-button-toggle: black,
+  unselected-chip: map_get($mat-grey, 700),
+  disabled-list-option: black,
+);
+
+// Foreground palette for dark themes.
+$sketch-dark-theme-foreground: (
+  base:              white,
+  divider:           $light-dividers,
+  dividers:          $light-dividers,
+  disabled:          $light-disabled-text,
+  disabled-button:   rgba(white, 0.3),
+  disabled-text:     $light-disabled-text,
+  hint-text:         $light-disabled-text,
+  secondary-text:    $light-secondary-text,
+  icon:              white,
+  icons:             white,
+  text:              white,
+  slider-min:        white,
+  slider-off:        rgba(white, 0.3),
+  slider-off-active: rgba(white, 0.3),
+);
+
+// Creates a container object for a dark theme to be given to individual component theme mixins.
+@function sketch-dark-theme($primary, $accent, $warn) {
+    @return (
+      primary: $primary,
+      accent: $accent,
+      warn: $warn,
+      is-dark: true,
+      foreground: $sketch-dark-theme-foreground,
+      background: $sketch-dark-theme-background,
+    );
+  }
+

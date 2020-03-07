@@ -1,0 +1,50 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div class="post">
+  <div class="row">
+    <div class="float-left text-center col-md-1">
+      <ul class="list-unstyled">
+        <li>
+            <i class="fa fa-2x fa-caret-up vote" (click)="upVote(post)" [ngClass]="{'text-success': post.voteMetric.userVote == 1 }"></i>
+        </li>
+        <li> {{ post.voteMetric.up }}</li>
+        <li class="divider divider-solid divider-md"></li>
+        <li>{{ post.voteMetric.down }}</li>
+        <li>
+            <i class="fa fa-caret-down fa-2x vote" (click)="downVote(post)" [ngClass]="{'text-danger': post.voteMetric.userVote == -1 }"></i>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-11">
+      <p style="margin-bottom: 10px;" class="mat-line post-text">{{ post.text }}</p>
+      <div *ngIf="post.attachments.length > 0" class="attachments">
+        <a *ngFor="let url of post.attachments" [href]="url" target="_blank">
+          <img [src]="url" class="rounded mb-2" />
+        </a>
+      </div>
+      <div class="post-author pt-2">
+        <div class="row">
+            <div class="col">
+                {{ post.profileName }} <span class="badge badge-warning pr-1">{{post.created | date:'shortDate'}}</span>
+            </div>
+            <div class="col text-right" *ngIf="canDelete">
+                <button (click)="openDeletePostDialog(post)" mat-icon-button color="warn">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

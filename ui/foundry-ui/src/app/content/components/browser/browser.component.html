@@ -1,0 +1,118 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+
+<div class="card card-white">
+  <div class="card-content">
+    <div class="sort-row row">
+      <div class="col-auto">
+        <div class="btn-group" role="group" aria-label="View Modes">
+          <button type="button"  matTooltip="Grid View" class="btn" (click)="setProfileViewMode('tile')" [ngClass]="viewMode == 'tile' ? 'btn-dark' : 'btn-secondary'"><i class="fa fa-sliders"></i></button>
+          <button type="button"  matTooltip="List View" class="btn" (click)="setProfileViewMode('list')" [ngClass]="viewMode == 'list' ? 'btn-dark' : 'btn-secondary'"><i class="fa fa-list"></i></button>
+        </div>
+      </div>
+      <div class="col-auto">
+        <mat-chip-list>
+          <mat-chip>{{ total }} {{ total == 1 ? 'Result' : 'Results' }}</mat-chip>
+          <mat-chip *ngIf="selectedFilter" color="primary" selected>{{selectedFilter}}<mat-icon (click)="filter(null, '')" class="remove-filter ml-2">clear</mat-icon></mat-chip>
+          <mat-chip *ngIf="term" color="secondary" selected>Showing results for "{{term}}"<mat-icon (click)="clearSearch()" class="remove-filter ml-2">clear</mat-icon></mat-chip>
+        </mat-chip-list>
+      </div>
+      <div class="col-auto ml-auto">
+        <mat-form-field class="sort-form">
+          <mat-select [(value)]="dataFilter.sort" placeholder="Sort by">
+            <mat-option value="alphabetic" (click)="sort('alphabetic')">Name (Asc)</mat-option>
+            <mat-option value="-alphabetic" (click)="sort('-alphabetic')">Name (Desc)</mat-option>
+            <mat-option value="-recent" (click)="sort('-recent')">Newest</mat-option>
+            <mat-option value="recent" (click)="sort('recent')">Oldest</mat-option>
+            <mat-option value="-level" (click)="sort('-level')">Hardest</mat-option>
+            <mat-option value="level" (click)="sort('level')">Easiest</mat-option>
+            <mat-option value="top" (click)="sort('top')">Highest Rated</mat-option>
+            <mat-option value="-top" (click)="sort('-top')">Lowest Rated</mat-option>
+            <mat-option value="-popular" (click)="sort('-popular')">Popular</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-2 col-md-3">
+    <div class="card card-white d-none d-sm-none d-md-block">
+      <div class="card-content">
+        <mat-list role="list">
+          <h3 mat-subheader>Filter by</h3>
+          <mat-list-item *ngFor="let c of contentFilterTypes; let i = index;"
+                         (click)="filter(i, c)"
+                         [class.active-list-item]="selectedIndex === i">{{c.displayName}}</mat-list-item>
+          <div class="divider divider-solid divider-md"></div>
+          <h3 mat-subheader>Content Types</h3>
+          <mat-list-item *ngFor="let c of contentTypes; let i = index;">
+            <mat-checkbox (change)="filterByType(c)" [checked]="c.checked">{{c.name}}</mat-checkbox>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+    <div class="card card-white d-block d-sm-block d-md-none">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Filter
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="card-content">
+            <mat-list role="list">
+              <h3 mat-subheader>Filter by</h3>
+              <mat-list-item *ngFor="let c of contentFilterTypes; let i = index;"
+                             (click)="filter(i, c)"
+                             [class.active-list-item]="selectedIndex === i">{{c.displayName}}</mat-list-item>
+              <div class="divider divider-solid divider-md"></div>
+              <h3 mat-subheader>Content Types</h3>
+              <mat-list-item *ngFor="let c of contentTypes; let i = index;">
+                <mat-checkbox (change)="filterByType(c)" [checked]="c.checked">{{c.name}}</mat-checkbox>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+  <div class="col-lg-10 col-md-9">
+    <app-browser-scroll (more)="showMore()" [moreFlag]="more" [spinFlag]="spin">
+      <div *ngIf="viewMode=='tile'">
+        <div class="d-flex flex-wrap align-items-center justify-content-center">
+          <div class="p-2" *ngFor="let content of contents; let i = index" style="width:320px;">
+            <content-tile [content]="content" [index]="i" [viewMode]="viewMode"></content-tile>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="viewMode=='list'">
+        <div *ngFor="let content of contents; let i = index">
+          <content-tile [content]="content" [index]="i" [viewMode]="viewMode"></content-tile>
+        </div>
+      </div>
+      <mat-progress-bar mode="indeterminate" *ngIf="spin"></mat-progress-bar>
+      <mat-card *ngIf="contents && contents.length == 0 && !spin" class="text-center mt-1 mb-1">There is no content matching this search</mat-card>
+      <div class="text-center">
+        <div>&nbsp;</div>
+        Didn't find what you were looking for?
+        <div>&nbsp;</div>
+        <a mat-raised-button color="accent" [href]="requestUrl" target="_blank" class="btn-sm mb-1" style="margin-right: 1em;">
+          <i class="nav-icon material-icons">mode_edit</i> Request New Content
+        </a>
+      </div>
+    </app-browser-scroll>
+  </div>
+</div>
+

@@ -1,0 +1,64 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<h3 class="pt-3 pb-3">{{ title }}</h3>
+<div class="box box-default" *ngIf="profile">
+    <div class="box-body">
+        <mat-table #table [dataSource]="orders">
+            <ng-container matColumnDef="orderNumber">
+                <mat-header-cell *matHeaderCellDef>Order Number</mat-header-cell>
+                <mat-cell *matCellDef="let order"><a [routerLink]="['/order', order.id]">#000{{ order.id }}</a></mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="requestor">
+                <mat-header-cell *matHeaderCellDef>Requestor</mat-header-cell>
+                <mat-cell *matCellDef="let order">{{ order.requestor }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="created">
+                <mat-header-cell *matHeaderCellDef>Submitted</mat-header-cell>
+                <mat-cell *matCellDef="let order">{{ order.created | date: 'short' }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="description">
+                <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+                <mat-cell *matCellDef="let order">{{ order.description }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="branchName">
+                <mat-header-cell *matHeaderCellDef>Branch</mat-header-cell>
+                <mat-cell *matCellDef="let order">{{order.branchName}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="due">
+                <mat-header-cell *matHeaderCellDef>Due</mat-header-cell>
+                <mat-cell *matCellDef="let order">{{ order.due | date: 'MM/dd/yyyy' }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="orderStatus">
+                <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                <mat-cell *matCellDef="let order">
+                    <mat-select placeholder="Set Status" [(ngModel)]="order.status" name="status" (change)="setStatus(i, order.id, order.status)" *ngIf="profile.isAdministrator">
+                        <mat-option value="Draft">Draft</mat-option>
+                        <mat-option value="Submitted">Submitted</mat-option>
+                        <mat-option value="InProgress">In Progress</mat-option>
+                        <mat-option value="NeedsInformation">Needs Information</mat-option>
+                        <mat-option value="Complete">Complete</mat-option>
+                        <mat-option value="Closed">Closed</mat-option>
+                    </mat-select>
+                    <span *ngIf="!profile.isAdministrator">{{order.status}}</span>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="commentCount">
+                <mat-header-cell *matHeaderCellDef class="text-right">Comments</mat-header-cell>
+                <mat-cell *matCellDef="let order" class="text-right">{{ order.commentCount }}</mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: columns;"></mat-row>
+        </mat-table>
+    </div>
+</div>
+

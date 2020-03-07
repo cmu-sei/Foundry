@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundry.Groups", "src\Foundry.Groups\Foundry.Groups.csproj", "{90F03B34-574D-416B-9249-11216681077A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundry.Groups.Data", "src\Foundry.Groups.Data\Foundry.Groups.Data.csproj", "{C53BAB1C-D5DE-4AE7-AFBB-C82E670EEAFF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundry.Groups.Data.PostgreSQL", "src\Foundry.Groups.Data.PostgreSQL\Foundry.Groups.Data.PostgreSQL.csproj", "{DE4DA69C-A2E1-461B-BEBA-7804C3C7C87C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundry.Groups.Data.SqlServer", "src\Foundry.Groups.Data.SqlServer\Foundry.Groups.Data.SqlServer.csproj", "{83D8E0B8-6E74-48E2-BDB2-439FD975DBBD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{86BFA5B9-80CF-4E7E-AB29-642669ADD532}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foundry.Groups.Tests", "test\Foundry.Groups.Tests\Foundry.Groups.Tests.csproj", "{E2206FB9-C6F1-42CA-873B-86B1AFA3149D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4CA06663-35B1-4023-8778-6369484CFC46}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90F03B34-574D-416B-9249-11216681077A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90F03B34-574D-416B-9249-11216681077A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90F03B34-574D-416B-9249-11216681077A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90F03B34-574D-416B-9249-11216681077A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C53BAB1C-D5DE-4AE7-AFBB-C82E670EEAFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C53BAB1C-D5DE-4AE7-AFBB-C82E670EEAFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C53BAB1C-D5DE-4AE7-AFBB-C82E670EEAFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C53BAB1C-D5DE-4AE7-AFBB-C82E670EEAFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE4DA69C-A2E1-461B-BEBA-7804C3C7C87C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE4DA69C-A2E1-461B-BEBA-7804C3C7C87C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE4DA69C-A2E1-461B-BEBA-7804C3C7C87C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE4DA69C-A2E1-461B-BEBA-7804C3C7C87C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83D8E0B8-6E74-48E2-BDB2-439FD975DBBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83D8E0B8-6E74-48E2-BDB2-439FD975DBBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83D8E0B8-6E74-48E2-BDB2-439FD975DBBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83D8E0B8-6E74-48E2-BDB2-439FD975DBBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2206FB9-C6F1-42CA-873B-86B1AFA3149D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2206FB9-C6F1-42CA-873B-86B1AFA3149D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2206FB9-C6F1-42CA-873B-86B1AFA3149D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2206FB9-C6F1-42CA-873B-86B1AFA3149D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C53BAB1C-D5DE-4AE7-AFBB-C82E670EEAFF} = {86BFA5B9-80CF-4E7E-AB29-642669ADD532}
+		{DE4DA69C-A2E1-461B-BEBA-7804C3C7C87C} = {86BFA5B9-80CF-4E7E-AB29-642669ADD532}
+		{83D8E0B8-6E74-48E2-BDB2-439FD975DBBD} = {86BFA5B9-80CF-4E7E-AB29-642669ADD532}
+		{E2206FB9-C6F1-42CA-873B-86B1AFA3149D} = {4CA06663-35B1-4023-8778-6369484CFC46}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8833C86B-05BE-4DE2-A31B-8689AD374E88}
+	EndGlobalSection
+EndGlobal

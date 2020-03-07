@@ -1,0 +1,171 @@
+/*
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+*/
+
+h2,
+h4 {
+  color: #777;
+}
+.panel-border {
+  padding-bottom: 10px;
+}
+.group-list li {
+  background-color: #dff0d8;
+  border-color: white;
+}
+
+.panel-top {
+  padding-top: 10px;
+}
+.profile-nav {
+  border-bottom: 1px solid #777;
+}
+.profile-nav a {
+  color: #777;
+  font-weight: 400;
+}
+.profile-nav a:hover {
+  cursor: pointer;
+}
+li.active {
+  border-bottom: 2px solid #c7c6c4;
+}
+li.active a {
+  font-weight: 600;
+}
+.flex-container {
+  display: -webkit-flex;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.flex-item-wrapper {
+  background-color: #eae8e9;
+  width: 255px;
+  height: 115px;
+  margin: 10px 15px 0px 0px;
+  border-radius: 2px;
+  position: relative;
+  border: 1px dashed #eae8e9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.flex-inner {
+  height: 100%;
+  width: 70px;
+  float: left;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  z-index: 1000;
+  background-color: #777;
+  padding: 5px;
+  color: #FFF;
+  font-weight: bold;
+  opacity: .90;
+}
+.flex-inner i {
+  font-size: 24px;
+  padding-top: 10px;
+}
+.center-img {
+  flex-shrink: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
+.branch-name {
+  width: 255px;
+}
+
+.playlist-name {
+  display: inline-block;
+  max-width: 195px;
+  color: #999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.branch-name:hover {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+.item-count {
+  font-size: 24px;
+  padding-top: 3px;
+}
+.placeholder-icon {
+  margin-right: 60px;
+  color: #D6D3D5;
+}
+.restricted-icon {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+}
+.pending-label {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+}
+.playlist-options li {
+  padding-left: 2.5px;
+  padding-right: 2.5px;
+}
+.profile-action:hover {
+  cursor: pointer;
+}
+a:hover {
+  cursor: pointer;
+}
+.profile-btn {
+  line-height: 0px;
+}
+// .mat-menu-panel {
+//   z-index: 2002;
+//   position: absolute;
+//   background-color: #404b55;
+//   outline: none;
+//   box-sizing: border-box;
+//   max-height: 120px;
+//   box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.4);
+//   display: flex;
+//   left: 15%;
+//   top: 2px;
+//   overflow-y: auto;
+// }
+
+ul.posts,
+ul.replies,
+ul.activities {
+  padding: 0;
+  margin-top: 5px;
+  list-style: none;
+}
+
+ul.posts > li,
+ul.replies > li,
+ul.activities > li {
+  list-style: none;
+}
+
+ul.replies > li {
+  margin-left: 100px;
+}
+
+.divider-post {
+  border-color: grey;
+}
+
+ul.activities a {
+  text-decoration: underline;
+}
+

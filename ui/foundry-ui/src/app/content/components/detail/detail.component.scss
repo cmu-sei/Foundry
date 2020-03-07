@@ -1,0 +1,153 @@
+/*
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+*/
+
+h2 {
+  color: #555;
+}
+a:hover {
+  cursor: pointer;
+}
+.extra-padding {
+  padding-bottom: 15px;
+}
+.content-detail-sidebar {
+  background: #fafafa;
+  border-top: solid 1px rgba(0, 0, 0, 0.1);
+  border-left: solid 1px rgba(0, 0, 0, 0.1);
+  border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+.cta-bg-img {
+  background-color: rgba(0, 0, 0, 0.4);
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.card-content h3,
+.card-content h4 {
+  margin: 0 0 .3em 0;
+}
+.rating > span:hover:before {
+  content: "\2605";
+  position: absolute;
+  cursor: pointer;
+}
+.rating {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  font-size: 20px;
+}
+.rating > span {
+  display: inline-block;
+  position: relative;
+  width: 1.1em;
+}
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+  content: "\2605";
+  position: absolute;
+  color: #e3cf7a;
+}
+.settings-container {
+  padding-top: 10px;
+}
+.label-collect {
+  background-color: #598400;
+}
+.label-analyze {
+  background-color: #c45700;
+}
+.label-investigate {
+  background-color: #754cac;
+}
+.label-operate {
+  background-color: #00807c;
+}
+.label-oversight {
+  background-color: #2364af;
+}
+.label-protect {
+  background-color: #e20e77;
+}
+.label-secure {
+  background-color: #d40000;
+}
+.tag-link:hover {
+  color: white;
+}
+
+.type-tag:hover {
+  cursor: pointer;
+}
+.tile-icon {
+  vertical-align: middle;
+}
+.btn-link:hover {
+  cursor: pointer;
+}
+.content-badge:hover,
+.link-badge:hover {
+  cursor: pointer;
+}
+img.sponsor-thumbnail {
+  max-height: 24px;
+  max-width: 24px;
+}
+// .mat-menu-panel {
+//   z-index: 2002;
+//   position: absolute;
+//   background-color: #404b55;
+//   outline: none;
+//   box-sizing: border-box;
+//   max-height: 200px;
+//   box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.4);
+//   display: flex;
+//   left: 15%;
+//   bottom: 5%;
+//   overflow-y: auto;
+// }
+.btn-active {
+  background-color: #e6e6e6;
+}
+.card-image {
+  min-height: 128px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 7em 1em;
+}
+.action-container a {
+  padding: 2.5px;
+}
+.margin-top-2 {
+  margin-top: 2rem !important;
+}
+.btn-launch {
+  position: absolute;
+  z-index: 1;
+  margin-top: -43px;
+}
+.btn-launch i {
+  line-height: 30px;
+}
+.action-container span {
+  padding: 2.5px;
+}
+.flag-radio-group {
+  display: inline-flex;
+  flex-direction: column;
+}
+.flagradio-button {
+  margin: 5px;
+}
+.flag-selected-value {
+  margin: 15px 0;
+}
+

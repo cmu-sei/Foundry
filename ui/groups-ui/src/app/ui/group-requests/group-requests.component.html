@@ -1,0 +1,86 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<ng-container *ngIf="memberRequests">
+  <div class="card card-dark">
+    <div class="container">
+      <div class="row data-filter">
+        <div class="col-auto">
+          <mat-form-field appearance="standard">
+            <input matInput placeholder="Search" [(ngModel)]="memberDataFilter.term"
+              (keyup.enter)="loadMemberRequests(groupId)">
+          </mat-form-field>
+        </div>
+        <div class="col-auto ml-auto">
+          <mat-form-field appearance="standard">
+            <mat-select [(value)]="memberDataFilter.sort" placeholder="Sort by">
+              <mat-option value="alphabetic" (click)="sort('alphabetic')">Name (Asc)</mat-option>
+              <mat-option value="-alphabetic" (click)="sort('-alphabetic')">Name (Desc)</mat-option>
+              <mat-option value="recent" (click)="sort('recent')">Newest</mat-option>
+              <mat-option value="-recent" (click)="sort('-recent')">Oldest</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <mat-progress-bar mode="indeterminate" *ngIf="spin"></mat-progress-bar>
+  <table mat-table [dataSource]="memberRequests" class="mat-elevation-z8">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name</th>
+      <td mat-cell *matCellDef="let member">
+          <a (click)="openProfile(member)" matTooltip="View profile in portal app">
+              {{member.accountName}}
+            </a>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef> Request Date </th>
+      <td mat-cell *matCellDef="let member"> {{member.created | date:'mediumDate'}} </td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <td mat-cell *matCellDef="let member">
+        <span *ngIf="member.status === 'Pending'" class="badge badge-primary">Membership Request Pending</span>
+        <span *ngIf="member.status === 'Approved'" class="badge badge-success">Member</span>
+        <span *ngIf="member.status === 'Denied'" class="badge badge-danger">Membership Request Denied</span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let member">
+        <ng-container *ngIf="member.status === 'Pending'">
+          <button matTooltip="Approve" color="warn" mat-icon-button (click)="updateMemberRequest(member, 1)">
+            <mat-icon>thumb_up</mat-icon>
+          </button>
+          <button *ngIf="member.status === 'Pending'" matTooltip="Deny" color="primary" mat-icon-button
+            (click)="updateMemberRequest(member, 2)">
+            <mat-icon>thumb_down</mat-icon>
+          </button>
+        </ng-container>
+        <button *ngIf="member.status === 'Denied'" matTooltip="Delete member request" color="primary" mat-icon-button
+          (click)="openDelete(member)">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</ng-container>
+<mat-paginator [length]="total" [pageSize]="memberDataFilter.take" [pageSizeOptions]="[5, 10, 25, 100]"
+  (page)="getPageEvent($event)">
+</mat-paginator>
+<div class="container">
+  <p class="text-danger">{{errorMsg}}</p>
+</div>
+

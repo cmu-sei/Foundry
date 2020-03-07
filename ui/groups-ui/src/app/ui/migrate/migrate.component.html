@@ -1,0 +1,72 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<section *ngIf="pagedResult && pagedResult.results">
+  <div class="card-dark mt-4">
+    <pager [pagedResult]="pagedResult" [dataFilter]="dataFilter" (onPageChanged)="search()" (onPageSizeChanged)="search()" (onSearch)="search()"></pager>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>GlobalId</th>
+          <th>Name</th>
+          <th>Members</th>
+          <th colspan="5" class="text-center">
+            <button class="btn btn-sm btn-info mr-2" [disabled]="!pagedResult.results" (click)="verifyAll()">Verify All</button>
+            <button class="btn btn-sm btn-warning" [disabled]="!verified || migrating" (click)="migrateAll()">Migrate All</button>
+          </th>
+          <th>
+
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let g of pagedResult.results">
+          <td>{{ g.id }}</td>
+          <td>{{ g.globalId }}</td>
+          <td>{{ g.name }}</td>
+          <td>{{ g.memberCount }}</td>
+          <td>
+            <i class="fas fa-layer-group" *ngIf="!g.verified"></i>
+            <i class="fas fa-layer-group text-warning" *ngIf="g.verified && !g.migrated"></i>
+            <i class="fas fa-layer-group text-success" *ngIf="g.verified && g.migrated"></i>
+          </td>
+          <td>
+            <span class="badge badge-secondary mr-2">{{ g.group == null ? '0' : g.group.counts.members }}</span>
+            <i class="fas fa-users" *ngIf="!g.verified"></i>
+            <i class="fas fa-users text-warning" *ngIf="g.verified && ((g.migrated && g.group.counts.members < g.memberCount) || !g.migrated)"></i>
+            <i class="fas fa-users text-success" *ngIf="g.verified && g.migrated && g.group.counts.members >= g.memberCount"></i>
+          </td>
+          <td>
+            <span class="badge badge-secondary mr-2">{{ g.group == null ? '0' : g.group.counts.memberRequests }}</span>
+            <i class="fas fa-paper-plane" *ngIf="!g.verified"></i>
+            <i class="fas fa-paper-plane text-warning" *ngIf="g.verified && g.group == null"></i>
+            <i class="fas fa-paper-plane text-success" *ngIf="g.verified && g.group != null"></i>
+          </td>
+          <td>
+            <i class="fas fa-cog text-secondary" *ngIf="!g.migrating"></i>
+            <i class="fas fa-cog fa-spin" *ngIf="g.migrating"></i>
+          </td>
+          <td>
+            <i class="fas fa-check-circle text-secondary" *ngIf="!g.migrated"></i>
+            <i class="fas fa-check-circle text-success" *ngIf="g.migrated"></i>
+          </td>
+          <th>
+            <button class="btn btn-sm btn-info mr-2" (click)="verifyGroup(g)">Verify</button>
+            <button class="btn btn-sm btn-warning" [disabled]="!g.verified || g.migrating" (click)="migrateGroup(g)">Migrate</button>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+

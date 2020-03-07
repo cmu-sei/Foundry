@@ -1,0 +1,94 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<ng-container *ngIf="members">
+    <div class="card card-dark">
+        <div class="container">
+            <div class="row data-filter">
+                <div class="col-auto">
+                  <mat-form-field appearance="standard">
+                    <input matInput placeholder="Search" [(ngModel)]="memberDataFilter.term" (keyup.enter)="loadMembers(groupId)">
+                  </mat-form-field>
+                </div>
+                <div class="col-auto ml-auto">
+                  <mat-form-field appearance="standard">
+                    <mat-select [(value)]="memberDataFilter.sort" placeholder="Sort by">
+                      <mat-option value="alphabetic" (click)="sort('alphabetic')">Name (Asc)</mat-option>
+                      <mat-option value="-alphabetic" (click)="sort('-alphabetic')">Name (Desc)</mat-option>
+                      <mat-option value="recent" (click)="sort('recent')">Newest</mat-option>
+                      <mat-option value="-recent" (click)="sort('-recent')">Oldest</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+        </div>
+      </div>
+        <mat-progress-bar mode="indeterminate" *ngIf="spin"></mat-progress-bar>
+  <table mat-table [dataSource]="members" class="mat-elevation-z8">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name</th>
+      <td mat-cell *matCellDef="let member">
+          <a (click)="openProfile(member)" matTooltip="View profile in portal app">
+            {{member.accountName}}
+          </a>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef> Date Added </th>
+      <td mat-cell *matCellDef="let member"> {{member.created | date:'mediumDate'}} </td>
+    </ng-container>
+    <ng-container matColumnDef="access">
+      <th mat-header-cell *matHeaderCellDef> Access </th>
+      <td mat-cell *matCellDef="let member">
+        <span class="badge badge-primary" *ngIf="member.isOwner">Owner</span>
+        <span class="badge badge-secondary" *ngIf="member.isManager">Manager</span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions</th>
+      <td mat-cell *matCellDef="let member">
+          <ng-container *ngIf="canManage">
+              <ng-container *ngIf="!member.isOwner">
+                  <button *ngIf="!member.isManager"  matTooltip="Promote to Manager" color="warn" mat-icon-button (click)="promoteToManager(member)">
+                    <mat-icon>verified_user</mat-icon>
+                  </button>
+                  <button *ngIf="member.isManager" matTooltip="Remove as Manager" color="primary" mat-icon-button (click)="demoteFromManager(member)">
+                    <mat-icon>verified_user</mat-icon>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="!member.isOwner">
+                <button *ngIf="member.isManager"  matTooltip="Promote to Owner" color="warn" mat-icon-button (click)="promoteToOwner(member)">
+                  <mat-icon>supervisor_account</mat-icon>
+              </button>
+              </ng-container>
+              <button *ngIf="member.isOwner"  matTooltip="Remove as Owner" color="primary" mat-icon-button (click)="demoteFromOwner(member)">
+                <mat-icon>supervisor_account</mat-icon>
+            </button>
+            <button *ngIf="!member.isOwner" matTooltip="Remove Member" type="button" color="primary" mat-icon-button (click)="openDelete(member)">
+              <mat-icon>delete_forever</mat-icon>
+            </button>
+          </ng-container>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [length]="total"
+  [pageSize]="memberDataFilter.take"
+  [pageSizeOptions]="[5, 10, 25, 100]"
+  (page)="getPageEvent($event)">
+</mat-paginator>
+</ng-container>
+<div class="container">
+    <p class="text-danger">{{errorMsg}}</p>
+  </div>
+

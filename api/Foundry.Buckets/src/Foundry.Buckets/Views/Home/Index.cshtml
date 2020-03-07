@@ -1,0 +1,104 @@
+@*
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+*@
+
+@model Foundry.Buckets.ViewModels.HomeModel
+<html>
+<head>
+    <title>Foundry · Buckets</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        p {
+            color: #000;
+            font-size: 10pt;
+        }
+
+        ul {
+            border-top: solid 1px #eee;
+            list-style: none;
+            font-size: 10pt;
+            padding: 1em 0 0 0;
+            margin: 0;
+        }
+
+            ul li {
+                display: inline-block;
+                margin: 10px 0;
+                padding-right: 1em;
+            }
+
+                ul li a {
+                    color: #000;
+                }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: #b00;
+            font-size: 18pt;
+        }
+
+        header {
+            padding: 100px;
+        }
+
+        footer {
+            color: #777;
+            font-size: 16pt;
+            background: #333;
+            padding: 60px 100px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Foundry · Buckets</h2>
+        <p>
+            Beep! Boop! Bop! Running...
+        </p>
+        <ul>
+            <li><strong>API</strong></li>
+            <li><a href="~/api">docs</a></li>
+            <li><a href="~/api/v1/api.json">json</a></li>
+        </ul>
+        <div></div>
+        <ul>
+            @foreach (var module in Model.ApiStatus.Modules)
+            {
+                <li><strong>@module.Name</strong> | @module.Version | @module.Build</li>
+            }
+        </ul>
+        <div></div>
+        <ul>
+            @foreach (var config in Model.Configuration)
+            {
+                <li>
+                    <strong>@config.Name</strong>
+                    <ul>
+                        @foreach (var setting in config.Settings)
+                        {
+                            <li><u>@setting.Key</u> @setting.Value</li>
+                        }
+                    </ul>
+                </li>
+            }
+        </ul>
+    </header>
+    <footer>
+        Carnegie Mellon University - Software Engineering Institute &copy; @DateTime.Now.Year
+    </footer>
+</body>
+</html>
+

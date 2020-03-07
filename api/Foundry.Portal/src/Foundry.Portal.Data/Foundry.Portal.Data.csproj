@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyVersion>1.4.0.0</AssemblyVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</SourceRevisionId>
+    <Version>1.4.0</Version>
+    <RepositoryUrl>https://code.sei.cmu.edu/bitbucket/projects/CWD/repos/sketch.market/browse/src/Sketch.Market.Data</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Authors>Hunter Daley, Jeff Mattson, Robert Kemerer, Jeff Hamed</Authors>
+    <Company>CWD</Company>
+    <PackageReleaseNotes>https://wiki-int.sei.cmu.edu/confluence/display/CWDR/Release+Notes+%7C+Sketch+Market</PackageReleaseNotes>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Cmu.Sei.Cwd.Stack.Data" Version="1.1.0" />
+    <PackageReference Include="Cmu.Sei.Cwd.Stack.Patterns.Repository" Version="1.0.0" />
+    <PackageReference Include="IdentityModel" Version="3.10.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.2" />
+  </ItemGroup>
+</Project>

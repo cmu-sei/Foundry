@@ -1,0 +1,104 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<h3 *ngIf="group && group.id" class="pt-4 pb-4">Edit Group</h3>
+<h3 *ngIf="group && !group.id" class="pt-4 pb-4">Create A New Group</h3>
+<div *ngIf="error" class="alert alert-warning" role="alert">
+    {{error}}
+</div>
+<div class="group-card card-dark p-3">
+    <form *ngIf="group" (ngSubmit)="onSubmit()" #groupForm="ngForm">
+        <mat-form-field class="w-100 pb-3">
+            <input matInput required name="name" [(ngModel)]="group.name" placeholder="Name" minlength="4"
+                maxlength="70">
+            <mat-hint align="end">name length <span *ngIf="group.name">{{group.name.length}}</span><span
+                    *ngIf="!group.name">0</span> / 70</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="w-100 pb-3">
+            <mat-label>Parent</mat-label>
+            <mat-select name="parentId" [(ngModel)]="group.parentId" (ngModelChange)="onParentChange($event)">
+                <mat-option>--No Parent--</mat-option>
+                <mat-option *ngFor="let g of groups" [value]="g.id">
+                    {{g.name}}
+                </mat-option>
+            </mat-select>
+            <mat-hint *ngIf="parentRequestMsg" align="start" class="text-success">{{parentRequestMsg}}</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="w-100 pb-3">
+            <textarea matInput required placeholder="Description" name="description" [(ngModel)]="group.description"
+                rows="5" minlength="4" maxlength="512">
+                        </textarea>
+            <mat-hint align="start">This field is visible
+                only on the group detail page.</mat-hint>
+
+            <mat-hint align="end">description length <span
+                    *ngIf="group.description">{{group.description.length}}</span><span
+                    *ngIf="!group.description">0</span> / 512</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="w-100 pb-3">
+            <textarea matInput placeholder="Summary" name="summary" [(ngModel)]="group.summary" rows="3" minlength="4"
+                maxlength="256">
+            </textarea>
+            <mat-hint align="start"> Enter a short summary description that
+                will be displayed on group summary cards. </mat-hint>
+            <mat-hint align="end">summary length <span *ngIf="group.summary">{{group.summary.length}}</span><span
+                    *ngIf="!group.summary">0</span> / 256</mat-hint>
+        </mat-form-field>
+        <div class="row pt-4 pb-3">
+            <div class="col-md-8">
+                <mat-form-field required class="w-100">
+                    <input matInput placeholder="Poster Image Url" name="logoUrl" [(ngModel)]="group.logoUrl" ngModel
+                        [ngModelOptions]="{updateOn: 'blur'}" required>
+                    <mat-hint>Select an image to use as a poster image</mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="col-md-4 text-center" *ngIf="group.logoUrl">
+                <img style="width:150px" src="{{group.logoUrl}}">
+                <button class="btn btn-link" (click)="group.logoUrl = null">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="col-md-4 text-center pt-4" *ngIf="!group.logoUrl">
+                <button type="button" mat-button color="primary" (click)="openImageBrowser()">
+                    Add an Image
+                </button>
+            </div>
+        </div>
+        <hr class="divider">
+        <div class="row pt-3">
+            <div class="col-auto">
+                <div class="form-group">
+                    <button type="submit" mat-raised-button class="btn-w-md" color="warn">
+                        Submit
+                    </button>
+                    <button type="button" mat-raised-button class="btn-w-md ml-2" (click)="goBack()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+            <div class="col-auto ml-auto">
+                <app-confirm-delete *ngIf="group.id" label="Delete Group" prompt="Are you sure you?"
+                    (onDelete)="delete()"></app-confirm-delete>
+            </div>
+        </div>
+        <p *ngIf="formErrors.name"><span class="text-danger"><i class="fa fa-exclamation-triangle"
+                    aria-hidden="true"></i>
+                {{ formErrors.name }}</span></p>
+        <p *ngIf="formErrors.description"><span class="text-danger"><i class="fa fa-exclamation-triangle"
+                    aria-hidden="true"></i>
+                {{ formErrors.description }}</span></p>
+        <p *ngIf="formErrors.logoUrl"><span class="text-danger"><i class="fa fa-exclamation-triangle"
+                    aria-hidden="true"></i>
+                {{ formErrors.logoUrl }}</span></p>
+    </form>
+</div>
+

@@ -1,0 +1,74 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+
+<nav class="navbar fixed-top navbar-expand-lg">
+    <a class="navbar-brand" [routerLink]="['/home']">{{appName}}</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['/order']">All Orders</a>
+        </li>
+        </ul>
+        <!-- <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form> -->
+
+        <ul class="navbar-nav my-2 my-lg-0">
+            <li class="nav-item" *ngIf="count > 0">
+                <a class="nav-link" routerLinkActive="active" [routerLink]="['/order']"><span class="counter">{{ count }} Pending Order{{ count == 1 ? '' : 's' }}</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLink]="['/order/add']"><i class="far fa-plus-square"></i> Order</a>
+            </li>
+            <li *ngIf="profile" class="nav-item">
+                <div class="dropdown">
+                    <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user"></i> {{profile.name}}
+                    </button>
+                    <div class="dropdown-menu" id="user-dropdown" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" (click)="logout()">Logout</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container-fluid app-main theme-dark">
+    <div class="row flex-xl-nowrap">
+        <div class="col-sm-12 body-content">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+<section class="app-footer">
+    <div class="container-fluid">
+        <span class="float-left">
+            <img class="unitmark" src="/images/Software_Engineering_Institute_Unitmark_Gray.png" alt="SEI" height="40">
+        </span>
+    </div>
+</section>
+
+<div *ngIf="showExpiring || showExpired" class="overlay">
+    <div class="vcenter">
+        <h1 *ngIf="showExpiring && !showExpired">Still here?</h1>
+        <button *ngIf="showExpiring" class="btn btn-default btn-lg" (click)="continue()">Continue</button>
+        <h1 *ngIf="showExpired">Session expired.</h1>
+        <button *ngIf="showExpired" class="btn btn-default btn-lg" (click)="logout()">Home</button>
+    </div>
+</div>
+

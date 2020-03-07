@@ -1,0 +1,79 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+  <div class="row pb-2 pt-3">
+    <div class="col">
+      <h3>Import</h3>
+    </div>
+  </div>
+  <mat-card *ngIf="pagedResult">
+      <pager [pagedResult]="pagedResult" [dataFilter]="dataFilter" (onPageChanged)="search()" (onPageSizeChanged)="reset()" (onSearch)="search()"></pager>
+      <!--<div class="row">
+          <div class="col">
+              <mat-form-field>
+                  <mat-select placeholder="Add To Bucket" [(ngModel)]="selectedBucketId" name="selectedBucketId" matTooltip="Add To Bucket" [disabled]="selected.length == 0">
+                      <mat-option *ngFor="let bucket of buckets" [value]="bucket.id">{{bucket.name}}</mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
+      </div>-->
+      <table class="table">
+          <colgroup>
+              <col />
+              <col style="width: 25%" />
+          </colgroup>
+          <thead>
+              <tr>
+                  <th colspan="8">
+                      <small class="text-danger">
+                          {{ (selected.length == 0 ? 'No selection made' : 'Selected ' + selected.length + ' content') }}
+                      </small>
+                  </th>
+              </tr>
+          </thead>
+          <thead>
+              <tr>
+                  <th><input type="checkbox" value="all" [disabled]="working" (change)="onAllChange('all', $event)" [checked]="all" /></th>
+                  <th>Name</th>
+                  <th>Path</th>
+                  <th>Bucket</th>
+                  <th>
+                      <button mat-icon-button [disabled]="selected.length == 0" color="warn" (click)="importAll()"><mat-icon aria-label="Import">refresh</mat-icon></button>
+                  </th>
+              </tr>
+          </thead>
+          <tbody *ngIf="files">
+              <tr *ngFor="let file of files">
+                  <td><input [disabled]="working || file.isImported || file.bucketId == 0" type="checkbox" value="{{file.path}}" (change)="onChange(file, $event)" [checked]="selected.includes(file)" /></td>
+                  <td>{{file.name }}</td>
+                  <td>{{file.path }}</td>
+                  <td>
+                      <mat-form-field>
+                          <mat-select placeholder="Add To Bucket" [(ngModel)]="file.bucketId" name="bucketId" matTooltip="Files To Show" [disabled]="file.isImported">
+                              <mat-option *ngFor="let bucket of buckets" [value]="bucket.id">{{bucket.name}}</mat-option>
+                          </mat-select>
+                      </mat-form-field>
+                  </td>
+                  <td>
+                      <button mat-icon-button [disabled]="file.isImported" (click)="import(file)">
+                          <mat-icon>{{ file.isImported ? 'check' : 'refresh' }}</mat-icon>
+                      </button>
+                  </td>
+              </tr>
+          </tbody>
+          <tfoot *ngIf="files.length == 0">
+              <tr>
+                  <td colspan="5">No Files Found To Import!</td>
+              </tr>
+          </tfoot>
+      </table>
+  </mat-card>

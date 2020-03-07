@@ -1,0 +1,51 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+
+<table mat-table [dataSource]="groupRequests" class="mat-elevation-z8">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Group</th>
+    <td mat-cell *matCellDef="let request">
+        <a [routerLink]="['/detail', request.childGroupId, request.childGroupSlug]">
+          {{request.childGroupName}}
+        </a>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef> Request Date </th>
+    <td mat-cell *matCellDef="let request"> {{request.created | date:'mediumDate'}} </td>
+  </ng-container>
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef> Status </th>
+    <td mat-cell *matCellDef="let request">
+        <span *ngIf="request.status === 'Pending'" class="badge badge-primary">Group Request Pending</span>
+        <span *ngIf="request.status === 'Approved'" class="badge badge-success">Group Request Approved</span>
+        <span *ngIf="request.status === 'Denied'" class="badge badge-danger">Group Request Denied</span>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <td mat-cell *matCellDef="let request">
+      <ng-container *ngIf="request.status === 'Pending'">
+          <button matTooltip="Approve" color="warn" mat-icon-button (click)="updateGroupRequest(request, 1)">
+              <mat-icon>thumb_up</mat-icon>
+          </button>
+          <button *ngIf="request.status === 'Pending'" matTooltip="Deny" color="primary" mat-icon-button (click)="updateGroupRequest(request, 2)">
+            <mat-icon>thumb_down</mat-icon>
+        </button>
+      </ng-container>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+

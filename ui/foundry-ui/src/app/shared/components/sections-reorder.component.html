@@ -1,0 +1,50 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="text-muted">Drag Sections and Content using the <i class="fa fa-bars"></i> icon.</div>
+        <hr />
+        <ul [dragula]="'drag-section'" [dragulaOptions]="sectionOptions" [dragulaModel]='sections' class="sections">
+            <li *ngFor="let section of sections; let s = index" class="drag-section">
+                <i class="fa fa-bars handle-section"></i>
+                <input type="text" [(ngModel)]="section.name" placeholder="Section Name" />
+                <button class="btn btn-danger btn-sm float-right" type="button">
+                    <i class="fa fa-remove" (click)="removeSection(s)"></i>
+                </button>
+                <hr />
+                <ul [dragula]='"drag-content"' [dragulaOptions]="contentOptions" [dragulaModel]='section.contents' class="contents">
+                    <li *ngIf="section.contents.length == 0" class="drag-content"><span class="text-muted">This section has no content.</span></li>
+                    <li *ngFor='let content of section.contents; let c = index' class="drag-content">
+                        <i class="fa fa-bars handle-content"></i> {{ content.name }}
+                        <button class="btn btn-danger btn-sm float-right" type="button">
+                            <i class="fa fa-remove" (click)="removeContent(section, c)"></i>
+                        </button>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="col-lg-6">
+        <div class="text-muted">Add a new section by entering the name below and clicking <button class="btn btn-success btn-sm" type="button"><i class="fa fa-plus"></i></button>.</div>
+        <hr />
+        <ul class="sections">
+            <li class="drag-section new-section">
+                <input [(ngModel)]="name" placeholder="Name of the new section...">
+                <button [disabled]="name == ''" class="btn btn-success btn-sm float-right" (click)="addSection()" type="button">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+

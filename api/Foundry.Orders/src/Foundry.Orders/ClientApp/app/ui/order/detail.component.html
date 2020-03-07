@@ -1,0 +1,291 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div class="row mt-3 mb-3">
+    <div class="col">
+        <p class="page-title">Order Details</p>
+    </div>
+    <div class="col">
+        <!-- <order-create-pdf [order]="order"></order-create-pdf> -->
+    </div>
+</div>
+
+<div *ngIf="profile">
+    <div *ngIf="order" class="box box-default">
+        <div class="box-body">
+            <div class="row">
+                <div class="col">
+                    <h4>Order #000{{order.id}} <small *ngIf="order.isPrivate">Private</small><span class="{{orderStatusLabel()}}">{{order.status}}</span></h4>
+                    <strong>Submitted: {{ order.created | date: 'short' }}</strong>
+
+                    <div *ngIf="profile.isAdministrator">
+                        <mat-form-field class="w-40">
+                            <mat-select placeholder="Set Status" [(ngModel)]="order.status" name="orderStatus" (change)="setStatus(i, order.id, order.status)">
+                                <mat-option value="Draft">Draft</mat-option>
+                                <mat-option value="Submitted">Submitted</mat-option>
+                                <mat-option value="InProgress">In Progress</mat-option>
+                                <mat-option value="NeedsInformation">Needs Information</mat-option>
+                                <mat-option value="Complete">Complete</mat-option>
+                                <mat-option value="Closed">Closed</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col text-center" *ngIf="profile">
+                    <span class="float-right">
+                        <div *ngIf="profile.isAdministrator">
+                            <h5>Design Tools</h5>
+                            <ul class="list-inline">
+                                <li class="list-inline-item" *ngIf="topoMojoUrl">
+                                    <a [href]="topoMojoUrl" target="_blank">TopoMojo</a>
+                                </li>
+                                <li class="list-inline-item" *ngIf="cartographerUrl">
+                                    <a [href]="cartographerUrl" target="_blank">Cartographer</a>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                        <div *ngIf="profile.id == order.createdById">
+                            <button [routerLink]="['/order', 'edit', order.id]" mat-raised-button color="primary">Edit</button>
+                            <button (click)="deleteOrder()" mat-raised-button color="warn">Delete</button>
+                        </div>
+
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="order" class="box box-default">
+        <div class="box-body">
+            <h5 class="detail-title">Define Request</h5>
+            <div class="row">
+                <div class="col">
+                    <p class="detail-sub-title">Request:</p>
+
+                    <ul class="list-unstyled pl-4">
+                        <li>{{order.requestor}}</li>
+                        <li>{{order.branchName}}</li>
+                        <li>{{order.rankName}}</li>
+                        <li *ngIf="order.unit"><strong>Unit/Team Number: </strong>{{order.unit}}</li>
+                        <li><strong>Email: </strong>{{order.email}}</li>
+                        <li>{{order.phone}}</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <p *ngIf="order.audienceName" class="detail-sub-title">Audience:</p>
+                    <ul class="list-unstyled pl-4">
+                        <li>{{order.audienceName}}</li>
+                        <li *ngIf="order.audienceItems.length && order.audienceId == 1"><strong>Units/Teams:</strong></li>
+                        <li *ngIf="order.audienceId == 2 && order.audienceItemOther">
+                            <strong>Roles: </strong>{{order.audienceItemOther}}
+                        </li>
+                        <span class="badge badge-light mr-1" *ngFor="let audienceItem of order.audienceItems;">{{ audienceItem.name }}</span>
+                        <li *ngIf="order.due"><strong>Requested Due Date: </strong>{{order.due | date: 'MM/dd/yyyy'}}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h5 class="detail-title">Define Content</h5>
+            <div class="row">
+                <div class="col">
+                    <p class="detail-sub-title">Content:</p>
+                    <ul class="list-unstyled pl-4">
+                        <li *ngIf="order.contentType"><strong>Content Type: </strong>{{order.contentType}}</li>
+                        <li *ngIf="order.trainingDescription">
+                            <p><strong>Training Description:</strong></p>
+                            <p>{{order.trainingDescription}}</p>
+                        </li>
+                        <li *ngIf="order.objectives">
+                            <p><strong>Learning Objectives:</strong></p>
+                            <p>{{order.objectives}}</p>
+                        </li>
+                        <li>
+                            <span *ngIf="order.eventStart"><strong>Start Date: </strong> {{order.eventStart}} </span>
+                            <span *ngIf="order.eventEnd"><strong>End Date: </strong>{{order.eventEnd}}</span>
+                        </li>
+                        <li *ngIf="order.duration">
+                            <strong>Event Duration: </strong> {{order.duration}} {{order.durationType}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <p class="detail-sub-title">Preparation:</p>
+                    <ul class="list-unstyled pl-4">
+                        <li *ngIf="order.prerequisites">
+                            <p><strong>Prerequisites:</strong></p>
+                            <p>{{order.prerequisites}}</p>
+                        </li>
+                    </ul>
+                    <p class="detail-sub-title">Assessment:</p>
+                    <ul class="list-unstyled pl-4">
+                        <li *ngIf="order.assessmentTypes.length">
+                            <p><strong>Assessment Types:</strong></p>
+                            <p *ngFor="let type of order.assessmentTypes">{{type.name}}</p>
+                        </li>
+                        <li *ngIf="order.successIndicators">
+                            <p><strong>Success Indicators:</strong></p>
+                            <p>{{order.successIndicators}}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <h5 class="detail-title">Terrain</h5>
+            <div class="row">
+                <div class="col">
+                    <p class="detail-sub-title">Terrain Details:</p>
+                    <ul class="list-unstyled pl-4" *ngIf="order.operatingSystemTypes">
+                        <li>
+                            <p><strong>Operating Systems:</strong></p>
+                            <p *ngFor="let operatingSystemType of order.operatingSystemTypes">
+                                {{operatingSystemType.name}}<span *ngIf="operatingSystemType.name == 'Other'">: {{order.operatingSystemOther}}</span>
+                            </p>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled pl-4" *ngIf="order.services">
+                        <li>
+                            <p><strong>Desired Services:</strong></p>
+                            <p *ngFor="let service of order.services">
+                                {{service.name}}<span *ngIf="service.name == 'Other'">: {{order.serviceOther}}</span>
+                            </p>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled pl-4" *ngIf="order.securityTools">
+                        <li>
+                            <p><strong>Desired Tools:</strong></p>
+                            <p *ngFor="let securityTool of order.securityTools">
+                                {{securityTool.name}}<span *ngIf="securityTool.name == 'Other'">: {{order.securityToolOther}}</span>
+                            </p>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled pl-4">
+                        <li>
+                            <p><strong>Desired Simulators:</strong></p>
+                            <div *ngIf="order.simulators">
+                                <p *ngFor="let simulator of order.simulators">
+                                    {{simulator.name}}<span *ngIf="simulator.name == 'Other'">: {{order.simulatorOther}}</span>
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled pl-4">
+                        <li>
+                            <p><strong>Malicious Terrain:</strong></p>
+                            <div *ngIf="order.terrains">
+                                <p *ngFor="let terrain of order.terrains">
+                                    {{terrain.name}}<span *ngIf="terrain.name == 'Other'">: {{order.terrainOther}}</span>
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <div *ngIf="order.files">
+                        <p class="detail-sub-title">Supporting Files:</p>
+                        <ul class="list-unstyled pl-4">
+                            <li *ngFor="let file of order.files"><a href="{{file.url}}" target="_blank">{{file.name}}</a></li>
+                        </ul>
+                    </div>
+                    <div *ngIf="order.networkDiagramUrl">
+                        <p class="detail-sub-title">
+                            Network Diagram:
+                            <a href="{{order.networkDiagramUrl}}" target="_blank">download</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="detail-title">Scenario</h5>
+            <div class="row">
+                <div class="col">
+                    <p class="detail-sub-title">Desired Scenario:</p>
+                    <p *ngIf="order.classificationName"><strong>Classification Level: </strong>{{order.classificationName}}</p>
+                    <p *ngIf="order.classificationOther"><strong>Classification Level: </strong>{{order.classificationOther}}</p>
+                    <span *ngIf="order.theater">
+                        <p class="detail-sub-title">Theater/Command/Area of Responsibility:</p>
+                        <p>{{order.theater}}</p>
+                    </span>
+                    <span *ngIf="order.storyline">
+                        <p class="detail-sub-title">Geopolitical Situation / Storyline:</p>
+                        <p>{{order.storyline}}</p>
+                    </span>
+                    <span *ngIf="order.missionProcedures">
+                        <p class="detail-sub-title">Mission CONOPS:</p>
+                        <p>{{order.missionProcedures}}</p>
+                    </span>
+                    <ul class="list-unstyled pl-4">
+                        <li *ngIf="order.threats.length">
+                            <p><strong>Threat Actors / Adversary:</strong></p>
+                            <p *ngFor="let type of order.threats">{{type.name}}</p>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled pl-4">
+                        <li *ngIf="order.supports.length">
+                            <p><strong>Exercise Support:</strong></p>
+                            <p *ngFor="let type of order.supports">{{type.name}}</p>
+                        </li>
+                    </ul>
+                    <span *ngIf="order.cyberThreats">
+                        <p class="detail-sub-title">MSEL Input/Cyber Threats:</p>
+                        <p>{{order.cyberThreats}}</p>
+                    </span>
+                </div>
+                <div class="col">
+                    <p class="detail-sub-title">Intel Integration:</p>
+                    <p><strong>Embedded with Team?</strong> {{order.isEmbeddedTeam}}</p>
+                    <ul class="list-unstyled pl-4">
+                        <li *ngIf="order.supports.length">
+                            <p><strong>Intel Types:</strong></p>
+                            <p *ngFor="let type of order.embeddedTeams">{{type.name}}</p>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled pl-4">
+                        <li *ngIf="order.assessmentTypes.length">
+                            <p><strong>Assessment Methods:</strong></p>
+                            <p *ngFor="let type of order.assessmentTypes">{{type.name}}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box box-default">
+        <div class="box-body">
+            <div *ngFor="let comment of comments; let i = index">
+                <div>
+                    {{ comment.title}}
+                    <p>
+                        {{ comment.message }}
+                    </p>
+                    - {{ comment.createdByName }} <small>({{comment.created | date:'short'}})</small>
+                </div>
+                <hr />
+            </div>
+            <div>
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Title" [(ngModel)]="title" name="title" required maxlength="70">
+                </mat-form-field>
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Message" [(ngModel)]="message" name="message" required maxlength="500">
+                </mat-form-field>
+                <hr />
+                <div class="alert alert-danger text-center w-25" *ngIf="commentError">
+                    {{ commentError }}
+                </div>
+                <button mat-raised-button color="primary" (click)="addComment()">Add Comment</button>
+            </div>
+        </div>
+    </div>
+</div>
+

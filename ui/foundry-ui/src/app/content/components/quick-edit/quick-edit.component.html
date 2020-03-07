@@ -1,0 +1,74 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<mat-progress-spinner *ngIf="!content" style="margin:0 auto;" color="primary" mode="indeterminate"></mat-progress-spinner>
+<form *ngIf="content" (ngSubmit)="onSubmit(contentForm)" #contentForm="ngForm">
+    <div class="form-group" style="padding-bottom: 10px;">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="Name" required name="name" [(ngModel)]="content.name" minlength="4" maxlength="70">
+            <mat-hint *ngIf="formErrors.name" align="start"><span class="text-danger">{{ formErrors.name }}</span></mat-hint>
+            <mat-hint align="end"><span *ngIf="content.name">{{content.name.length}}</span><span *ngIf="!content.name">0</span> / 70</mat-hint>
+        </mat-form-field>
+    </div>
+    <div class="divider divider-dashed divider-lg pull-in"></div>
+    <div class="form-group row">
+            <div class="col-md-8">
+                <label class="form-label">Poster Image</label>
+                <div><mat-hint>Select an image from below or enter url</mat-hint></div>
+                <mat-form-field class="full-width hidden">
+                    <input matInput placeholder="Poster Image Url" name="logoUrl" [(ngModel)]="content.logoUrl" required>
+                </mat-form-field>
+                <mat-hint align="start">Optimal dimension is 570 X 300</mat-hint>
+
+            </div>
+            <div class="col-md-4 text-right" *ngIf="content.logoUrl">
+                <img style="height:75px" src="{{ content.logoUrl }}">
+                <button class="btn btn-link" (click)="content.logoUrl = null">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <image-crop  prompt="Browse to upload" (onUploaded)="logoUrlComplete($event)"></image-crop>
+    </div>
+    <div class="divider divider-dashed divider-lg pull-in"></div>
+    <div class="form-group row">
+            <div class="col-md-4" *ngIf="isPowerUser">
+                <mat-slide-toggle [(ngModel)]="content.isRecommended" name="isRecommended">Recommended</mat-slide-toggle>
+                <div>
+                    <mat-hint align="end">Recommended content has priority on the dashboard.</mat-hint>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <mat-slide-toggle [(ngModel)]="content.isDisabled" name="isDisabled">Disabled</mat-slide-toggle>
+                <div>
+                    <mat-hint align="end">Disabled content is only shown to users with permission.</mat-hint>
+                </div>
+            </div>
+
+            <div class="col-md-4" *ngIf="isPowerUser">
+                <mat-slide-toggle [(ngModel)]="content.isFeatured" name="isFeatured">Featured</mat-slide-toggle>
+                <div>
+                    <mat-hint align="end">Featured content is displayed in the dashboard carousel.</mat-hint>
+                </div>
+            </div>
+    </div>
+    <div mat-dialog-actions>
+        <button type="button" mat-raised-button (click)="onNoClick()">Cancel</button>
+        <button type="submit" mat-raised-button color="accent" [disabled]="!contentForm.form.valid">Submit <i *ngIf="submitSpin" class="fa fa-refresh fa-spin fa-fw fa-2x"></i></button>
+        <button type="button" mat-raised-button color="primary" (click)="navigateToEdit(content)" >Edit More Fields<i *ngIf="submitSpin"></i></button>
+    </div>
+</form>
+<div class="pt-4">
+    <p *ngIf="errorMsg"><span class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ errorMsg }}</span></p>
+    <p *ngIf="formErrors.name"><span class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ formErrors.name }}</span></p>
+    <p *ngIf="formErrors.logoUrl"><span class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ formErrors.logoUrl }}</span></p>
+</div>
+

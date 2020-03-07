@@ -1,0 +1,59 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div *ngIf="viewMode == 'list'" class="row list-item p-4" [ngClass]="{ 'disabled': profile.isDisabled, 'even' : index % 2 == 0, 'odd' : index % 2 == 1, 'first': index == 0 }">
+  <div class="col title-col">
+    <a [routerLink]="['/profile', profile.id, profile.slug]">{{ profile.name }}</a>
+  </div>
+  <div class="col">
+    <span class="badge badge-success mr-1">{{profile.playlistCount}} Playlists</span>
+    <span class="badge badge-info">{{profile.membershipCount}} Groups</span>
+  </div>
+  <div class="col text-right">
+    <span class="card-button float-right" *ngFor="let button of buttons">
+      <a *ngIf="button.type == 'Link'" matTooltip="{{ button.text }}" [href]="button.value" target="_blank" class="btn btn-icon btn-icon-round btn-floating btn-secondary"><i class="material-icons mdi-sm">{{ button.style }}</i></a>
+      <button *ngIf="button.type == 'Click'" matTooltip="{{ button.text }}" (click)="this[button.value]()" class="btn btn-icon btn-icon-round btn-floating btn-info"><i class="material-icons mdi-sm">{{ button.style }}</i></button>
+    </span>
+    <i class="fa fa-superpowers mr-2" *ngIf="profile.isAdministrator" matTooltip="Administrator"></i>
+    <i class="fa fa-shield" *ngIf="profile.isPowerUser" matTooltip="Power User"></i>
+  </div>
+</div>
+<div *ngIf="viewMode == 'tile'">
+  <div class="card card-white" [ngClass]="{ 'disabled': profile.isDisabled }">
+    <div class="card-content">
+      <div class="media pb-3">
+        <img class="rounded mr-3" [src]="profileInfo?.avatar || defaultImage()" style="height: 90px; width: 90px">
+        <div class="media-body profile-name">
+          <h5 class="mt-0" [routerLink]="[ '/profile', profile.id, profile.slug]">
+            {{ profile.name }}
+          </h5>
+          <img class="rounded mr-1" [src]="profileInfo?.organizationLogo || defaultImage()" style="max-height: 50px; max-width: 50px" />
+          <img class="rounded" [src]="profileInfo?.organizationUnitLogo || defaultImage()" style="max-height: 50px; max-width: 50px" />
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="row">
+        <div class="col-auto mr-auto">
+          <ul class="list-inline">
+            <li class="list-inline-item">Playlists: <strong>{{profile.playlistCount}}</strong></li>
+            <li class="list-inline-item">Groups: <strong>{{profile.membershipCount}}</strong></li>
+          </ul>
+        </div>
+        <div class="col-auto">
+          <i class="fa fa-superpowers mr-2" *ngIf="profile.isAdministrator" matTooltip="Administrator"></i>
+          <i class="fa fa-shield" *ngIf="profile.isPowerUser" matTooltip="Power User"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

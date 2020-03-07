@@ -1,0 +1,248 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<section class="container-fluid with-maxwidth chapter">
+  <div *ngIf="displayLRSData == true">
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h4>Most Viewed</h4>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="box box-default table-box mdl-shadow--2dp">
+        <table class="mdl-data-table">
+          <colgroup><col style="width: 10%" /><col style="width: 35%" /></colgroup>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th class="mdl-data-table__cell--non-numeric">Content Name</th>
+              <th class="mdl-data-table__cell--non-numeric">Views</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="contentLaunches != null">
+            <tr *ngFor="let content of contentLaunches; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td class="mdl-data-table__cell--non-numeric"><a [routerLink]="['/content', content.contentGlobalId, content.name]">{{ content.name }}</a></td>
+              <td class="mdl-data-table__cell--non-numeric">{{content.count}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p *ngIf="contentLaunchesCount == 0" class="text-center p-4">There is no data available for the most viewed content. Check back soon!</p>
+      </div>
+    </mat-expansion-panel>
+  </div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h4>Top Content</h4>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="box box-default table-box mdl-shadow--2dp">
+      <table class="mdl-data-table" *ngIf="contents != null">
+        <colgroup><col style="width: 10%" /><col style="width: 35%" /></colgroup>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th class="mdl-data-table__cell--non-numeric">Name</th>
+            <th class="mdl-data-table__cell--non-numeric">Rating</th>
+            <th class="mdl-data-table__cell--non-numeric">Difficulty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let content of contents.results; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td class="mdl-data-table__cell--non-numeric"><a [routerLink]="['/content', content.id, content.slug]">{{ content.name }}</a></td>
+            <td class="mdl-data-table__cell--non-numeric">
+              <ratings-display [average]="content.rating.average" [total]="content.rating.total"></ratings-display>
+            </td>
+            <td class="mdl-data-table__cell--non-numeric">
+              <difficulty-display [average]="content.difficulty.average" [total]="content.difficulty.total"></difficulty-display>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="contents?.total == 0" class="text-center p-4">There is currently no top rated content. Check back soon!</p>
+    </div>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h4>Top Playlists</h4>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="box box-default table-box mdl-shadow--2dp">
+      <table class="mdl-data-table" *ngIf="playlists != null">
+        <colgroup><col style="width: 10%" /><col style="width: 35%" /></colgroup>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th class="mdl-data-table__cell--non-numeric">Name</th>
+            <th class="mdl-data-table__cell--non-numeric">Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let playlist of playlists.results; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td class="mdl-data-table__cell--non-numeric"><a [routerLink]="['/playlist', playlist.id, playlist.slug]">{{ playlist.name }}</a></td>
+            <td class="mdl-data-table__cell--non-numeric">
+              <ratings-display [average]="playlist.rating.average" [total]="playlist.rating.total"></ratings-display>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="playlists?.total == 0" class="text-center p-4">There are no top playlists. Check back soon!</p>
+    </div>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h4>Top Contributors</h4>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="box box-default table-box mdl-shadow--2dp">
+      <table class="mdl-data-table" *ngIf="contributors != null">
+        <colgroup><col style="width: 10%" /><col style="width: 35%" /></colgroup>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th class="mdl-data-table__cell--non-numeric">Name</th>
+            <th class="mdl-data-table__cell--non-numeric">Contributions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let contributor of contributors.results; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td class="mdl-data-table__cell--non-numeric"><a [routerLink]="['/profile', contributor.id, contributor.slug]">{{ contributor.name }}</a></td>
+            <td class="mdl-data-table__cell--non-numeric">{{ contributor.contributionCount + (contributor.contributionCount == 1 ? ' contribution' : ' contributions' ) }} </td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="contributors?.total == 0" class="text-center p-4">There are no top contributors. Check back soon!</p>
+    </div>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h4>Top Sponsors</h4>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="box box-default table-box mdl-shadow--2dp">
+      <table class="mdl-data-table" *ngIf="sponsors != null">
+        <colgroup><col style="width: 10%" /><col style="width: 35%" /></colgroup>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th class="mdl-data-table__cell--non-numeric">Name</th>
+            <th class="mdl-data-table__cell--non-numeric">Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let sponsor of sponsors.results; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td class="mdl-data-table__cell--non-numeric"><a [routerLink]="['/group', sponsor.id]">{{ sponsor.name }}</a></td>
+            <td class="mdl-data-table__cell--non-numeric">
+              <ratings-display [average]="sponsor.rating.average" [total]="sponsor.rating.total"></ratings-display>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="sponsors?.total == 0" class="text-center p-4">There are no top sponsors. Check back soon!</p>
+    </div>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h4>Top Authors</h4>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="box box-default table-box mdl-shadow--2dp">
+      <table class="mdl-data-table" *ngIf="authors != null">
+        <colgroup><col style="width: 10%" /><col style="width: 35%" /></colgroup>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th class="mdl-data-table__cell--non-numeric">Name</th>
+            <th class="mdl-data-table__cell--non-numeric">Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let author of authors.results; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td class="mdl-data-table__cell--non-numeric"><a [routerLink]="['/profile', author.id, 'author.slug']">{{ author.name }}</a></td>
+            <td class="mdl-data-table__cell--non-numeric">
+              <ratings-display [average]="author.rating.average" [total]="author.rating.total"></ratings-display>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="authors?.total == 0" class="text-center p-4">There are no top authors. Check back soon!</p>
+    </div>
+  </mat-expansion-panel>
+  <div *ngIf="displaySTEPLeaderboardData == true">
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h4>Top Challenges</h4>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div *ngIf="exerciseMessage.length > 0">{{exerciseMessage}}</div>
+      <div *ngIf="exercises?.length > 0">
+        <div *ngFor="let exercise of exercises; let i = index">
+          <div *ngIf="exercise.AssessmentName != null">
+            <h5>Assessment: {{exercise.AssessmentName}}</h5>
+            <div class="box box-default table-box mdl-shadow--2dp">
+              <table class="mdl-data-table">
+                <colgroup><col style="width: 10%" /><col style="width: 30%" /><col style="width: 30%" /><col style="width: 30%" /></colgroup>
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th class="mdl-data-table__cell--non-numeric">Service</th>
+                    <th class="mdl-data-table__cell--non-numeric">Unit</th>
+                    <th class="mdl-data-table__cell--non-numeric">Name</th>
+                    <th class="mdl-data-table__cell--non-numeric">Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let leader of exercise.LeaderValues; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td><img *ngIf="hasProfile(leader.OAuthId)" class="float-md-left" [src]="getProfile(leader.OAuthId).organizationLogo" /></td>
+                    <td><img *ngIf="hasProfile(leader.OAuthId)" class="float-md-left" [src]="getProfile(leader.OAuthId).organizationUnitLogo" /></td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                      <img *ngIf="hasProfile(leader.OAuthId)" class="float-md-left mr-2" [src]="getProfile(leader.OAuthId).avatar" />
+                      {{ leader.profile?.name || leader.UserName }}
+                    </td>
+                    <td class="mdl-data-table__cell--non-numeric">{{ leader.UserScore }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="exerciseMessage.length == 0" class="box box-default table-box mdl-shadow--2dp">
+        <table *ngIf="exercises == null || exercises?.length == 0 || exerciseResultTotal == 0" class="mdl-data-table">
+          <colgroup><col style="width: 10%" /><col style="width: 30%" /><col style="width: 30%" /><col style="width: 30%" /></colgroup>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th class="mdl-data-table__cell--non-numeric">Service</th>
+              <th class="mdl-data-table__cell--non-numeric">Name</th>
+              <th class="mdl-data-table__cell--non-numeric">Score</th>
+            </tr>
+          </thead>
+        </table>
+        <p *ngIf="exercises == null || exercises?.length == 0 || exerciseResultTotal == 0" class="text-center p-4">There are currently no Performance Based Assessment leaderboard results. Check back soon!</p>
+      </div>
+    </mat-expansion-panel>
+  </div>
+</section>
+

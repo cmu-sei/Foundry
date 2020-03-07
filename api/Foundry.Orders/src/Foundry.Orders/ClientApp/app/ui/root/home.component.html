@@ -1,0 +1,76 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<h3 class="pt-3 pb-3">{{ title }}</h3>
+<!--<div class="alert alert-primary text-center">
+    Order fulfillment contingent on organizational sponsorship. Please contact <a href="mailto:cyberforce-support@sei.cmu.edu">cyberforce-support@sei.cmu.edu</a> for more information.
+</div>-->
+<div class="alert alert-primary text-center">
+    Content order requests submitted through CyberForce provide US Cyber Command with training requirements from operational units. Order fulfillment is contingent on sponsorship from the requestor's organization or command.
+</div>
+<div *ngIf="collections">
+    <div *ngFor="let collection of collections; let i = index">
+        <div class="box box-default" *ngIf="collection && collection.orders.length > 0">
+            <div class="box-body">
+                <h5 class="detail-title">{{ collection.text }}</h5>
+                <mat-table #table [dataSource]="collection.orders">
+                    <ng-container matColumnDef="order">
+                        <mat-header-cell *matHeaderCellDef>Order</mat-header-cell>
+                        <mat-cell *matCellDef="let order"><a [routerLink]="['/order', order.id]">#000{{ order.id }}</a></mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="created">
+                        <mat-header-cell *matHeaderCellDef>Submitted</mat-header-cell>
+                        <mat-cell *matCellDef="let order">{{ order.created | date: 'short' }}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="isPrivate">
+                        <mat-header-cell *matHeaderCellDef>Private</mat-header-cell>
+                        <mat-cell *matCellDef="let order"></mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="branchName">
+                        <mat-header-cell *matHeaderCellDef>Branch</mat-header-cell>
+                        <mat-cell *matCellDef="let order"><a *ngIf="order.branchId" [routerLink]="['/branch', order.branchId]">{{order.branchName}}</a></mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="rankName">
+                        <mat-header-cell *matHeaderCellDef>Rank</mat-header-cell>
+                        <mat-cell *matCellDef="let order">{{ order.rankName }}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="unit">
+                        <mat-header-cell *matHeaderCellDef>Unit</mat-header-cell>
+                        <mat-cell *matCellDef="let order">{{ order.unit }}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="orderStatus">
+                        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                        <mat-cell *matCellDef="let order">
+                            <mat-select *ngIf="profile.isAdministrator" placeholder="Set Status" [(ngModel)]="order.status" name="orderStatus" (change)="setStatus(i, order.id, order.status)">
+                                <mat-option value="Draft">Draft</mat-option>
+                                <mat-option value="Submitted">Submitted</mat-option>
+                                <mat-option value="InProgress">In Progress</mat-option>
+                                <mat-option value="NeedsInformation">Needs Information</mat-option>
+                                <mat-option value="Complete">Complete</mat-option>
+                                <mat-option value="Closed">Closed</mat-option>
+                            </mat-select>
+                            <div *ngIf="!profile.isAdministrator">{{ order.status }}</div>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="commentCount">
+                        <mat-header-cell *matHeaderCellDef class="text-right">Comments</mat-header-cell>
+                        <mat-cell *matCellDef="let order" class="text-right">{{ order.commentCount }}</mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: columns;"></mat-row>
+                </mat-table>
+                <!--<mat-paginator #paginator [pageSize]="10" [length]="collection.result.total * pageSize" [pageSizeOptions]="[5, 10, 20]" [hidePageSize]="collection.result.total <= 1" [showFirstLastButtons]="collection.result.total > 1">
+                </mat-paginator>-->
+            </div>
+        </div>
+    </div>
+</div>

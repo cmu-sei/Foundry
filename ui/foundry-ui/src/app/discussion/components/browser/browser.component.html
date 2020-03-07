@@ -1,0 +1,68 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+
+<div *ngIf="discussions.length > 0">
+    <hr/>
+    <h4>Comments
+        <small *ngIf="comments.length > 1" class="pull-right">[
+            <a (click)="sortScore()" class="">Score</a> |
+            <a style="margin-left:5px" (click)="sortDate()">Date</a> ]
+        </small>
+    </h4>
+
+    <div *ngIf="discussions.length > 0" class="row" style="padding-bottom:20px;">
+        <div class="col-sm-12">
+            <form (ngSubmit)="addComment(commentForm.value)" #commentForm="ngForm">
+                <textarea class="form-control" name="newCommentText" [(ngModel)]="newCommentText" placeholder="Add a comment..."></textarea>
+                <input type="submit" class="btn btn-danger pull-right" value="Submit" />
+            </form>
+        </div>
+    </div>
+    <div *ngIf="showComments">
+        <div *ngFor="let comment of comments">
+            <div class="row">
+                <div class="col-md-1 text-center">
+                    <span class="label label-default">{{ comment.votes }}</span>
+                </div>
+                <div class="col-md-2 text-center">
+                    <ul class="list-unstyled rating">
+                        <li (click)="upvote(comment)">
+                            <span class="btn btn-default btn-lg extra-padding"><i class="fa fa-thumbs-o-up"></i></span>
+                            <span *ngIf="comment.authorVote == 1"><i class="fa fa-check" aria-hidden="true"></i></span>
+                        </li>
+                        <li (click)="downvote(comment)">
+                            <span class="btn btn-default btn-lg extra-padding"><i class="fa fa-thumbs-o-down"></i></span>
+                            <span *ngIf="comment.authorVote == -1"><i class="fa fa-check" aria-hidden="true"></i></span>
+                        </li>
+                    </ul>
+                    <!--<button class="btn btn-link" [disabled]="!comment.canVote" (click)="downvote(comment)"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                        <span class="label label-default">{{comment.votes}}</span>
+                    <button class="btn btn-link" [disabled]="!comment.canVote" (click)="upvote(comment)"><i class="fa fa-plus" aria-hidden="true"></i></button>-->
+                </div>
+                <div class="col-md-9">
+                    <blockquote>
+                        <div [innerHtml]="comment.text"></div>
+                        <small>{{comment.author}} <span class="label">{{comment.whenCreated}}</span></small>
+                    </blockquote>
+                </div>
+            </div>
+            <hr/>
+        </div>
+    </div>
+</div>
+
+<!--<div *ngIf="!showComments">
+    <p >No comments...</p>
+</div>
+<p [hidden]="comments != 0">No comments...</p>-->
+

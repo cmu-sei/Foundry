@@ -1,0 +1,3084 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "v1",
+        "title": "Sketch Core API",
+        "description": "API documentation and interaction for Sketch Core API"
+    },
+    "basePath": "/",
+    "paths": {
+        "/api/Channel/List": {
+            "get": {
+                "tags": [
+                    "Channel"
+                ],
+                "operationId": "ApiChannelListGet",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Channel"
+                ],
+                "operationId": "ApiChannelListPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Channel/Load/{id}": {
+            "get": {
+                "tags": [
+                    "Channel"
+                ],
+                "operationId": "ApiChannelLoadByIdGet",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Channel/Add": {
+            "post": {
+                "tags": [
+                    "Channel"
+                ],
+                "operationId": "ApiChannelAddPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Channel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Channel/Update": {
+            "post": {
+                "tags": [
+                    "Channel"
+                ],
+                "operationId": "ApiChannelUpdatePost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Channel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Channel/Delete/{id}": {
+            "post": {
+                "tags": [
+                    "Channel"
+                ],
+                "operationId": "ApiChannelDeleteByIdPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "format": "int32",
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Channel/Subscribers": {
+            "get": {
+                "tags": [
+                    "Channel"
+                ],
+                "operationId": "ApiChannelSubscribersGet",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Channel"
+                ],
+                "operationId": "ApiChannelSubscribersPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Channel/Subscribe/{id}": {
+            "post": {
+                "tags": [
+                    "Channel"
+                ],
+                "operationId": "ApiChannelSubscribeByIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Channel/Admit": {
+            "post": {
+                "tags": [
+                    "Channel"
+                ],
+                "operationId": "ApiChannelAdmitPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "subscriber",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Subscriber"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Channel/Deny": {
+            "post": {
+                "tags": [
+                    "Channel"
+                ],
+                "operationId": "ApiChannelDenyPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "subscriber",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Subscriber"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Content/List": {
+            "post": {
+                "tags": [
+                    "Content"
+                ],
+                "operationId": "ApiContentListPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Content/ListSubscribed": {
+            "post": {
+                "tags": [
+                    "Content"
+                ],
+                "operationId": "ApiContentListSubscribedPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Content/Load/{id}": {
+            "get": {
+                "tags": [
+                    "Content"
+                ],
+                "operationId": "ApiContentLoadByIdGet",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Content/LoadEditDetail/{id}": {
+            "get": {
+                "tags": [
+                    "Content"
+                ],
+                "operationId": "ApiContentLoadEditDetailByIdGet",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Content/Save": {
+            "post": {
+                "tags": [
+                    "Content"
+                ],
+                "operationId": "ApiContentSavePost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "content",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Content"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Content/SaveSummary": {
+            "post": {
+                "tags": [
+                    "Content"
+                ],
+                "operationId": "ApiContentSaveSummaryPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "content",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Content"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Content/Launch/{id}": {
+            "get": {
+                "tags": [
+                    "Content"
+                ],
+                "operationId": "ApiContentLaunchByIdGet",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Content/Delete/{id}": {
+            "post": {
+                "tags": [
+                    "Content"
+                ],
+                "operationId": "ApiContentDeleteByIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Content/SaveModule/{id}": {
+            "post": {
+                "tags": [
+                    "Content"
+                ],
+                "operationId": "ApiContentSaveModuleByIdPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "contentIds",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "format": "int32",
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Content/Tag/{id}": {
+            "post": {
+                "tags": [
+                    "Content"
+                ],
+                "operationId": "ApiContentTagByIdPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "tagIds",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "format": "int32",
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Content/Rate": {
+            "post": {
+                "tags": [
+                    "Content"
+                ],
+                "operationId": "ApiContentRatePost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "rating",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/RatingModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Content/UpVote/{id}": {
+            "post": {
+                "tags": [
+                    "Content"
+                ],
+                "operationId": "ApiContentUpVoteByIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Content/DownVote/{id}": {
+            "post": {
+                "tags": [
+                    "Content"
+                ],
+                "operationId": "ApiContentDownVoteByIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Content/GetRating/{id}": {
+            "get": {
+                "tags": [
+                    "Content"
+                ],
+                "operationId": "ApiContentGetRatingByIdGet",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Content/RateLevel": {
+            "post": {
+                "tags": [
+                    "Content"
+                ],
+                "operationId": "ApiContentRateLevelPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "difficultyRating",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/DifficultyRatingModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Discussion/List": {
+            "post": {
+                "tags": [
+                    "Discussion"
+                ],
+                "operationId": "ApiDiscussionListPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Discussion/Load/{id}": {
+            "get": {
+                "tags": [
+                    "Discussion"
+                ],
+                "operationId": "ApiDiscussionLoadByIdGet",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Discussion/Save": {
+            "post": {
+                "tags": [
+                    "Discussion"
+                ],
+                "operationId": "ApiDiscussionSavePost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "discussion",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Discussion"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Discussion/Comments": {
+            "get": {
+                "tags": [
+                    "Discussion"
+                ],
+                "operationId": "ApiDiscussionCommentsGet",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Discussion"
+                ],
+                "operationId": "ApiDiscussionCommentsPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Discussion/Find/{type}/{id}": {
+            "get": {
+                "tags": [
+                    "Discussion"
+                ],
+                "operationId": "ApiDiscussionFindByTypeByIdGet",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Discussion/Comment": {
+            "post": {
+                "tags": [
+                    "Discussion"
+                ],
+                "operationId": "ApiDiscussionCommentPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "comment",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Comment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Discussion/UpVote/{commentId}": {
+            "post": {
+                "tags": [
+                    "Discussion"
+                ],
+                "operationId": "ApiDiscussionUpVoteByCommentIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "commentId",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Discussion/DownVote/{commentId}": {
+            "post": {
+                "tags": [
+                    "Discussion"
+                ],
+                "operationId": "ApiDiscussionDownVoteByCommentIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "commentId",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Discussion/Delete/{id}": {
+            "post": {
+                "tags": [
+                    "Discussion"
+                ],
+                "operationId": "ApiDiscussionDeleteByIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Group/List": {
+            "get": {
+                "tags": [
+                    "Group"
+                ],
+                "operationId": "ApiGroupListGet",
+                "consumes": [],
+                "produces": [],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Group"
+                ],
+                "operationId": "ApiGroupListPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Group/Load/{id}": {
+            "get": {
+                "tags": [
+                    "Group"
+                ],
+                "operationId": "ApiGroupLoadByIdGet",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Group/Save": {
+            "post": {
+                "tags": [
+                    "Group"
+                ],
+                "operationId": "ApiGroupSavePost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "Group",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Group"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Group/Delete/{id}": {
+            "post": {
+                "tags": [
+                    "Group"
+                ],
+                "operationId": "ApiGroupDeleteByIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Group/Members": {
+            "get": {
+                "tags": [
+                    "Group"
+                ],
+                "operationId": "ApiGroupMembersGet",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Group"
+                ],
+                "operationId": "ApiGroupMembersPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Group/Join/{id}": {
+            "post": {
+                "tags": [
+                    "Group"
+                ],
+                "operationId": "ApiGroupJoinByIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Group/Admit": {
+            "post": {
+                "tags": [
+                    "Group"
+                ],
+                "operationId": "ApiGroupAdmitPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "member",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Member"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Group/Deny": {
+            "post": {
+                "tags": [
+                    "Group"
+                ],
+                "operationId": "ApiGroupDenyPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "member",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Member"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Playlist/List/{id}": {
+            "get": {
+                "tags": [
+                    "Playlist"
+                ],
+                "operationId": "ApiPlaylistListByIdGet",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Playlist/Save": {
+            "post": {
+                "tags": [
+                    "Playlist"
+                ],
+                "operationId": "ApiPlaylistSavePost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "playlist",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Playlist"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Playlist/Delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Playlist"
+                ],
+                "operationId": "ApiPlaylistDeleteByIdDelete",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Playlist/SetAsDefault": {
+            "post": {
+                "tags": [
+                    "Playlist"
+                ],
+                "operationId": "ApiPlaylistSetAsDefaultPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "playlist",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Playlist"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Playlist/Add/{id}": {
+            "post": {
+                "tags": [
+                    "Playlist"
+                ],
+                "operationId": "ApiPlaylistAddByIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Playlist/Organize/{id}": {
+            "post": {
+                "tags": [
+                    "Playlist"
+                ],
+                "operationId": "ApiPlaylistOrganizeByIdPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "contentIds",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "format": "int32",
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Profile/List": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "operationId": "ApiProfileListPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Profile/Load/{id}": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "operationId": "ApiProfileLoadByIdGet",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Profile/Save": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "operationId": "ApiProfileSavePost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "Profile",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Profile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Profile/Delete/{id}": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "operationId": "ApiProfileDeleteByIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Profile/Subscriptions/{id}": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "operationId": "ApiProfileSubscriptionsByIdGet",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Profile/Subscriptions": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "operationId": "ApiProfileSubscriptionsPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Profile/Subscribe/{id}": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "operationId": "ApiProfileSubscribeByIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Profile/Unsubscribe/{id}": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "operationId": "ApiProfileUnsubscribeByIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Profile/Memberships/{id}": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "operationId": "ApiProfileMembershipsByIdGet",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Profile/Memberships": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "operationId": "ApiProfileMembershipsPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Profile/Playlists/{id}": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "operationId": "ApiProfilePlaylistsByIdGet",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Profile/Playlists": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "operationId": "ApiProfilePlaylistsPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/SearchResult[Playlist]"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/Provider/List": {
+            "get": {
+                "tags": [
+                    "Provider"
+                ],
+                "operationId": "ApiProviderListGet",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Provider"
+                ],
+                "operationId": "ApiProviderListPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Provider/LoadAsync/{id}": {
+            "get": {
+                "tags": [
+                    "Provider"
+                ],
+                "operationId": "ApiProviderLoadAsyncByIdGet",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Provider/SaveAsync": {
+            "post": {
+                "tags": [
+                    "Provider"
+                ],
+                "operationId": "ApiProviderSaveAsyncPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "provider",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Provider"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Provider/Agents": {
+            "get": {
+                "tags": [
+                    "Provider"
+                ],
+                "operationId": "ApiProviderAgentsGet",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Provider"
+                ],
+                "operationId": "ApiProviderAgentsPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Provider/AddAgent/{id}": {
+            "post": {
+                "tags": [
+                    "Provider"
+                ],
+                "operationId": "ApiProviderAddAgentByIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Provider/ResetAgent/{id}": {
+            "post": {
+                "tags": [
+                    "Provider"
+                ],
+                "operationId": "ApiProviderResetAgentByIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Provider/DeleteAgent/{id}": {
+            "post": {
+                "tags": [
+                    "Provider"
+                ],
+                "operationId": "ApiProviderDeleteAgentByIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Provider/Delete/{id}": {
+            "post": {
+                "tags": [
+                    "Provider"
+                ],
+                "operationId": "ApiProviderDeleteByIdPost",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Tag/List": {
+            "post": {
+                "tags": [
+                    "Tag"
+                ],
+                "operationId": "ApiTagListPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Search"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Tag/Apply/{id}": {
+            "post": {
+                "tags": [
+                    "Tag"
+                ],
+                "operationId": "ApiTagApplyByIdPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "tagIds",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "format": "int32",
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Tag/Add": {
+            "post": {
+                "tags": [
+                    "Tag"
+                ],
+                "operationId": "ApiTagAddPost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "tags",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Tag/Remove": {
+            "post": {
+                "tags": [
+                    "Tag"
+                ],
+                "operationId": "ApiTagRemovePost",
+                "consumes": [
+                    "application/json",
+                    "text/json",
+                    "application/json-patch+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "tags",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "format": "int32",
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Search": {
+            "type": "object",
+            "properties": {
+                "term": {
+                    "type": "string"
+                },
+                "skip": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "take": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "sort": {
+                    "enum": [
+                        "index",
+                        "alphabetic",
+                        "recent",
+                        "popular",
+                        "level"
+                    ],
+                    "type": "string"
+                },
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SearchFilter"
+                    }
+                }
+            }
+        },
+        "SearchFilter": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            }
+        },
+        "Channel": {
+            "type": "object",
+            "properties": {
+                "access": {
+                    "enum": [
+                        "unrestricted",
+                        "restricted",
+                        "archived"
+                    ],
+                    "type": "string"
+                },
+                "providerId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "provider": {
+                    "$ref": "#/definitions/Provider"
+                },
+                "contents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Content"
+                    }
+                },
+                "subscribers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Subscription"
+                    }
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "globalId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "whenCreated": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            }
+        },
+        "Provider": {
+            "type": "object",
+            "properties": {
+                "capability": {
+                    "enum": [
+                        "Tradecraft_consulting",
+                        "Scenario_development",
+                        "Exercise_Management",
+                        "Infrastructure_Management",
+                        "Topology_hosting",
+                        "Training_development"
+                    ],
+                    "type": "string"
+                },
+                "logo": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "groupId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "group": {
+                    "$ref": "#/definitions/Group"
+                },
+                "agents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Agent"
+                    }
+                },
+                "channels": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Channel"
+                    }
+                },
+                "contents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Content"
+                    }
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "globalId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "whenCreated": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            }
+        },
+        "Content": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [
+                        "text",
+                        "video",
+                        "embeddedVideo",
+                        "quiz",
+                        "lab",
+                        "room",
+                        "doc",
+                        "link",
+                        "module",
+                        "wiki",
+                        "page",
+                        "forum",
+                        "chat",
+                        "helpdesk"
+                    ],
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "thumbnail": {
+                    "type": "string"
+                },
+                "settings": {
+                    "type": "string"
+                },
+                "order": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "whoCreated": {
+                    "type": "string"
+                },
+                "channelId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "channel": {
+                    "$ref": "#/definitions/Channel"
+                },
+                "providerId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "provider": {
+                    "$ref": "#/definitions/Provider"
+                },
+                "access": {
+                    "enum": [
+                        "unrestricted",
+                        "restricted",
+                        "archived"
+                    ],
+                    "type": "string"
+                },
+                "achievements": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Achievement"
+                    }
+                },
+                "instances": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ContentInstance"
+                    }
+                },
+                "disabled": {
+                    "type": "boolean"
+                },
+                "levelBytes": {
+                    "format": "byte",
+                    "maxLength": 12,
+                    "type": "string"
+                },
+                "levelAverage": {
+                    "format": "double",
+                    "type": "number",
+                    "readOnly": true
+                },
+                "levelCount": {
+                    "format": "int32",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "ratingBytes": {
+                    "format": "byte",
+                    "maxLength": 20,
+                    "type": "string"
+                },
+                "ratingAverage": {
+                    "format": "double",
+                    "type": "number",
+                    "readOnly": true
+                },
+                "ratingCount": {
+                    "format": "int32",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "globalId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "whenCreated": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            }
+        },
+        "Subscription": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "channelId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "channel": {
+                    "$ref": "#/definitions/Channel"
+                },
+                "profileId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "profile": {
+                    "$ref": "#/definitions/Profile"
+                },
+                "whenCreated": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "permissions": {
+                    "enum": [
+                        "None",
+                        "Browse_Content",
+                        "Launch_Content",
+                        "Public",
+                        "Edit_Content",
+                        "Edit_Channel",
+                        "Manage_Members",
+                        "Owner"
+                    ],
+                    "type": "string"
+                }
+            }
+        },
+        "Group": {
+            "type": "object",
+            "properties": {
+                "logo": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "members": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Membership"
+                    }
+                },
+                "providers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Provider"
+                    }
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "globalId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "whenCreated": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            }
+        },
+        "Agent": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "providerId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "provider": {
+                    "$ref": "#/definitions/Provider"
+                },
+                "profileId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "profile": {
+                    "$ref": "#/definitions/Profile"
+                }
+            }
+        },
+        "Achievement": {
+            "type": "object",
+            "properties": {
+                "rule": {
+                    "type": "string"
+                },
+                "contentId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "score": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "content": {
+                    "$ref": "#/definitions/Content"
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "globalId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "whenCreated": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            }
+        },
+        "ContentInstance": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "globalId": {
+                    "type": "string"
+                },
+                "contentInstanceSummaryId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "contentInstanceSummary": {
+                    "$ref": "#/definitions/ContentInstanceSummary"
+                },
+                "instanceAchievements": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/InstanceAchievement"
+                    }
+                },
+                "whenCreated": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            }
+        },
+        "Profile": {
+            "type": "object",
+            "properties": {
+                "organization": {
+                    "type": "string"
+                },
+                "permissions": {
+                    "enum": [
+                        "None",
+                        "Create_Groups",
+                        "Create_Channels",
+                        "Add_Users",
+                        "Modify_Users",
+                        "Admin"
+                    ],
+                    "type": "string"
+                },
+                "memberships": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Membership"
+                    }
+                },
+                "subscriptions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Subscription"
+                    }
+                },
+                "playlists": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Playlist"
+                    }
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "globalId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "whenCreated": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            }
+        },
+        "Membership": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "groupId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "permissions": {
+                    "enum": [
+                        "None",
+                        "Member",
+                        "Manage_Members",
+                        "Run_Reports",
+                        "Edit",
+                        "Owner"
+                    ],
+                    "type": "string"
+                },
+                "profileId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "group": {
+                    "$ref": "#/definitions/Group"
+                },
+                "profile": {
+                    "$ref": "#/definitions/Profile"
+                }
+            }
+        },
+        "ContentInstanceSummary": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "contentId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "content": {
+                    "$ref": "#/definitions/Content"
+                },
+                "profileId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "profile": {
+                    "$ref": "#/definitions/Profile"
+                },
+                "level": {
+                    "enum": [
+                        "Unrated",
+                        "Basic",
+                        "Intermediate",
+                        "Advanced"
+                    ],
+                    "type": "string"
+                },
+                "rating": {
+                    "enum": [
+                        "Unrated",
+                        "Up",
+                        "Down"
+                    ],
+                    "type": "string"
+                },
+                "instances": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ContentInstance"
+                    }
+                },
+                "whenCreated": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "levelCounts": {
+                    "type": "array",
+                    "items": {
+                        "format": "int32",
+                        "type": "integer"
+                    },
+                    "readOnly": true
+                },
+                "ratingCounts": {
+                    "type": "array",
+                    "items": {
+                        "format": "int32",
+                        "type": "integer"
+                    },
+                    "readOnly": true
+                }
+            }
+        },
+        "InstanceAchievement": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "contentInstanceId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "contentInstance": {
+                    "$ref": "#/definitions/ContentInstance"
+                }
+            }
+        },
+        "Playlist": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "isDefault": {
+                    "type": "boolean"
+                },
+                "profileId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "profile": {
+                    "$ref": "#/definitions/Profile"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PlaylistContent"
+                    }
+                }
+            }
+        },
+        "PlaylistContent": {
+            "type": "object",
+            "properties": {
+                "playlistId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "playlist": {
+                    "$ref": "#/definitions/Playlist"
+                },
+                "contentId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "content": {
+                    "$ref": "#/definitions/Content"
+                },
+                "order": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            }
+        },
+        "Subscriber": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "permissions": {
+                    "enum": [
+                        "None",
+                        "Browse_Content",
+                        "Launch_Content",
+                        "Public",
+                        "Edit_Content",
+                        "Edit_Channel",
+                        "Manage_Members",
+                        "Owner"
+                    ],
+                    "type": "string"
+                },
+                "channelId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "channelName": {
+                    "type": "string"
+                },
+                "profileId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "profileName": {
+                    "type": "string"
+                },
+                "needsApproval": {
+                    "type": "boolean"
+                },
+                "canManage": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "RatingModel": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "rating": {
+                    "enum": [
+                        "Unrated",
+                        "Up",
+                        "Down"
+                    ],
+                    "type": "string"
+                }
+            }
+        },
+        "DifficultyRatingModel": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "difficulty": {
+                    "enum": [
+                        "Unrated",
+                        "Basic",
+                        "Intermediate",
+                        "Advanced"
+                    ],
+                    "type": "string"
+                }
+            }
+        },
+        "Discussion": {
+            "type": "object",
+            "properties": {
+                "entityId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "type": {
+                    "enum": [
+                        "ContentReview"
+                    ],
+                    "type": "string"
+                },
+                "comments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Comment"
+                    }
+                },
+                "status": {
+                    "enum": [
+                        "Open",
+                        "Closed"
+                    ],
+                    "type": "string"
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "globalId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "whenCreated": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            }
+        },
+        "Comment": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "parentId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "parent": {
+                    "$ref": "#/definitions/Comment"
+                },
+                "discussionId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "discussion": {
+                    "$ref": "#/definitions/Discussion"
+                },
+                "profileId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "profile": {
+                    "$ref": "#/definitions/Profile"
+                },
+                "whenCreated": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "votes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CommentVote"
+                    }
+                }
+            }
+        },
+        "CommentVote": {
+            "type": "object",
+            "properties": {
+                "commentId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "profileId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "value": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            }
+        },
+        "Member": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "permissions": {
+                    "enum": [
+                        "None",
+                        "Member",
+                        "Manage_Members",
+                        "Run_Reports",
+                        "Edit",
+                        "Owner"
+                    ],
+                    "type": "string"
+                },
+                "groupId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "groupName": {
+                    "type": "string"
+                },
+                "profileId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "profileName": {
+                    "type": "string"
+                },
+                "needsApproval": {
+                    "type": "boolean"
+                },
+                "canManage": {
+                    "type": "boolean"
+                },
+                "membershipCount": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            }
+        },
+        "SearchResult[Playlist]": {
+            "type": "object",
+            "properties": {
+                "search": {
+                    "$ref": "#/definitions/Search"
+                },
+                "total": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Playlist"
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "oauth2": {
+            "flow": "implicit",
+            "authorizationUrl": "http://localhost:5000/connect/authorize",
+            "scopes": {
+                "sketch-api": "public api access"
+            },
+            "type": "oauth2"
+        }
+    }
+}

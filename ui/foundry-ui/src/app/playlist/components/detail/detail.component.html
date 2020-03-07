@@ -1,0 +1,169 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div *ngIf="errorMsg" class="alert alert-danger">{{errorMsg}}</div>
+<mat-progress-spinner *ngIf="!playlist" style="margin:0 auto;" color="primary" mode="indeterminate">
+</mat-progress-spinner>
+<section *ngIf="playlist" class="page-with-tabs">
+  <div class="card card-white">
+    <div class="card-content">
+      <div class="row">
+        <div class="col-auto">
+          <img height="75" width="auto" [src]="playlist.logoUrl">
+        </div>
+        <div class="col-auto">
+          <h4>{{ playlist.name }}</h4>
+          <div class="row">
+            <div class="col-auto">
+              <a *ngIf="playlist.profileId"
+                 [routerLink]="[ '/profile', playlist.profileId, playlist.profileSlug]"
+                 matTooltip="Playlist Creator">
+                <i class="nav-icon tile-icon material-icons">account_box</i>
+                <span *ngIf="playlist.profileName">{{ playlist.profileName}}</span>
+                <span *ngIf="!playlist.profileName">View Playlist Creator</span>
+              </a>
+            </div>
+            <div class="col-auto" *ngIf="playlist.publisherId">
+              <a *ngIf="playlist.publisherId"
+                 [routerLink]="['/group', playlist.publisherId, playlist.publisherSlug]">
+                <i class="nav-icon tile-icon material-icons">group</i>
+                {{ playlist.publisherName }}
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-auto ml-auto">
+
+          <button *ngIf="playlist.isPublic" type="button" class="btn btn-primary btn-sm mr-3"
+                  (click)="openRatingDialog()">
+            <ratings-display [average]="playlist.rating.average" [total]="playlist.rating.total">
+            </ratings-display>
+          </button>
+          <a *ngIf="playlist.canFollow && !playlist.isFollowing" class="mr-1">
+            <button (click)="follow()" matTooltip="Follow Playlist"
+                    class="btn btn-icon btn-icon-round btn-floating btn-success">
+              <i class="material-icons mdi-sm">add_circle_outline</i>
+            </button>
+          </a>
+          <a *ngIf="playlist.isFollowing" class="mr-1">
+            <button (click)="unFollow()" matTooltip="Forget Playlist"
+                    class="btn btn-icon btn-icon-round btn-floating btn-success">
+              <i class="material-icons mdi-sm">check_circle</i>
+            </button>
+          </a>
+          <a *ngIf="showGameLaunch" class="mr-1">
+            <button [routerLink]="['/playlist/game', playlist.id]" matTooltip="Launch Game"
+                    class="btn btn-icon btn-icon-round btn-floating btn-info">
+              <i class="material-icons mdi-sm">games</i>
+            </button>
+          </a>
+          <a *ngIf="playlist.canEdit" class="mr-1">
+            <button [routerLink]="['/playlist', 'edit', playlist.id]" matTooltip="Edit Playlist"
+                    class="btn btn-icon btn-icon-round btn-floating btn-danger">
+              <i class="material-icons mdi-sm">settings</i>
+            </button>
+          </a>
+          <button (click)="openSelectDialog()" class="btn btn-icon btn-icon-round"
+                  matTooltip="Add To Group">
+            <i class="material-icons">playlist_add_check</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <mat-tab-group [selectedIndex]="0">
+    <mat-tab label="Content">
+      <ng-template matTabContent>
+        <div *ngIf="playlist.sections.length > 0" class="row">
+          <div class="col-sm-12 col-md-4">
+            <div class="card card-white">
+              <div class="card-content sidebar-outer">
+                <div class="sidebar-inner">
+                  <mat-expansion-panel [expanded]="expanded" *ngFor="let s of playlist.sections; let i = index;"
+                                       class="pb-2">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title class="section-title-container">
+                        <span class="badge badge-primary mr-2">{{i + 1}}</span><p>{{ s.name }}</p>
+                      </mat-panel-title>
+                      <!-- <mat-panel-description>
+                          <span>{{s.contents.length }} {{ s.contents.length == 1 ? 'Item' : 'Items' }}</span>
+                      </mat-panel-description> -->
+                    </mat-expansion-panel-header>
+                    <sidebar-list *ngFor="let c of s.contents; let ci = index;" [index]="i" [contentIndex]="ci"
+                                  [content]="c"></sidebar-list>
+                    <i *ngIf="spinner" class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+                  </mat-expansion-panel>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-8">
+            <div class="card card-white">
+              <div class="card-content">
+                <router-outlet></router-outlet>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="playlist.sections?.length == 0" class="card card-white">
+          <div class="card-content">
+            <p>There are no items in this playlist.</p>
+          </div>
+        </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="About">
+      <ng-template matTabContent>
+        <div class="card card-white">
+          <div class="card-content">
+            <div class="row">
+              <div class="col-sm-9">
+                <div class="row" *ngIf="playlist.trailerUrl">
+                  <div class="col-sm-6 mr-auto">
+                    <app-video-player [item]="playlist"></app-video-player>
+                  </div>
+                </div>
+                <h6>Description</h6>
+                <div class="pt-2 pb-2" [innerHtml]="renderedDescription()"></div>
+                <ng-container *ngIf="playlist.copyright">
+                  <div class="divider divider-solid divider-md"></div>
+                  <h6>Copyright Information</h6>
+                  <div class="pt-2 pb-2" [innerHtml]="renderedCopyright()"></div>
+                </ng-container>
+              </div>
+              <div class="col-sm-3">
+                <h6>Info</h6>
+                <p><strong>Added: </strong>{{playlist.created | date: 'MMMM d, y' }}</p>
+                <p>
+                  <span class="badge badge-info mr-1">{{playlist.contentCount}} Items</span>
+                  <span class="badge badge-warning mr-1">
+                    {{playlist.profileFollowerCount}}
+                    Followers
+                  </span>
+                  <span class="badge badge-danger">{{playlist.groupFollowerCount}} Group Followers</span>
+                </p>
+                <div class="divider divider-solid divider-md"></div>
+                <h6>Tags</h6>
+                <span *ngFor="let tag of playlist.tags">
+                  <span class="badge badge-primary text-uppercase link-badge mr-1"
+                        [routerLink]="['/tag']" [queryParams]="{tag: tag.name}">{{ tag.name }}</span>
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</section>
+

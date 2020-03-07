@@ -1,0 +1,277 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div *ngIf="errorMsg" class="alert alert-danger">{{errorMsg}}</div>
+<mat-progress-spinner *ngIf="!profile" style="margin:0 auto;" color="primary" mode="indeterminate">
+</mat-progress-spinner>
+<section *ngIf="profile">
+  <div class="card card-white">
+    <div class="card-content">
+      <div class="row margin-stop-2">
+        <div class="col">
+          <div class="media">
+            <img [src]="profileInfo?.avatar || defaultImage()" class="rounded mr-3"
+              style="max-height: 128px; max-width: 128px;" />
+            <div class="media-body">
+              <div class="row">
+                <div class="col">
+                  <h3 class="mt-0">
+                    {{ profile.name }}
+                  </h3>
+                </div>
+                <div class="col text-right">
+                  <i class="fa fa-superpowers mr-2" *ngIf="profile.isAdministrator" matTooltip="Administrator"></i>
+                  <i class="fa fa-shield" *ngIf="profile.isPowerUser" matTooltip="Power User"></i>
+                </div>
+              </div>
+              <img class="rounded mr-1" [src]="profileInfo?.organizationLogo || defaultImage()" style="height: 64px; max-width: 64px;" />
+              <img class="rounded" [src]="profileInfo?.organizationUnitLogo || defaultImage()" style="max-height: 64px; max-width: 64px;" />
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="d-flex align-items-center h-100">
+            <span class="align-middle">{{profileInfo?.biography}}</span>
+          </div>
+        </div>
+        <div class="col text-right pt-2">
+          <div class="row">
+            <div class="col-md-12">
+              <span *ngIf="profile.canManage">
+                <button (click)="openSelectDialog()" class="ml-1 btn btn-icon btn-icon-round"s
+                  matTooltip="Add Profile To Group">
+                  <i class="material-icons">group_add</i>
+                </button>
+              </span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <a mat-raised-button color="accent" class="btn-sm mb-3 mt-5" *ngIf="isSelf" href="{{ profileUrl }}"
+                target="profile">Edit</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <mat-tab-group>
+    <mat-tab *ngIf="posts" label="{{ isSelf ? 'My Posts' : 'Posts' }}">
+      <post-create [posts]="posts.results" [isHidden]="!isSelf" [placeholderMsg]="'Add New'"></post-create>
+      <div class="divider divider-solid divider-md mb-4"></div>
+      <ul class="posts">
+        <li *ngFor="let p of posts.results; let i = index">
+          <post-tile [posts]="posts.results" [post]="p" [index]="i" [canDelete]="isSelf"></post-tile>
+          <div class="row">
+            <a (click)="p.reply = true;" *ngIf="!p.reply" mat-button color="primary" class="col-auto ml-auto">Reply</a>
+          </div>
+          <ul class="replies">
+            <li class="reply" *ngIf="p.reply">
+              <post-create [parentId]="p.id" [posts]="p.replies" [placeholderMsg]="'Reply'"></post-create>
+            </li>
+            <li class="pb-2" *ngFor="let r of p.replies; let i = index">
+              <post-tile [post]="r" [index]="i" [canDelete]="isSelf"></post-tile>
+          </ul>
+          <div class="pb-4 divider divider-post divider-sm"></div>
+        </li>
+      </ul>
+      <mat-card *ngIf="posts && posts.results.length == 0" class="text-center mt-1 mb-1">
+        {{postText}}
+      </mat-card>
+    </mat-tab>
+    <mat-tab *ngIf="activities" label="{{ isSelf ? 'My Activities' : 'Activities' }}">
+        <section class="tab-container container-fluid">
+          <div class="card card-white">
+            <div class="card-content">
+                <ul class="activities">
+                    <li *ngFor="let activity of activities; let i = index">
+                      <div class="row">
+                        <div class="col-auto">
+                          {{ activity.created | date:'medium' }}
+                        </div>
+                        <div class="col-auto">
+                          <span *ngIf="activity.type == 'logged-in'">
+                            Logged In
+                          </span>
+                          <span *ngIf="activity.type == 'page-view'">
+                            Page View {{ activity.url }}
+                          </span>
+                          <span *ngIf="activity.type == 'view'">
+                            Viewed <a [routerLink]="['/content', activity.contentId, activity.contentSlug]">{{ activity.contentName }}</a>
+                          </span>
+                          <span *ngIf="activity.type == 'launch'">
+                            Launched <a [routerLink]="['/content', activity.contentId, activity.contentSlug]">{{ activity.contentName }}</a>
+                          </span>
+                          <span *ngIf="activity.type == 'search'">
+                            Searched '{{ activity.data }}'
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+            </div>
+          </div>
+        </section>
+    </mat-tab>
+    <mat-tab *ngIf="content" label="{{ isSelf ? 'My Content' : 'Content' }}">
+      <section class="tab-container container-fluid">
+        <div class="card card-white">
+          <div class="card-content">
+            <div class="row">
+              <div class="col-auto sort-span">
+                <div class="btn-group mt-1" role="group" aria-label="View Modes">
+                  <button type="button" matTooltip="Grid View" class="btn" (click)="setContentViewMode('tile')"
+                          [ngClass]="contentViewMode == 'tile' ? 'btn-dark' : 'btn-secondary'">
+                    <i class="fa fa-sliders"></i>
+                  </button>
+                  <button type="button" matTooltip="List View" class="btn" (click)="setContentViewMode('list')"
+                          [ngClass]="contentViewMode == 'list' ? 'btn-dark' : 'btn-secondary'">
+                    <i class="fa fa-list"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-auto ml-auto">
+                <mat-chip-list>
+                  <mat-chip>{{ totalContent }} {{ totalContent == 1 ? 'Item' : 'Items' }}</mat-chip>
+                </mat-chip-list>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <app-browser-scroll (more)="showMoreContent()" [moreFlag]="moreContent" [spinFlag]="spinContent">
+              <div *ngIf="contentViewMode=='tile'">
+                <div class="d-flex flex-wrap align-items-center justify-content-center">
+                  <div class="p-2" *ngFor="let content of content; let i = index" style="width:320px;">
+                    <content-tile [content]="content" [index]="i" [viewMode]="contentViewMode">
+                    </content-tile>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="contentViewMode=='list'">
+                <div *ngFor="let content of content; let i = index">
+                  <content-tile [content]="content" [index]="i" [viewMode]="contentViewMode">
+                  </content-tile>
+                </div>
+              </div>
+              <mat-card *ngIf="content && content.length == 0" class="text-center mt-1 mb-1">
+                {{contentText}}
+              </mat-card>
+            </app-browser-scroll>
+          </div>
+        </div>
+      </section>
+    </mat-tab>
+    <mat-tab *ngIf="playlists" label="{{ isSelf ? 'My Playlists' : 'Playlists' }}">
+      <section class="tab-container container-fluid">
+        <div class="card card-white">
+          <div class="card-content">
+            <div class="row">
+              <div class="col-auto sort-span">
+                <div class="btn-group mt-1" role="group" aria-label="View Modes">
+                  <button type="button" matTooltip="Grid View" class="btn" (click)="setPlaylistViewMode('tile')"
+                          [ngClass]="playlistViewMode == 'tile' ? 'btn-dark' : 'btn-secondary'">
+                    <i class="fa fa-sliders"></i>
+                  </button>
+                  <button type="button" matTooltip="List View" class="btn" (click)="setPlaylistViewMode('list')"
+                          [ngClass]="playlistViewMode == 'list' ? 'btn-dark' : 'btn-secondary'">
+                    <i class="fa fa-list"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-auto ml-auto">
+                <mat-chip-list>
+                  <mat-chip>{{ totalPlaylists }} {{ totalContent == 1 ? 'Item' : 'Items' }}</mat-chip>
+                </mat-chip-list>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <app-browser-scroll (more)="showMorePlaylists()" [moreFlag]="morePlaylists" [spinFlag]="spinPlaylists">
+              <div *ngIf="playlistViewMode=='tile'">
+                <div class="d-flex flex-wrap align-items-center justify-content-center">
+                  <div class="p-2" *ngFor="let playlist of playlists;" style="width:320px;">
+                    <playlist-tile [playlist]="playlist" [viewMode]="playlistViewMode">
+                    </playlist-tile>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="playlistViewMode=='list'">
+                <div *ngFor="let playlist of playlists;">
+                  <playlist-tile [playlist]="playlist" [viewMode]="playlistViewMode">
+                  </playlist-tile>
+                </div>
+              </div>
+              <mat-card *ngIf="playlists && playlists.length == 0" class="text-center mt-1 mb-1">
+                {{playlistText}}
+              </mat-card>
+            </app-browser-scroll>
+          </div>
+        </div>
+      </section>
+    </mat-tab>
+    <mat-tab *ngIf="groups" label="{{ isSelf ? 'My Groups' : 'Groups' }}">
+      <section class="tab-container container-fluid">
+        <div class="card card-white">
+          <div class="card-content">
+            <div class="row">
+              <div class="col-auto sort-span">
+                <div class="btn-group mt-1" role="group" aria-label="View Modes">
+                  <button type="button" matTooltip="Grid View" class="btn" (click)="setGroupViewMode('tile')"
+                          [ngClass]="groupViewMode == 'tile' ? 'btn-dark' : 'btn-secondary'">
+                    <i class="fa fa-sliders"></i>
+                  </button>
+                  <button type="button" matTooltip="List View" class="btn" (click)="setGroupViewMode('list')"
+                          [ngClass]="groupViewMode == 'list' ? 'btn-dark' : 'btn-secondary'">
+                    <i class="fa fa-list"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-auto ml-auto">
+                <mat-chip-list>
+                  <mat-chip>{{ totalGroups }} {{ totalGroups == 1 ? 'Item' : 'Items' }}</mat-chip>
+                </mat-chip-list>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <app-browser-scroll (more)="showMoreGroups()" [moreFlag]="moreGroups" [spinFlag]="spinGroups">
+              <div *ngIf="groupViewMode=='tile'">
+                <div class="d-flex flex-wrap align-items-center justify-content-center">
+                  <div class="p-2" *ngFor="let group of groups;" style="width:320px;">
+                    <group-tile [group]="group" [viewMode]="groupViewMode">
+                    </group-tile>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="groupViewMode=='list'">
+                <div *ngFor="let group of groups;">
+                  <group-tile [group]="group" [viewMode]="groupViewMode">
+                  </group-tile>
+                </div>
+              </div>
+              <mat-card *ngIf="groups && groups.length == 0" class="text-center mt-1 mb-1">
+                {{groupText}}
+              </mat-card>
+            </app-browser-scroll>
+          </div>
+        </div>
+      </section>
+    </mat-tab>
+  </mat-tab-group>
+</section>
+

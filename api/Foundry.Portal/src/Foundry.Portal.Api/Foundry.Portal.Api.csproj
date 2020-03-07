@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</SourceRevisionId>
+    <Version>2.0.0</Version>
+    <Authors>Hunter Daley, Jeff Mattson, Robert Kemerer, Jeff Hamed</Authors>
+    <Company>CWD</Company>
+    <PackageProjectUrl>https://wiki-int.sei.cmu.edu/confluence/display/CWDR/Sketch+Market</PackageProjectUrl>
+    <RepositoryUrl>https://code.sei.cmu.edu/bitbucket/projects/CWD/repos/sketch.market/browse</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>..\..\Foundry.Portal.Api.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="sketch-market.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Cmu.Sei.Cwd.Stack.Data" Version="1.1.0" />
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.6.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Foundry.Portal.Data.PostgreSQL\Foundry.Portal.Data.PostgreSQL.csproj" />
+    <ProjectReference Include="..\Foundry.Portal.Data.Sqlite\Foundry.Portal.Data.Sqlite.csproj" />
+    <ProjectReference Include="..\Foundry.Portal.Data.SqlServer\Foundry.Portal.Data.SqlServer.csproj" />
+    <ProjectReference Include="..\Foundry.Portal.Data\Foundry.Portal.Data.csproj" />
+    <ProjectReference Include="..\Foundry.Portal.Messages.RabbitMQ\Foundry.Portal.RabbitMQ.csproj" />
+    <ProjectReference Include="..\Foundry.Portal\Foundry.Portal.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+</Project>

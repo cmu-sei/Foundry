@@ -1,0 +1,78 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<h4 *ngIf="orderId == 0" class="pt-3 pb-3">Create a New Order</h4>
+<h4 *ngIf="orderId > 0" class="pt-3 pb-3">Order Number: 000{{orderId}}</h4>
+<div class="alert alert-primary text-center">
+    Content order requests submitted through CyberForce provide US Cyber Command with training requirements from operational units. Order fulfillment is contingent on sponsorship from the requestor's organization or command.
+</div>
+<div class="alert alert-warning text-center">
+    All order requests are visible by all users of the system.
+</div>
+<div *ngIf="order" class="box box-default">
+    <div class="box-body">
+        <mat-horizontal-stepper [linear]="isLinear" #stepper="matHorizontalStepper">
+            <mat-step [stepControl]="peopleOrderFormGroup">
+                <div class="pt-4">
+                    <ng-template matStepLabel>Define Request</ng-template>
+                    <order-identify-people [order]="order" #peopleForm></order-identify-people>
+                    <div class="pt-5">
+                        <button mat-raised-button color="primary" (click)="submitPeople(stepper)">Continue</button>
+                    </div>
+                </div>
+            </mat-step>
+
+            <mat-step [stepControl]="trainingContentOrderFormGroup">
+                <div class="pt-4">
+                    <ng-template matStepLabel>Define Content</ng-template>
+                    <order-training-content [order]="order" #trainingForm></order-training-content>
+                    <div class="pt-5">
+                        <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+                        <button mat-raised-button color="primary" matStepperNext (click)="submitTraining()">Continue</button>
+                    </div>
+                </div>
+            </mat-step>
+
+            <mat-step [stepControl]="terrainOrderFormGroup">
+                <div class="pt-4">
+                    <ng-template matStepLabel>Define Terrain</ng-template>
+                    <order-terrain [order]="order" #terrainForm></order-terrain>
+                    <div class="pt-5">
+                        <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+                        <button mat-raised-button color="primary" matStepperNext (click)="submitTerrain()">Continue</button>
+                    </div>
+                </div>
+            </mat-step>
+
+            <mat-step [stepControl]="scenarioOrderFormGroup">
+                <div class="pt-4">
+                    <ng-template matStepLabel>Define Scenario</ng-template>
+                    <order-scenario [order]="order" #scenarioForm></order-scenario>
+                    <div class="pt-5">
+                        <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+                        <button mat-raised-button color="primary" matStepperNext (click)="submitScenario()">Continue</button>
+                    </div>
+                </div>
+            </mat-step>
+            <mat-step [stepControl]="reviewOrderFormGroup">
+                <div class="pt-4">
+                    <ng-template matStepLabel>Review and Submit Order</ng-template>
+                    <order-review [order]="orderDetail" #reviewForm></order-review>
+                    <div class="pt-5">
+                        <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+                        <button mat-raised-button color="accent" (click)="submitOrder()">Submit Order</button>
+                    </div>
+                </div>
+            </mat-step>
+        </mat-horizontal-stepper>
+    </div>
+</div>

@@ -1,0 +1,90 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div *ngIf="viewMode == 'tile'" class="item-card" [ngClass]="{ 'disabled': content.isDisabled }">
+    <div [innerHTML]="getSash(content)"></div>
+    <div [routerLink]="['/content', content.id, content.slug]" class="card__image" [ngStyle]="{'background-image': 'url(' + encodedLogoUrl + ')'}">
+        <i *ngIf="content.logoUrl == null || content.logoUrl == ''" class="material-icons text-white">video_label</i>
+    </div>
+    <div class="card__body card-white">
+        <div class="card__title">
+            <div class="row">
+                <div class="col-sm-12 content-name">
+                    <h4 [routerLink]="['/content', content.id, content.slug]">{{ content.name }} </h4>
+                    <ng-container *ngIf="content.type == 'Event'">
+                            <small *ngIf="!content.start" class="text-muted">Added: {{content.created | date: 'MMM d, y' }}</small>
+                            <small *ngIf="content.start" class="text-muted">Starts {{content.startDate }} - Ends {{content.endDate}}</small>
+                    </ng-container>
+                    <ng-container *ngIf="content.type != 'Event'">
+                            <small class="text-muted">Added: {{content.created | date: 'MMM d, y' }}</small>
+                    </ng-container>
+                    <i *ngIf="content.summary" class="fa fa-info-circle pl-1 summary-hover" [matTooltip]="content.summary"></i>
+                    <div class="card-content">
+                        <button *ngIf="content.canEdit" [routerLink]="['/content', 'edit', content.id]" matTooltip="Edit Content" class="btn btn-icon btn-icon-round btn-danger mr-1"><i class="material-icons mdi-sm">settings</i></button>
+                        <ng-container *ngIf="content.type == 'Event'">
+                                <button *ngIf="!content.isBookmarked" [disabled]="btnDisabled" (click)="addBookmark()" matTooltip="Watch Event" class="btn btn-icon btn-icon-round btn-success mr-1"><i class="material-icons mdi-sm">event_available</i></button>
+                                <button *ngIf="content.isBookmarked" [disabled]="btnDisabled" (click)="removeBookmark()" matTooltip="Stop Watching Event" class="btn btn-icon btn-icon-round btn-success mr-1"><i class="material-icons mdi-sm">event_busy</i></button>
+                        </ng-container>
+                        <ng-container *ngIf="content.type != 'Event'">
+                                <button *ngIf="!content.isBookmarked" [disabled]="btnDisabled" (click)="addBookmark()" matTooltip="Add Bookmark" class="btn btn-icon btn-icon-round btn-success mr-1"><i class="material-icons mdi-sm">bookmark_border</i></button>
+                                <button *ngIf="content.isBookmarked" [disabled]="btnDisabled" (click)="removeBookmark()" matTooltip="Remove Bookmark" class="btn btn-icon btn-icon-round btn-success mr-1"><i class="material-icons mdi-sm">bookmark</i></button>
+                        </ng-container>
+                        <button *ngIf="content.canEdit && content.isFlagged" [routerLink]="['/content', 'edit', content.id]" matTooltip="This has been flagged {{ content.flagCount }} times" class="btn btn-icon btn-icon-round btn-warning"><i class="material-icons mdi-sm">flag</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="divider divider-solid divider-md"></div>
+        <div class="row">
+            <div class="col-xl-6">
+                <ratings-display [average]="content.rating.average" [total]="content.rating.total"></ratings-display>
+            </div>
+            <div class="col-xl-6 text-right">
+                <difficulty-display [average]="content.difficulty.average" [total]="content.difficulty.total"></difficulty-display>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="viewMode == 'list'" class="list-items">
+    <div class="row list-item p-4" [ngClass]="{ 'even' : index % 2 == 0, 'odd' : index % 2 == 1, 'first': index == 0 }">
+        <div class="col-sm-5 title-col">
+            <img class="list-item-thumbnail pr-2" *ngIf="content.logoUrl" [src]="content.logoUrl" />
+            <a class="list-title" [routerLink]="['/content', content.id, content.slug]">{{ content.name }}</a>
+        </div>
+        <div class="col-sm-2 text-center">
+            <ng-container *ngIf="content.type == 'Event'">
+                <small *ngIf="!content.start" class="text-muted">Added: {{content.created | date: 'MMM d, y' }}</small>
+                <small *ngIf="content.start" class="text-muted">Starts {{content.startDate }} - Ends {{content.endDate}}</small>
+            </ng-container>
+            <ng-container *ngIf="content.type != 'Event'">
+                <small class="text-muted">Added: {{content.created | date: 'MMM d, y' }}</small>
+            </ng-container>
+        </div>
+        <div class="col-sm-2 text-center">
+            <ratings-display [average]="content.rating.average" [total]="content.rating.total"></ratings-display>
+            <difficulty-display [average]="content.difficulty.average" [total]="content.difficulty.total"></difficulty-display>
+        </div>
+        <div class="col-sm-3 text-right">
+            <button *ngIf="content.canEdit" [routerLink]="['/content', 'edit', content.id]" matTooltip="Edit Content" class="btn btn-icon btn-icon-round btn-danger mr-1"><i class="material-icons mdi-sm">settings</i></button>
+            <ng-container *ngIf="content.type == 'Event'">
+                    <button *ngIf="!content.isBookmarked" [disabled]="btnDisabled" (click)="addBookmark()" matTooltip="Watch Event" class="btn btn-icon btn-icon-round btn-success mr-1"><i class="material-icons mdi-sm">event_available</i></button>
+                    <button *ngIf="content.isBookmarked" [disabled]="btnDisabled" (click)="removeBookmark()" matTooltip="Stop Watching Event" class="btn btn-icon btn-icon-round btn-success mr-1"><i class="material-icons mdi-sm">event_busy</i></button>
+            </ng-container>
+            <ng-container *ngIf="content.type != 'Event'">
+                    <button *ngIf="!content.isBookmarked" [disabled]="btnDisabled" (click)="addBookmark()" matTooltip="Add Bookmark" class="btn btn-icon btn-icon-round btn-success mr-1"><i class="material-icons mdi-sm">bookmark_border</i></button>
+                    <button *ngIf="content.isBookmarked" [disabled]="btnDisabled" (click)="removeBookmark()" matTooltip="Remove Bookmark" class="btn btn-icon btn-icon-round btn-success mr-1"><i class="material-icons mdi-sm">bookmark</i></button>
+            </ng-container>
+            <button *ngIf="content.canEdit && content.isFlagged" [routerLink]="['/content', 'edit', content.id]" matTooltip="This has been flagged {{ content.flagCount }} times" class="btn btn-icon btn-icon-round btn-warning"><i class="material-icons mdi-sm">flag</i></button>
+        </div>
+    </div>
+</div>
+

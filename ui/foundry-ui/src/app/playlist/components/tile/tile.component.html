@@ -1,0 +1,87 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div *ngIf="viewMode == 'tile'">
+    <div class="item-card">
+            <div [innerHTML]="getSash(playlist)"></div>
+        <div class="card-image" [routerLink]="['/playlist', playlist.id, playlist.slug]" [ngStyle]="{'background-image': 'url(' + encodedLogoUrl + ')'}">
+            <i *ngIf="playlist.logoUrl == null || playlist.logoUrl == ''" class="material-icons text-white">playlist_play</i>
+        </div>
+        <div class="card__body card-white">
+            <div class="card__title">
+                <div class="row">
+                    <div class="col-sm-12 playlist-name">
+                        <h4>
+                            <a *ngIf="playlist.isPublic || playlist.canEdit" [routerLink]="['/playlist', playlist.id, playlist.slug]">{{playlist.name}}</a>
+                            <span *ngIf="!playlist.isPublic && !playlist.canEdit">{{playlist.name}}</span>
+                        </h4>
+                        <div class="card-content">
+                            <button *ngIf="!playlist.isPublic" matTooltip="Private Playlist" class="btn btn-icon btn-icon-round btn-danger mr-1"><i class="material-icons mdi-sm">lock</i></button>
+                            <button *ngIf="playlist.canFollow && !playlist.isFollowing" matTooltip="Follow Playlist" (click)="follow()" class="btn btn-icon btn-icon-round btn-floating btn-success mr-1"><i class="material-icons mdi-sm">add_circle_outline</i></button>
+                            <button *ngIf="playlist.isFollowing" matTooltip="Forget Playlist" (click)="unFollow()" class="btn btn-icon btn-icon-round btn-floating btn-success mr-1"><i class="material-icons mdi-sm">check_circle</i></button>
+                            <button  *ngIf="playlist.canEdit" matTooltip="Edit Playlist" [routerLink]="['/playlist', 'edit', playlist.id]" class="btn btn-icon btn-icon-round btn-floating btn-danger"><i class="material-icons mdi-sm">settings</i></button>
+                            <button  *ngIf="canManageGroup && groupId" matTooltip="Remove From Group" (click)="removeFromGroup()" class="btn btn-icon btn-icon-round btn-floating"><i class="material-icons mdi-sm">clear</i></button>
+                        </div>
+                    </div>
+                </div>
+                <small class="text-muted">{{playlist.created | date: 'MMM d, y' }}</small>
+                <i *ngIf="playlist.summary" class="fa fa-info-circle pl-1 summary-hover" [matTooltip]="playlist.summary"></i>
+                <div class="divider divider-solid divider-md mr-2 ml-2"></div>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <span class="badge badge-secondary">{{ playlist.profileFollowerCount }} {{ playlist.profileFollowerCount == 1 ? 'Follower' : 'Followers' }}</span>
+                    </div>
+                    <div class="col-xl-6 text-right">
+                        <span class="badge badge-secondary">{{ playlist.groupFollowerCount }} {{ playlist.groupFollowerCount == 1 ? 'Group Follower' : 'Group Followers' }}</span>
+                    </div>
+                </div>
+                <div class="divider divider-solid divider-md md mr-2 ml-2"></div>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <ratings-display [average]="playlist.rating.average" [total]="playlist.rating.total"></ratings-display>
+                    </div>
+                    <div class="col-xl-6 text-right">
+                        <span class="badge badge-success">{{playlist.contentCount}} Items</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="viewMode == 'list'" class="list-items">
+    <div class="row list-item p-4" [ngClass]="{ 'even' : index % 2 == 0, 'odd' : index % 2 == 1, 'first': index == 0 }">
+        <div class="col-sm-4 title-col">
+            <img class="list-item-thumbnail pr-2" [src]="playlist.logoUrl" />
+            <a *ngIf="playlist.isPublic || playlist.canEdit" [routerLink]="['/playlist', playlist.id, playlist.slug]">{{ playlist.name }}</a>
+            <span *ngIf="!playlist.isPublic && !playlist.canEdit">{{ playlist.name }}</span>
+        </div>
+
+        <div class="col-sm-3">
+            <mat-chip>{{ playlist.profileFollowerCount }} {{ playlist.profileFollowerCount == 1 ? 'Follower' : 'Followers' }}</mat-chip>
+            <mat-chip>{{ playlist.groupFollowerCount }} {{ playlist.groupFollowerCount == 1 ? 'Group Follower' : 'Group Followers' }}</mat-chip>
+        </div>
+        <div class="col-sm-2">
+            <span class="text-muted">{{playlist.created | date: 'MMMM d, y' }}</span>
+        </div>
+        <div class="col-sm-1">
+            <ratings-display [average]="playlist.rating.average" [total]="playlist.rating.total"></ratings-display>
+        </div>
+        <div class="col-sm-2 text-right">
+            <button *ngIf="!playlist.isPublic" matTooltip="Private Playlist" class="btn btn-icon btn-icon-round btn-floating btn-danger mr-1"><i class="material-icons mdi-sm">lock</i></button>
+            <button *ngIf="playlist.canFollow && !playlist.isFollowing" matTooltip="Follow Playlist" (click)="follow()" class="btn btn-icon btn-icon-round btn-floating btn-success mr-1"><i class="material-icons mdi-sm">add_circle_outline</i></button>
+            <button *ngIf="playlist.isFollowing" matTooltip="Forget Playlist" (click)="unFollow()" class="btn btn-icon btn-icon-round btn-floating btn-success mr-1"><i class="material-icons mdi-sm">check_circle</i></button>
+            <button  *ngIf="playlist.canEdit" matTooltip="Edit Playlist" [routerLink]="['/playlist', 'edit', playlist.id]" class="btn btn-icon btn-icon-round btn-floating btn-danger"><i class="material-icons mdi-sm">settings</i></button>
+            <button  *ngIf="canManageGroup && groupId" matTooltip="Remove From Group" (click)="removeFromGroup()" class="btn btn-icon btn-icon-round btn-floating"><i class="material-icons mdi-sm">clear</i></button>
+        </div>
+    </div>
+</div>
+

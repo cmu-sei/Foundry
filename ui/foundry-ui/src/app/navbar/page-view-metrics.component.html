@@ -1,0 +1,49 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<li ngbDropdown class="nav-item mr-2 d-none d-sm-none d-md-flex" (openChange)="togglePageViewMetrics($event)">
+  <a class="btn btn-link nav-link" id="analyticsDropdown" ngbDropdownToggle>
+    <i class="material-icons">insert_chart</i>
+  </a>
+  <div ngbDropdownMenu aria-labelledby="analyticsDropdown" class="analytics-preview">
+    <div class="row">
+      <div class="col-3 offset-1"><i class="material-icons">show_chart</i></div>
+      <div class="col-8"><strong>Views</strong></div>
+    </div>
+    <div class="row">
+      <div class="col-3 offset-1 text-right">{{ pageViewMetric ? pageViewMetric.total : 0 }}</div>
+      <div class="col-8">Total</div>
+    </div>
+    <div class="row">
+      <div class="col-3 offset-1 text-right">{{ pageViewMetric ? pageViewMetric.totalUnique : 0 }}</div>
+      <div class="col-8">Unique</div>
+    </div>
+    <div>&nbsp;</div>
+    <div class="row">
+      <div class="col-3 offset-1"><i class="material-icons">history</i></div>
+      <div class="col-8"><strong>Entry</strong></div>
+    </div>
+    <div *ngIf="pageViewMetric">
+      <div class="row"
+           *ngFor="let history of histories">
+        <div class="col-3 offset-1 text-right">{{ history.total }}</div>
+        <div class="col-8">
+          <a (click)="navigate(history.url)" class="pr-5">
+            {{ history.url.length > this.max ? (history.url.substring(0, this.max - 3) + '...') : (history.url == '' ? '...' : history.url) }}
+            <span *ngIf="history.url.length > 20">...</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>
+

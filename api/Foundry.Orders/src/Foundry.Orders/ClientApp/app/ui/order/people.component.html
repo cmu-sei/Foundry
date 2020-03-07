@@ -1,0 +1,138 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+
+<form *ngIf="order" #peopleForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="row pt-4">
+        <div class="col">
+            <span class="pb-2">
+                <h4>Requestor</h4>
+                <p class="text-muted"><small>Who is requesting this training?</small></p>
+            </span>
+            <div>
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Requestor's name"
+                           [(ngModel)]="order.requestor"
+                           name="requestor"
+                           [formControl]="requestorFormControl"
+                           [errorStateMatcher]="matcher" required maxlength="70">
+                    <mat-error *ngIf="requestorFormControl.hasError('required')">
+                        Requestor name is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field class="w-75">
+                    <mat-select placeholder="Service Branch" [(ngModel)]="order.branchId" name="branchId" (change)="getBranchText(order.branchId)">
+                        <mat-option [value]=""></mat-option>
+                        <mat-option *ngFor="let branch of branches" [value]="branch.id">
+                            {{ branch.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="selectedBranch == 'Other'">
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Branch Name" [(ngModel)]="order.branchOther" name="branchOther" maxlength="50">
+                </mat-form-field>
+            </div>
+            <div *ngIf="selectedBranch != 'Other'">
+                <mat-form-field class="w-75">
+                    <mat-select placeholder="Rank" [(ngModel)]="order.rankId" name="rankId">
+                        <mat-option [value]=""></mat-option>
+                        <mat-option *ngFor="let rank of ranks" [hidden]="rank.branchId != order.branchId" [value]="rank.id">
+                            {{ rank.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field class="w-75">
+                    <input matInput placeholder="Unit/Team" [(ngModel)]="order.unit" name="unit" maxlength="50">
+                    <mat-hint>i.e. 92 COS, 111 CPT</mat-hint>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field class="w-75">
+                    <input matInput type="email" placeholder="Email"
+                           [(ngModel)]="order.email"
+                           name="email"
+                           [formControl]="emailFormControl"
+                           [errorStateMatcher]="matcher" required maxlength="70">
+                    <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                        Please enter a valid email address
+                    </mat-error>
+                    <mat-error *ngIf="emailFormControl.hasError('required')">
+                        Email is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field class="w-75">
+                    <input matInput type="tel" placeholder="Phone"
+                           [(ngModel)]="order.phone"
+                           name="phone"
+                           [formControl]="phoneFormControl"
+                           maxlength="20">
+                    <mat-error *ngIf="phoneFormControl.hasError('pattern')">
+                        Please enter phone number in the 111-111-1111 format.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col">
+            <span class="pb-2">
+                <h4>Audience</h4>
+                <p class="text-muted"><small>Who is the intended audience?</small></p>
+            </span>
+            <div class=" pb-2">
+                <div>
+                    <mat-form-field class="w-75">
+                        <mat-select placeholder="Training Audience" [(ngModel)]="order.audienceId" name="audienceId" (change)="getAudienceType(order.audienceId)">
+                            <mat-option *ngFor="let audience of audiences" [value]="audience.id">
+                                {{ audience.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="selectedAudience == 'Collective'">
+                    <mat-form-field class="w-75">
+                        <mat-select placeholder="Team Type" [(ngModel)]="order.audienceItems" name="audienceItems" multiple (change)="getAudienceOther(order.audienceItems)">
+                            <mat-option *ngFor="let item of audienceItemsTeams" [value]="item.id">
+                                {{ item.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="selectedAudience == 'Individual'">
+                    <mat-form-field class="w-75">
+                        <input matInput placeholder="Role/Crew Position" [(ngModel)]="order.audienceItemOther" name="audienceItemOther">
+                    </mat-form-field>
+                </div>
+                <div *ngIf="audienceItemOtherVisible == true">
+                    <mat-form-field class="w-75">
+                        <input matInput placeholder="Other Team Type" [(ngModel)]="order.roleCrewPosition" name="roleCrewPosition">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="pb-3">
+                <mat-form-field class="w-75">
+                    <input matInput [matDatepicker]="pickerReadyDate" placeholder="Date Required" [(ngModel)]="order.due" name="due">
+                    <mat-datepicker-toggle matSuffix [for]="pickerReadyDate"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerReadyDate></mat-datepicker>
+                    <mat-hint *ngIf="order.due">How soon do you need this to be ready? Currently:  {{order.due |  date:'MM/dd/yyyy'}}</mat-hint>
+                    <mat-hint *ngIf="!order.due">How soon do you need this to be ready? </mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,334 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<mat-progress-spinner *ngIf="!content" style="margin:0 auto;" color="primary" mode="indeterminate"></mat-progress-spinner>
+<section *ngIf="content" class="page-with-tabs">
+  <div class="callout callout-danger" *ngIf="content.isDisabled">
+    <h4>Disabled</h4>
+    <p>{{ content.name }} has been disabled.</p>
+  </div>
+  <div class="callout callout-warning" *ngIf="content.isFlagged">
+    <h4>Flagged</h4>
+    <p>{{ content.name }} has been flagged {{ content.flagCount }} times.</p>
+    <div *ngFor="let flag of content.flags">
+      <hr />
+      <strong>{{ flag.profileName }} wrote:</strong>
+      <div>{{ flag.comment}}</div>
+    </div>
+  </div>
+  <div class="page-title">
+    <h2>{{ content.id > 0 ? 'Edit' : 'Add' }} {{content.name ? content.name : 'Content'}}</h2>
+  </div>
+  <section class="container-fluid tab-container">
+    <div class="box box-default">
+      <div class="box-body">
+        <form (ngSubmit)="onSubmit(contentForm)" #contentForm="ngForm">
+          <mat-horizontal-stepper #stepper linear>
+            <mat-step [completed]="detailStepCompleted">
+              <ng-template matStepLabel>Details</ng-template>
+              <div class="form-group pt-3 pb-3">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Name" required name="name" [(ngModel)]="content.name" minlength="4"
+                    maxlength="70">
+                  <mat-hint *ngIf="formErrors.name" align="start"></mat-hint>
+                  <mat-hint align="end">name length <span *ngIf="content.name">{{content.name.length}}</span><span
+                      *ngIf="!content.name">0</span> / 70</mat-hint>
+                </mat-form-field>
+                <p *ngIf="formErrors.name" class="text-danger">{{ formErrors.name }}</p>
+              </div>
+              <div class="divider divider-dashed divider-lg pull-in"></div>
+              <div class="form-group row pt-3 pb-3">
+                <div class="col-md-6">
+                  <mat-form-field class="full-width">
+                    <textarea matInput [(ngModel)]="content.description" placeholder="Description" name="description"
+                      rows="20" minlength="4" maxlength="1024" class="form-control" (keyup)="renderDescription()"
+                      required></textarea>
+                    <mat-hint align="start">
+                      Enter plain text or use <a target="_blank" href="https://guides.github.com/features/mastering-markdown/">markdown. </a>This field is visible only on the content detail page.</mat-hint>
+                    <mat-hint align="end">description length
+                      <span *ngIf="content.description">{{content.description.length}}</span>
+                      <span *ngIf="!content.description">0</span> / 1024
+                    </mat-hint>
+                  </mat-form-field>
+                  <p *ngIf="formErrors.description" class="text-danger">{{ formErrors.description }}</p>
+                </div>
+                <div class="col-md-6">
+                  <div class="output" [innerHtml]="renderedDescription"></div>
+                </div>
+              </div>
+              <div class="divider divider-dashed divider-lg pull-in"></div>
+              <div class="form-group row pt-3 pb-3">
+                <div class="col-md-6">
+                  <mat-form-field class="full-width">
+                    <textarea matInput [(ngModel)]="content.copyright" placeholder="Copyright" name="copyright" rows="10"
+                      maxlength="1024" class="form-control" (keyup)="renderCopyright()" minlength="4"></textarea>
+                    <mat-hint align="start">
+                      Enter plain text or use <a target="_blank" href="https://guides.github.com/features/mastering-markdown/">markdown.</a></mat-hint>
+                    <mat-hint align="end">copyright length <span *ngIf="content.copyright">{{content.copyright.length}}</span><span
+                        *ngIf="!content.copyright">0</span> / 1024</mat-hint>
+                  </mat-form-field>
+                  <p *ngIf="formErrors.copyright" class="text-danger">{{ formErrors.copyright }}</p>
+                </div>
+                <div class="col-md-6">
+                  <div class="output" [innerHtml]="renderedCopyright"></div>
+                </div>
+              </div>
+              <div class="divider divider-dashed divider-lg pull-in"></div>
+              <div class="form-group row pt-3 pb-3">
+                <div class="col-md-12">
+                  <mat-form-field class="full-width">
+                    <textarea matInput [(ngModel)]="content.summary" placeholder="Summary" name="summary" rows="3"
+                      maxlength="256" class="form-control"></textarea>
+                    <mat-hint align="start">
+                      Enter a short summary description that will be displayed on content cards and in the featured item carousel on the browser and dashboard pages.</mat-hint>
+                    <mat-hint align="end">summary length <span *ngIf="content.summary">{{content.summary.length}}</span><span
+                        *ngIf="!content.summary">0</span> / 256</mat-hint>
+                  </mat-form-field>
+                  <p *ngIf="formErrors.summary" class="text-danger">{{ formErrors.summary }}</p>
+                </div>
+              </div>
+              <div class="divider divider-dashed divider-lg pull-in"></div>
+              <div class="form-group row pt-3 pb-3">
+                <div class="col-md-12">
+                  <button mat-stroked-button color="primary" type="button" matStepperNext>Next</button>
+                </div>
+              </div>
+            </mat-step>
+            <mat-step [completed]="visibilityStepCompleted">
+              <ng-template matStepLabel>Visibility</ng-template>
+              <div class="form-group row pt-3 pb-3">
+                <div class="col-md-6">
+                  <mat-form-field class="select-width">
+                      <mat-select (selectionChange)="changeGroup($event)" class="full-width" placeholder="Sponsor" [(ngModel)]="content.publisherId"
+                      name="publisherId">
+                    <mat-option [value]="">--no group--</mat-option>
+                    <mat-option *ngFor="let g of groups" [value]="g.id">
+                      {{g.name}}
+                    </mat-option>
+                  </mat-select>
+                    <mat-hint align="start">Did a group sponsor the creation of this content?</mat-hint>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="select-width">
+                    <mat-select class="full-width" placeholder="Type" [(ngModel)]="content.type" name="contentType"
+                      (selectionChange)="checkContentType(content.type)" required>
+                      <mat-option *ngFor="let ct of contentTypes" [value]="ct.value">
+                        {{ct.name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-hint align="start">What type of content is this?</mat-hint>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="divider divider-dashed divider-lg pull-in"></div>
+              <div *ngIf="content.type == 'Event'" class="thumbnail-row form-group row pt-3 pb-3">
+                <div class="col">
+                  <mat-form-field>
+                    <input matInput name="startDate" [(ngModel)]="startDate" [matDatepicker]="startDatePicker"
+                      placeholder="Choose a start date">
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="col">
+                  <mat-form-field>
+                    <input matInput type="time" [(ngModel)]="startTime" name="startTime" placeholder="Choose a start time">
+                  </mat-form-field>
+                </div>
+                <div class="col">
+                  <mat-form-field>
+                    <input matInput name="endDate" [(ngModel)]="endDate" [matDatepicker]="endDatePicker" placeholder="Choose an end date">
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="col">
+                  <mat-form-field>
+                    <input matInput type="time" [(ngModel)]="endTime" name="endTime" placeholder="Choose an end time">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="form-group row pt-3">
+                <div class="col-md-4" *ngIf="isPowerUser">
+                  <mat-slide-toggle [(ngModel)]="content.isRecommended" name="isRecommended">Recommended</mat-slide-toggle>
+                  <div>
+                    <mat-hint align="end">Recommended content has priority on the dashboard.</mat-hint>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <mat-slide-toggle [(ngModel)]="content.isDisabled" name="isDisabled">Disabled</mat-slide-toggle>
+                  <div>
+                    <mat-hint align="end">Disabled content is only shown to users with permission.</mat-hint>
+                  </div>
+                </div>
+                <div class="col-md-4" *ngIf="isPowerUser">
+                  <mat-slide-toggle [(ngModel)]="content.isFeatured" name="isFeatured">Featured</mat-slide-toggle>
+                  <div>
+                    <mat-hint align="end">Featured content is displayed in the dashboard carousel.</mat-hint>
+                  </div>
+                </div>
+              </div>
+              <div class="divider divider-dashed divider-lg pull-in"></div>
+              <div class="form-group row pt-3 pb-3">
+                <div class="col-md-12">
+                  <button class="mr-2" mat-stroked-button color="primary" type="button" matStepperPrevious>Previous</button>
+                  <button mat-stroked-button color="primary" type="button" matStepperNext>Next</button>
+                </div>
+              </div>
+            </mat-step>
+            <mat-step [completed]="assetStepCompleted">
+              <ng-template matStepLabel>Assets</ng-template>
+              <div class="form-group row margin-b-lg pt-3 pb-3">
+                <div class="col-md-8">
+                  <label class="form-label">Poster Image</label>
+                  <div>
+                    <mat-hint>Select an image to use as a poster image</mat-hint>
+                  </div>
+                  <mat-form-field class="full-width hidden">
+                    <input matInput placeholder="Poster Image Url" name="logoUrl" [(ngModel)]="content.logoUrl" ngModel [ngModelOptions]="{updateOn: 'blur'}"
+                      required>
+                  </mat-form-field>
+                  <button type="button" class="mb-5 mt-5 btn btn-primary" (click)="openImageBrowser()">Add an Image
+                    </button>
+                    <p *ngIf="!content.logoUrl"><span class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                      No image selected</span></p>
+                </div>
+                <div class="col-md-4 text-center" *ngIf="content.logoUrl">
+                  <img style="height:150px" src="{{ content.logoUrl }}">
+                  <button class="btn btn-link" (click)="content.logoUrl = null">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                  </button>
+                  <!-- <button class="btn btn-primary" (click)="getRandomLogoUrl()" [disabled]="randomLoading">
+                      Get Random Logo
+                    </button> -->
+                </div>
+              </div>
+              <div class="divider divider-dashed divider-lg pull-in"></div>
+              <div class="form-group row pt-3 pb-3">
+                <div class="col-md-12">
+                  <label class="form-label">Video Trailer</label>
+                  <div>
+                    <mat-hint>Upload a file or enter a url</mat-hint>
+                  </div>
+                  <mat-form-field class="full-width mb-2">
+                    <input matInput placeholder="Video Trailer Url" name="trailerUrl" [(ngModel)]="content.trailerUrl">
+                    <mat-hint>If a .mp4 of .m4v video is added, it will play when loading the content detail page</mat-hint>
+                  </mat-form-field>
+                  <ng-container class="mt-3">
+                    <file-uploader prompt="Browse to upload" (onUploaded)="trailerUrlComplete($event)"></file-uploader>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="divider divider-dashed divider-lg pull-in"></div>
+              <div class="form-group row margin-b-lg pt-3 pb-3">
+                <div class="col-md-12">
+                  <label class="form-label">Content Location</label>
+                  <div>
+                    <mat-hint *ngIf="contentIsFile == true">Upload a file or enter a Url</mat-hint>
+                  </div>
+                  <mat-form-field class="full-width">
+                    <input (blur)="checkUrl(content.url)" matInput placeholder="Content Url" name="url" [(ngModel)]="content.url">
+                    <mat-hint>Make sure to add http:// or https:// prefix</mat-hint>
+                  </mat-form-field>
+                  <div *ngIf="contentIsFile == true" class="mt-3">
+                    <file-uploader prompt="Browse to upload" (onUploaded)="contentUrlComplete($event)"></file-uploader>
+                  </div>
+                </div>
+              </div>
+              <ng-container *ngIf="contentExists && showUrlAlert">
+                <div class="alert alert-dark" role="alert">
+                  <p>This URL exists in the following content items:</p>
+                  <ul>
+                    <li *ngFor="let c of contentExists"><a class="url-link" [routerLink]="['/content', c.id, c.slug]">{{c.name}}</a></li>
+                  </ul>
+                </div>
+              </ng-container>
+              <div class="divider divider-dashed divider-lg pull-in"></div>
+              <div class="form-group pt-3 pb-3">
+                <mat-form-field class="full-width">
+                  <mat-chip-list #tagList>
+                    <mat-chip *ngFor="let tag of nonTypeTags" [selectable]="selectable" [removable]="removable" (removed)="removeTag(tag)">
+                      {{tag}}
+                      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input matInput [formControl]="tagControl" required #tagInput placeholder="Enter Tags..."
+                      [matChipInputFor]="tagList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addTag($event)" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                      <mat-option *ngFor="let tag of filteredTagOptions | async" [value]="tag">
+                        {{ tag }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-chip-list>
+                  <mat-hint>Enter at least one tag. Add multiple tags by seprating words with <strong> commas</strong>
+                    or hit the <strong>enter</strong> key.</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="divider divider-dashed divider-lg pull-in"></div>
+              <div class="form-group pt-3 pb-3">
+                <mat-form-field class="full-width">
+                  <mat-chip-list #niceTagList>
+                    <mat-chip *ngFor="let tag of niceTags" [selectable]="selectable" [removable]="removable" (removed)="removeNiceTag(tag)">
+                      {{tag}}
+                      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input matInput [formControl]="niceTagControl" required #niceTagInput placeholder="Enter NICE Tags..."
+                      [matChipInputFor]="niceTagList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addNiceTag($event)" [matAutocomplete]="autoNice">
+                    <mat-autocomplete #autoNice="matAutocomplete" (optionSelected)="niceSelected($event)">
+                      <mat-option *ngFor="let tag of filteredNiceTagOptions | async" [value]="tag.name">
+                        {{ tag.name }} - {{ tag.description}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-chip-list>
+                  <mat-hint>Add multiple NICE tags by seprating words with <strong> commas</strong>
+                    or hit the <strong>enter</strong> key. NICE framework references found <a href="https://niccs.us-cert.gov/workforce-development/cyber-security-workforce-framework" target="_blank">here.</a></mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="divider divider-dashed divider-lg pull-in"></div>
+              <div class="form-group row pt-3 pb-3">
+                <div class="col-md-12">
+                  <button class="mr" mat-stroked-button color="primary" type="button" matStepperPrevious>Previous</button>
+                </div>
+              </div>
+            </mat-step>
+          </mat-horizontal-stepper>
+          <div class="form-group row pt-3 pb-3">
+            <div class="col">
+              <button type="submit" mat-raised-button color="accent" class="btn-w-md ml-4" [disabled]="!contentForm.form.valid">Submit
+                <i *ngIf="submitSpin" class="fa fa-refresh fa-spin fa-fw fa-2x"></i></button>
+                <button type="button" mat-raised-button class="btn-w-md ml-2" (click)="goBack()">Cancel</button>
+            </div>
+            <div class="col text-right">
+              <confirm-delete *ngIf="content.id > 0" label="Delete Content" prompt="Are you sure you?" (onDelete)="delete()"></confirm-delete>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+          <p *ngIf="errorMsg"><span class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{ errorMsg }}</span></p>
+          <p *ngIf="formErrors.name"><span class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{ formErrors.name }}</span></p>
+          <p *ngIf="formErrors.description"><span class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{ formErrors.description }}</span></p>
+          <p *ngIf="formErrors.logoUrl"><span class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{ formErrors.logoUrl }}</span></p>
+          <p *ngIf="formErrors.type"><span class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{ formErrors.type }}</span></p>
+
+        </form>
+      </div>
+    </div>
+  </section>
+</section>
+

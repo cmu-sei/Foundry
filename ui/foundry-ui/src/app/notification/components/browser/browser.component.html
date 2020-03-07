@@ -1,0 +1,120 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<section class="container-fluid chapter">
+  <div class="box box-default p-4">
+    <h4>Notifications</h4>
+    <div class="">
+      <div class="row data-filter pb-2">
+        <div class="col-lg-3 col-md-12">
+          <mat-form-field appearance="standard">
+            <mat-select [(value)]="dataFilter.sort" placeholder="Sort">
+              <mat-option value="-recent" (click)="sort('-recent')">Newest</mat-option>
+              <mat-option value="recent" (click)="sort('recent')">Oldest</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-3 col-md-12">
+          <mat-form-field appearance="standard">
+            <mat-select [(value)]="dataFilter.filter" placeholder="Filter">
+              <mat-option value="unread" (click)="filter('unread')">Unread</mat-option>
+              <mat-option value="read" (click)="filter('read')">Read</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-3 col-md-12">
+          <mat-form-field appearance="standard">
+            <input matInput placeholder="Search" [(ngModel)]="dataFilter.term" (keyup.enter)="search()">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="row">
+        <div class="col-lg-1">
+          <button type="button" mat-raised-button class="btn-sm btn-block btn-info" [disabled]="working || selected.length == 0" (click)="deleteSelected()" matTooltip="Delete Selected">
+            Delete <i class="fa fa-spinner fa-spin" *ngIf="working"></i>
+          </button>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div *ngIf="result">
+        <div class="table-responsive">
+          <table class="table table-light table-striped">
+            <colgroup>
+              <col style="width: 5%;" />
+              <col style="width: 30%;" />
+              <col style="width: 30%;" />
+              <col style="width: 10%;" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th><input type="checkbox" value="all" [disabled]="working" (change)="onAllChange('all', $event)" [checked]="all" /></th>
+                <th>Subject</th>
+                <th>Body</th>
+                <th>Created</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let n of result.results; let i = index">
+                <td><input [disabled]="working" type="checkbox" value="{{n.id}}" (change)="onChange(n, $event)" [checked]="selected.includes(n)" /></td>
+                <td>
+                  <mat-icon class="mr-2">{{ notificationIcon(n.values) }}</mat-icon>
+                  {{ n.subject }}
+                </td>
+                <td>
+                  <span *ngIf="!n.url">{{n.body}}</span>
+                  <span style="cursor: pointer;" *ngIf="n.url" class="font-weight-bold" (click)="navigate(n)">{{n.body}}</span>
+                </td>
+                <td><span class="text-muted">{{n.created | date: 'short' }}</span></td>
+                <td class="text-right notification-actions">
+                  <button *ngIf="!n.read" [disabled]="spin || working" class="btn btn-success" (click)="markAsRead(n)" matTooltip="Mark as Read"><i class="fa fa-check"></i></button>
+                  <button *ngIf="n.read" [disabled]="spin || working" class="btn btn-warning" (click)="markAsUnread(n)" matTooltip="Mark as Unread"><i class="fa fa-undo"></i></button>
+                  <button *ngIf="!n.deleted" [disabled]="spin || working" class="btn btn-danger" (click)="delete(n)" matTooltip="Delete"><i class="fa fa-times"></i></button>
+                </td>
+              </tr>
+              <tr *ngIf="result && result.results.length == 0 && !spin">
+                <td class="text-center" colspan="5">
+                  There are no notifications matching this search
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-auto mr-auto">
+            <mat-chip-list>
+              <mat-chip>{{ result.total }} {{ result.total == 1 ? 'Result' : 'Results' }}</mat-chip>
+            </mat-chip-list>
+          </div>
+          <div class="col-auto">
+            <mat-form-field>
+              <mat-select placeholder="Records To Show" [(ngModel)]="dataFilter.take" name="take" (selectionChange)="reset()">
+                <mat-option *ngFor="let t of takes" [value]="t">{{ t }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-auto">
+            <mat-chip-list>
+              <mat-chip (click)="action('start')" [disabled]="isDisabled('start')"><i class="fa fa-fast-backward"></i></mat-chip>
+              <mat-chip (click)="action('previous')" [disabled]="isDisabled('previous')"><i class="fa fa-backward"></i></mat-chip>
+              <mat-chip>{{ text }}</mat-chip>
+              <mat-chip (click)="action('next')" [disabled]="isDisabled('next')"><i class="fa fa-forward"></i></mat-chip>
+              <mat-chip (click)="action('end')" [disabled]="isDisabled('end')"><i class="fa fa-fast-forward"></i></mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+      </div>
+      <mat-progress-bar mode="indeterminate" *ngIf="spin"></mat-progress-bar>
+    </div>
+  </div>
+</section>
+

@@ -1,0 +1,103 @@
+/*
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+*/
+
+*, *:before, *:after { box-sizing: border-box; }
+
+.game-toolbar {
+  z-index: 10002;
+  top: 0;
+  left: 0;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.back-btn {
+  color: white;
+}
+
+.board {
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 10001;
+
+  .row {
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+
+    .tile {
+      top: 0;
+      bottom: 0;
+      flex: 1;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-size: 3.5vw;
+      font-family: impact;
+      //color: #fba61d;
+      color: #ddd;
+      background: linear-gradient(to top left, #000088, #0000ff);
+      border: 3px solid #000;
+
+      .question-hint {
+        font-size: 1.5vw;
+        padding-top: 20px;
+      }
+    }
+
+    .tile:hover {
+      cursor: pointer;
+    }
+
+    .title-tile {
+      text-align: center;
+      font-size: 2vw;
+      line-height: 2vw;
+    }
+
+    .question-value {
+      display: block;
+    }
+
+    .question-answer {
+      display: none;
+    }
+
+    .tile.active {
+      border-width: 0;
+      font-size: 4vw;
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      bottom: 0px;
+      right: 0px;
+      z-index: 5;
+
+      .question-value {
+        display: none;
+      }
+
+      .question-answer {
+        display: block;
+      }
+    }
+  }
+}
+

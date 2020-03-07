@@ -1,0 +1,58 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div class="row pb-2 pt-3">
+    <div class="col">
+        <h3>Accounts</h3>
+    </div>
+    <div class="col text-right">
+        <button mat-raised-button color="accent" (click)="openAccountAdd()">
+            <mat-icon class="mr-2" aria-label="Add Account">add</mat-icon>Add Account
+        </button>
+    </div>
+</div>
+<div *ngIf="pagedResult">
+    <pager [pagedResult]="pagedResult" [dataFilter]="dataFilter" (onPageChanged)="search()" (onPageSizeChanged)="reset()" (onSearch)="search()"></pager>
+    <table class="table">
+        <colgroup>
+            <col style="width: 10%" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Name <mat-icon aria-label="Sort" (click)="sort('name')" [ngClass]="getSortClass('name')">{{ getSortIcon('name') }}</mat-icon></th>
+                <th class="text-center">Administrator</th>
+                <th class="text-center">Application</th>
+                <th class="text-center">Upload Owner</th>
+                <th class="text-center">Buckets</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let account of pagedResult.results">
+                <td><a [routerLink]="['/account', account.globalId]">{{ account.name }}</a></td>
+                <td class="text-center">
+                    <mat-icon *ngIf="account.isAdministrator">done_outline</mat-icon>
+                </td>
+                <td class="text-center">
+                    <mat-icon *ngIf="account.isApplication">android</mat-icon>
+                </td>
+                <td class="text-center">
+                    <mat-icon *ngIf="account.isUploadOwner">done_outline</mat-icon>
+                </td>
+                <td class="text-center">{{ account.bucketCount }}</td>
+                <td class="actions">
+                    <mat-icon class="mr-2" aria-label="Manage Account" (click)="openAccountUpdate(account)">edit</mat-icon>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

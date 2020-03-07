@@ -1,0 +1,56 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<div [@slideInOut]="state" class="help-text">
+    <mat-toolbar>
+        <span>
+            <i class="fas fa-info-circle mr-2"></i>
+            Learning Objectives
+        </span>
+        <span class="fill-space"></span>
+        <span (click)="toggleHelpState()"><i class="fas fa-times close-btn"></i></span>
+    </mat-toolbar>
+    <div class="inner-help">
+            <p>A learning objective is a statement that specifies measurable behavior that a trainee should exhibit after instruction[1].  
+                    Writing learning objectives is an important first step in PCTE training content development. This document recommends a formula long used by military trainers: 
+                    each learning objective must include one or more tasks, conditions and standards of behavior.</p>
+                
+                    <ol>
+                        <li>
+                            <strong>Task:</strong> Behavior or action the trainee must exhibit
+                            <small> Examples: analyze malware, identify intrusion vector, exploit router</small> 
+                        </li>
+                        <li>
+                            <strong>Condition:</strong>  Situation under which the action will take place
+                            <small> Examples: using a Cyber Protection Team (CPT) toolkit, during a distributed denial of service (DDoS) attack, given netflow records and packet capture (PCAP) files</small> 
+                        </li>
+                        <li>
+                            <strong>Standard:</strong>  Metrics specifying satisfactory performance
+                            <small> Examples: with 80% accuracy, in 30 minutes, without being observed by blue team</small> 
+                        </li>
+                    </ol>
+                    
+                <p>While not mandatory, it is helpful to identify the intended trainees in the learning objective.  Here are five examples of PCTE training content learning objectives:</p>       
+                <ol>
+                    <li>Following this video lesson, the cyber operator will correctly identify 90% of NMap’s options and select which syntax to use given a written scenario.</li>
+                    <li>Following this demonstration video, the cyber operator will identify the components of a Snort IDS rule and select the correct rule to use for specific attacks with 90% accuracy.</li>
+                    <li>Given a standard CPT toolkit connected to an unknown DoD network, the Mission Protect (MP) squad will discover and enumerate 90% of the cyber key terrain within 60 minutes.</li>
+                    <li>Given a security onion system, a packet capture file and IDS logs, the incident response analyst will identify 90% of all malicious IP addresses and downloaded file types within 60 minutes.</li>
+                    <li>Given a standard CPT toolkit, modeled DODIN key terrain and an emulated DoD Industrial Control System (ICS), the Cyber Threat Emulation (CTE) squad will pivot and penetrate the ICS network, 
+                        compromise the Human Machine Interface (HMI) web server and implant a remote access trojan (RAT) within 60 minutes.</li>
+                </ol>
+                
+                <p>Remember, learning objectives must be clearly stated, achievable and measurable.</p>
+                <small>[1] <a href="https://energy.gov/ehss/downloads/doe-hdbk-1200-97" target="_blank">https://energy.gov/ehss/downloads/doe-hdbk-1200-97</a></small>
+    </div>                      
+</div>
+

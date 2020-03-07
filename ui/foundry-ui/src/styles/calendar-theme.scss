@@ -1,0 +1,191 @@
+/*
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+*/
+
+@import '~@angular/material/theming';
+@include mat-core();
+
+$primary: mat-palette($mat-blue, 700);
+$accent:  mat-palette($mat-green, A200, A100, A400);
+$theme: mat-dark-theme($primary, $accent);
+
+@mixin calendar-theme($theme) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $background: map-get($theme, background);
+
+    .cal-month-view {
+        .cal-open-day-events {
+            box-shadow: none;
+            background-color: mat-color($background, card);
+            border-bottom: 1px solid white;
+        }
+
+        .cal-day-cell.cal-weekend .cal-day-number {
+            color: mat-color($primary, A100);
+        }
+
+        .cal-day-cell.cal-today .cal-day-number {
+            color: mat-color($primary, default-contrast);
+            opacity: 1;
+        }
+
+        .cal-day-cell.cal-drag-over {
+            background-color: mat-color($primary, 600) !important;
+        }
+
+        .cal-day-cell.cal-today.cal-drag-over {
+            background-color: mat-color($primary, 600) !important;
+        }
+
+        .cal-cell-row {
+            .cal-cell.cal-today:hover {
+                background-color: mat-color($primary, 600);
+            }
+
+            .cal-cell:hover {
+                background-color: mat-color($background, hover);
+            }
+        }
+
+        .cal-cell.cal-has-events.cal-open {
+            background-color:mat-color($background, card);
+            color: mat-color($primary, A100);
+        }
+
+        // The cal-event-highlight class was added to angular-calendar in version 0.26.0-alpha.26
+        // For earlier versions, you will need to specify the event secondary color in code (eg #8E24AA)
+        .cal-cell.cal-event-highlight {
+            background-color: mat-color($primary, 600) !important;
+        }
+
+        .cal-day-cell.cal-today.cal-open,
+        .cal-day-cell.cal-today {
+            background-color:mat-color($primary);
+            color: mat-color($primary, A100);
+        }
+
+        .cal-day-badge {
+            background-color: mat-color($accent);
+            color: mat-color($accent, default-contrast);
+        }
+
+        .cal-cell-row:hover {
+            background-color: mat-color($background, card);
+        }
+
+        .cal-event {
+            background-color: mat-color($accent);
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
+            border-color: mat-color($accent, darker);
+        }
+    }
+
+    .cal-week-view {
+        .cal-day-headers {
+            .cal-header:hover,
+            .cal-drag-over {
+                background-color: mat-color($background, card);
+            }
+        }
+
+        .cal-header.cal-weekend span {
+            color: mat-color($primary, A100);
+        }
+
+        .cal-header.cal-today {
+            background-color:mat-color($primary);
+
+            span {
+                color:mat-color($primary, default-contrast);
+                opacity: 1;
+            }
+        }
+
+        .cal-hour:nth-child(odd) {
+            background-color: mat-color($background, background);
+        }
+        .cal-hour:nth-child(even) {
+            background-color: mat-color($background, card);
+        }
+
+        .cal-hour-segment:hover,
+        .cal-drag-over .cal-hour-segment {
+            background-color: mat-color($background, hover);
+        }
+
+        .cal-header.cal-today:hover {
+            background-color: mat-color($primary, 600);
+        }
+
+        .cal-event {
+            background-color: mat-color($primary, 600);
+            color: mat-color($primary, default-contrast);
+            border: 1px solid mat-color($primary, lighter);
+        }
+
+        .cal-event-title {
+            color: grey;
+        }
+
+
+        .cal-starts-within-week .cal-event {
+            border-top-left-radius: 2px;
+            border-bottom-left-radius: 2px;
+        }
+
+        .cal-ends-within-week .cal-event {
+            border-top-right-radius: 2px;
+            border-bottom-right-radius: 2px;
+        }
+    }
+
+    .cal-day-view {
+        .cal-hour:nth-child(odd) {
+            background-color: mat-color($background, background);
+        }
+        .cal-hour:nth-child(even) {
+            background-color: mat-color($background, card);
+        }
+
+        .cal-hour-segment:hover,
+        .cal-drag-over .cal-hour-segment {
+            background-color: mat-color($background, hover);
+        }
+
+        .cal-hour:not(:last-child) .cal-hour-segment,
+        .cal-hour:last-child :not(:last-child) .cal-hour-segment {
+          border-bottom: thin dashed mat-color($background, unselected-chip);
+        }
+
+        .cal-event {
+            background-color: mat-color($primary, 600);
+            color: mat-color($primary, default-contrast);
+            border: 1px solid mat-color($primary, lighter);
+        }
+
+        .cal-event-title {
+            color: grey;
+        }
+
+        .cal-starts-within-day .cal-event {
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
+        }
+        .cal-ends-within-day .cal-event {
+            border-bottom-left-radius: 2px;
+            border-bottom-right-radius: 2px;
+        }
+    }
+}
+
+@include calendar-theme($theme);
+

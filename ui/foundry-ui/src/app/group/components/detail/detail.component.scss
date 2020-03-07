@@ -1,0 +1,88 @@
+/*
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+*/
+
+h2 {
+  color: #555;
+}
+h6 {
+  color: #f8f8f8;
+  display: block;
+  word-wrap: break-word;
+  margin-bottom: 0;
+  padding: 10px;
+}
+.sub-nav {
+  background-color: #777;
+  width: 250px;
+  display: inline-block;
+}
+.sub-nav-wrapper {
+  background-color: #777;
+  z-index: 1000;
+  height: 100%;
+  overflow-y: auto;
+  margin-top: -20px;
+  padding-top: 20px;
+  padding-bottom: 95px;
+}
+@media (max-width: 1150px) {
+  .media-body {
+    visibility: hidden;
+  }
+  .sub-nav {
+    width: 80px;
+  }
+}
+.active {
+  background-color: #f8f8f8;
+}
+.active h6 {
+  color: #777;
+}
+ul {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.more-btn {
+  color: #f8f8f8;
+}
+.more-btn :hover {
+  text-decoration: underline;
+}
+.card-image {
+  min-height: 128px;
+  background-color: rgba(0, 0, 0, 0.4);
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.card-image img {
+  max-height: 128px;
+}
+.ns-box {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.card-image {
+  min-height: 128px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 7em 1em;
+}
+.action-container span {
+  padding: 2.5px;
+}
+.margin-top-2 {
+  margin-top: 2rem !important;
+}
+.card-content h3,
+.card-content h4 {
+  margin: 0 0 .3em 0;
+}
+

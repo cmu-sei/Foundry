@@ -1,0 +1,36 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<nav class="breadcrumb mb-2 pt-0">
+  <span class="breadcrumb-item active">Reports</span>
+</nav>
+<section class="container-fluid chapter" *ngIf="isAdministrator">
+  <div class="box box-default p-4">
+    <div class="row">
+      <div class="col-3 mb-1" *ngFor="let report of reports">
+        <div class="report">
+          <h4>{{ report.name }}</h4>
+          <p class="text-muted">{{ report.description }}</p>
+          <mat-chip-list>
+            <mat-chip color="primary" selected="true" [routerLink]="['/reports/', report.slug]"><i class="fa fa-play"></i>&nbsp;&nbsp;Run Report</mat-chip>
+            <mat-chip (click)="export(report, 'csv')"><i class="fa fa-file"></i>&nbsp;&nbsp;Export .CSV</mat-chip>
+          </mat-chip-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-container *ngIf="!isAdministrator">
+  <app-unauthorized></app-unauthorized>
+</ng-container>
+

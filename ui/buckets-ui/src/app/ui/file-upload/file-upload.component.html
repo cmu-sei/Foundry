@@ -1,0 +1,50 @@
+<!--
+
+Foundry
+Copyright 2020 Carnegie Mellon University.
+NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT INFRINGEMENT.
+Released under a MIT (SEI)-style license, please see license.txt or contact permission@sei.cmu.edu for full terms.
+[DISTRIBUTION STATEMENT A] This material has been approved for public release and unlimited distribution.  Please see Copyright notice for non-US Government use and distribution.
+Carnegie Mellon(R) and CERT(R) are registered in the U.S. Patent and Trademark Office by Carnegie Mellon University.
+DM20-0194
+
+-->
+
+<input type="file" #file style="display: none" (change)="onFilesAdded()" multiple />
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1 mat-dialog-title>
+        Upload Files
+      </h1>
+    </div>
+    <div class="col text-right">
+        <mat-form-field>
+            <mat-select placeholder="Add To Bucket" [(ngModel)]="bucketId" name="bucketId" matTooltip="Files To Show">
+                <mat-option *ngFor="let bucket of buckets" [value]="bucket.id">{{bucket.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <button [disabled]="uploading || uploadSuccessful || errors.length > 0" mat-raised-button color="primary" class="add-files-btn" (click)="addFiles()">Select Files</button>
+    </div>
+  </div>
+  <mat-dialog-content>
+    <mat-list>
+      <mat-list-item *ngFor="let file of files">
+        <h4 mat-line>{{file.name}}</h4>
+        <mat-progress-bar *ngIf="progress" mode="determinate" [value]="progress[file.name].progress | async"></mat-progress-bar>
+      </mat-list-item>
+    </mat-list>
+      <div class="alert alert-danger" *ngFor="let error of errors">
+          {{ error }}
+      </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="actions" *ngIf="showActionButtons">
+    <button [disabled]="uploading" mat-button mat-dialog-close>Close</button>
+    <button mat-raised-button color="primary" [disabled]="uploading || uploadSuccessful || errors.length > 0" (click)="upload()">Upload</button>
+  </mat-dialog-actions>
+</div>
+
