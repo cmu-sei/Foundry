@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cmu.Sei.Cwd.Stack.Data" Version="1.1.0" />
-    <PackageReference Include="Cmu.Sei.Cwd.Stack.Http" Version="1.1.0" />
-    <PackageReference Include="Cmu.Sei.Cwd.Stack.Http.Identity" Version="2.0.1" />
-    <PackageReference Include="Cmu.Sei.Cwd.Stack.Patterns.Repository" Version="1.0.0" />
-    <PackageReference Include="Cmu.Sei.Cwd.Stack.Patterns.Service" Version="2.0.0" />
+    <PackageReference Include="Foundry.Stack.Data" Version="1.1.0" />
+    <PackageReference Include="Foundry.Stack.Http" Version="1.1.0" />
+    <PackageReference Include="Foundry.Stack.Http.Identity" Version="2.0.1" />
+    <PackageReference Include="Foundry.Stack.Patterns.Repository" Version="1.0.0" />
+    <PackageReference Include="Foundry.Stack.Patterns.Service" Version="2.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1" />
     <PackageReference Include="Moq" Version="4.10.0" />

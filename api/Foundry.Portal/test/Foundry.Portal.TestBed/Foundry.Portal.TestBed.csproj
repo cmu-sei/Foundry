@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cmu.Sei.Cwd.Stack.Http.Identity" Version="2.0.1" />
+    <PackageReference Include="Foundry.Stack.Http.Identity" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="Moq" Version="4.13.1" />

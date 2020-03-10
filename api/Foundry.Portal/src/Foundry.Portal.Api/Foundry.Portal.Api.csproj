@@ -22,7 +22,7 @@
     <None Remove="sketch-market.db" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Cmu.Sei.Cwd.Stack.Data" Version="1.1.0" />
+    <PackageReference Include="Foundry.Stack.Data" Version="1.1.0" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.6.0" />

@@ -12,9 +12,9 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="Cmu.Sei.Cwd.Stack.Http" Version="1.1.0" />
-    <PackageReference Include="Cmu.Sei.Cwd.Stack.Http.Identity" Version="2.0.1" />
-    <PackageReference Include="Cmu.Sei.Cwd.Stack.Patterns.Service" Version="2.0.0" />
+    <PackageReference Include="Foundry.Stack.Http" Version="1.1.0" />
+    <PackageReference Include="Foundry.Stack.Http.Identity" Version="2.0.1" />
+    <PackageReference Include="Foundry.Stack.Patterns.Service" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="3.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="3.0.0" />

@@ -13,8 +13,8 @@
     <PackageReleaseNotes>https://wiki-int.sei.cmu.edu/confluence/display/CWDR/Release+Notes+%7C+Sketch+Market</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Cmu.Sei.Cwd.Stack.Data" Version="1.1.0" />
-    <PackageReference Include="Cmu.Sei.Cwd.Stack.Patterns.Repository" Version="1.0.0" />
+    <PackageReference Include="Foundry.Stack.Data" Version="1.1.0" />
+    <PackageReference Include="Foundry.Stack.Patterns.Repository" Version="1.0.0" />
     <PackageReference Include="IdentityModel" Version="3.10.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />

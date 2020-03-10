@@ -8,8 +8,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cmu.Sei.Cwd.Stack.Http" Version="1.1.0" />
-    <PackageReference Include="Cmu.Sei.Cwd.Stack.Http.Identity" Version="2.0.1" />
+    <PackageReference Include="Foundry.Stack.Http" Version="1.1.0" />
+    <PackageReference Include="Foundry.Stack.Http.Identity" Version="2.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
