@@ -238,4 +238,4 @@ _Pvt_Extensions
 .fake/
 
 less/**/*.css
-Foundry.Portal.xml
+Foundry.Portal.Api.xml

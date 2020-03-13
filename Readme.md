@@ -13,9 +13,8 @@ More information can be found the `docs` folder.
 ## Developers
 
 Requirements: dotnet-sdk 2.1
-1. After cloning this repo, run the `pack.sh` or `pack.ps1` to package and build the libs into a local nuget store.
-2. For each `api` app you want to run, use `dotnet run` from a terminal at that app's folder.
-3. For each `ui` app you want to run, use `npm install` and `npm start` from a terminal at that app's folder.
+1. For each `api` app you want to run, use `dotnet run` from a terminal at that app's folder.
+2. For each `ui` app you want to run, use `npm install` and `npm start` from a terminal at that app's folder.
 
 TODO: discuss Identity integration
 
