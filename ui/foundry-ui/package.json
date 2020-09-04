@@ -55,7 +55,7 @@
     "rimraf": "~2.6.2",
     "rxjs": "^6.0.0",
     "rxjs-compat": "^6.0.0-rc.0",
-    "showdown": "~1.8.6",
+    "showdown": "~1.9.1",
     "video.js": "^7.2.3",
     "zone.js": "^0.8.26"
   },
