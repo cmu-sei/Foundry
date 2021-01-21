@@ -183,6 +183,7 @@ namespace Foundry.Orders
                 });
             }
 
+            app.UsePathBase(Configuration["PathBase"]);
             app.UseCors("default");
             app.UseResponseCompression();
             app.UseResponseCaching();
@@ -215,4 +216,3 @@ namespace Foundry.Orders
         }
     }
 }
-

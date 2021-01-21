@@ -1,3 +1,4 @@
 bin/
 obj/
 nuget-local/
+.DS_Store

@@ -229,6 +229,7 @@ namespace Foundry.Portal.Api
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UsePathBase(Configuration["PathBase"]);
             app.UseCors("default");
             app.UseResponseCompression();
             app.UseResponseCaching();
@@ -252,4 +253,3 @@ namespace Foundry.Portal.Api
         }
     }
 }
-

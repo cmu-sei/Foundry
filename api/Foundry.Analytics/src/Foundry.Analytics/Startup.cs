@@ -127,6 +127,8 @@ namespace Foundry.Analytics
                 await context.Response.WriteAsync(result);
             }));
 
+            app.UsePathBase(Configuration["PathBase"]);
+
             app.UseCors("default");
 
             app.UseSwagger(c =>

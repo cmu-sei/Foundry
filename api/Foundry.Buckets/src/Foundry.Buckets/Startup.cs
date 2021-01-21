@@ -192,6 +192,8 @@ namespace Foundry.Buckets
                 app.UseExceptionHandler("/error");
             }
 
+            app.UsePathBase(Configuration["PathBase"]);
+
             app.UseCors("default");
 
             app.UseSwagger(c =>
@@ -215,4 +217,3 @@ namespace Foundry.Buckets
         }
     }
 }
-

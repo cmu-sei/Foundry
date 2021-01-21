@@ -134,6 +134,8 @@ namespace Foundry.Communications
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UsePathBase(Configuration["PathBase"]);
+
             app.UseCors("default");
 
             app.UseSwagger(c =>

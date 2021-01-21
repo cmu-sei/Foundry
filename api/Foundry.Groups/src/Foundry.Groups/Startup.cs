@@ -179,6 +179,7 @@ namespace Foundry.Groups
                 app.UseExceptionHandler("error");
             }
 
+            app.UsePathBase(Configuration["PathBase"]);
             app.UseCors("default");
             app.UseResponseCompression();
             app.UseResponseCaching();
@@ -202,4 +203,3 @@ namespace Foundry.Groups
         }
     }
 }
-

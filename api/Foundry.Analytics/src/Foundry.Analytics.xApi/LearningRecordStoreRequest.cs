@@ -40,7 +40,7 @@ namespace Foundry.Analytics.xApi
         {
             var request = _httpContext.Request;
 
-            var id = string.Format("{0}://{1}{2}", request.Scheme, request.Host, request.Path);
+            var id = string.Format("{0}://{1}{2}{3}", request.Scheme, request.Host, request.PathBase, request.Path);
             var homePage = new Uri(id);
 
             var activity = new Activity { Id = id };
@@ -258,4 +258,3 @@ namespace Foundry.Analytics.xApi
         }
     }
 }
-

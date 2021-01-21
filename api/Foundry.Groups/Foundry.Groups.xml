@@ -1,0 +1,1368 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Foundry.Groups</name>
+    </assembly>
+    <members>
+        <member name="T:Foundry.Groups.Controllers.AccountController">
+            <summary>
+            account controller
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.AccountController.#ctor(Foundry.Groups.Services.AccountService,Microsoft.Extensions.Logging.ILogger{Foundry.Groups.Controllers.AccountController})">
+            <summary>
+            create an instance of account service
+            </summary>
+            <param name="accountService"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.AccountController.GetAll(Foundry.Groups.ViewModels.AccountDataFilter)">
+            <summary>
+            get all accounts
+            </summary>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.AccountController.GetById(System.String)">
+            <summary>
+            get account by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.Controller`1.#ctor(`0,Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            create an instance of controller
+            </summary>
+            <param name="service"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="T:Foundry.Groups.Controllers.GroupController">
+            <summary>
+            group controller
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.#ctor(Foundry.Groups.Services.GroupService,Microsoft.Extensions.Logging.ILogger{Foundry.Groups.Controllers.GroupController})">
+            <summary>
+            create an instance of group service
+            </summary>
+            <param name="groupService"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.GetAll(Foundry.Groups.ViewModels.GroupDataFilter)">
+            <summary>
+            get all groups
+            </summary>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.GetAllGroupsByAccountId(System.String,Foundry.Groups.ViewModels.GroupDataFilter)">
+            <summary>
+            get all groups for account by id
+            </summary>
+            <param name="id"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.GetById(System.String)">
+            <summary>
+            get group by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.GetTree">
+            <summary>
+            get group tree
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.GetAllByParentId(System.String,Foundry.Groups.ViewModels.GroupDataFilter)">
+            <summary>
+            get children of group
+            </summary>
+            <param name="id"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.Add(Foundry.Groups.ViewModels.GroupCreate)">
+            <summary>
+            add group
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.Update(System.String,Foundry.Groups.ViewModels.GroupUpdate)">
+            <summary>
+            update group
+            </summary>
+            <param name="id"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.Delete(System.String)">
+            <summary>
+            delete group
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.GetByMemberInviteCode(System.String)">
+            <summary>
+            get group by member invite code
+            </summary>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.AcceptMemberInvite(System.String)">
+            <summary>
+            accept member invite by invite code for authenticated user
+            </summary>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.GetMemberInviteCodeById(System.String)">
+            <summary>
+            get member invite code
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.UpdateMemberInviteCodeById(System.String)">
+            <summary>
+            generate new member invite code
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.DeleteMemberInviteCodeById(System.String)">
+            <summary>
+            delete member invite code
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.GetByGroupInviteCode(System.String)">
+            <summary>
+            get group by group invite code
+            </summary>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.AcceptGroupInvite(System.String,System.String)">
+            <summary>
+            accept group invite by invite code for group id
+            </summary>
+            <param name="code"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.GetGroupInviteCodeById(System.String)">
+            <summary>
+            get group invite code
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.UpdateGroupInviteCodeById(System.String)">
+            <summary>
+            generate new group invite code
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupController.DeleteGroupInviteCodeById(System.String)">
+            <summary>
+            delete group invite code
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupRequestController.GetAllByParentId(System.String,Foundry.Groups.ViewModels.GroupRequestDataFilter)">
+            <summary>
+            get all group requests by parent id
+            </summary>
+            <param name="id"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupRequestController.Add(System.String,Foundry.Groups.ViewModels.GroupRequestCreate)">
+            <summary>
+            add group request
+            </summary>
+            <param name="id"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupRequestController.UpdateGroupRequest(System.String,System.String,Foundry.Groups.ViewModels.GroupRequestUpdate)">
+            <summary>
+            update group request
+            </summary>
+            <param name="id"></param>
+            <param name="childId"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.GroupRequestController.Delete(System.String,System.String)">
+            <summary>
+            remove group request
+            </summary>
+            <param name="id"></param>
+            <param name="childId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.Controllers.HomeController">
+            <summary>
+            home view endpoints
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.HomeController.#ctor(Stack.Http.Options.BrandingOptions,Stack.Data.Options.DatabaseOptions,Stack.Http.Options.AuthorizationOptions,Stack.Communication.Notifications.CommunicationOptions,Stack.DomainEvents.DomainEventDispatcherOptions,Foundry.Groups.Services.MigrationService,Stack.Http.Identity.IStackIdentityResolver)">
+            <summary>
+            create an instance of home controller
+            </summary>
+            <param name="brandingOptions"></param>
+            <param name="databaseOptions"></param>
+            <param name="authorizationOptions"></param>
+            <param name="communicationOptions"></param>
+            <param name="domainEventDispatcherOptions"></param>
+            <param name="migrationService"></param>
+            <param name="identityResolver"></param>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.HomeController.Index">
+            <summary>
+            root
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.HomeController.Error">
+            <summary>
+            error page
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.HomeController.Status">
+            <summary>
+            gets the status and module information for the api
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.HomeController.Configuration">
+            <summary>
+            get api configuration
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.Controllers.MemberController">
+            <summary>
+            member controller
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.MemberController.#ctor(Foundry.Groups.Services.MemberService)">
+            <summary>
+            create an instance of member service
+            </summary>
+            <param name="memberService"></param>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.MemberController.GetAllByGroupId(System.String,Foundry.Groups.ViewModels.MemberDataFilter)">
+            <summary>
+            get all members of a group by id
+            </summary>
+            <param name="id"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.MemberController.Add(System.String,Foundry.Groups.ViewModels.MemberCreate)">
+            <summary>
+            add member
+            </summary>
+            <param name="id"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.MemberController.Update(System.String,System.String,Foundry.Groups.ViewModels.MemberUpdate)">
+            <summary>
+            update member
+            </summary>
+            <param name="id"></param>
+            <param name="accountId"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.MemberController.Delete(System.String,System.String)">
+            <summary>
+            remove member
+            </summary>
+            <param name="id"></param>
+            <param name="accountId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.MemberRequestController.GetAllByGroupId(System.String,Foundry.Groups.ViewModels.MemberRequestDataFilter)">
+            <summary>
+            get all member requests by parent id
+            </summary>
+            <param name="id"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.MemberRequestController.Add(System.String,Foundry.Groups.ViewModels.MemberRequestCreate)">
+            <summary>
+            add member request
+            </summary>
+            <param name="id"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.MemberRequestController.Update(System.String,System.String,Foundry.Groups.ViewModels.MemberRequestUpdate)">
+            <summary>
+            update member request
+            </summary>
+            <param name="id"></param>
+            <param name="accountId"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Controllers.MemberRequestController.Delete(System.String,System.String)">
+            <summary>
+            remove member request
+            </summary>
+            <param name="id"></param>
+            <param name="accountId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ObjectExtensions.Clone``1(``0)">
+            <summary>
+            serialize and deserialize object to get a copy
+            </summary>
+            <typeparam name="TObject"></typeparam>
+            <param name="o"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.Identity.SketchIdentityResolver">
+            <summary>
+            resolves authenticated user based on claims in the request
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Identity.SketchIdentityResolver.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,Foundry.Groups.Data.GroupsDbContext,Microsoft.Extensions.Logging.ILogger{Foundry.Groups.Identity.SketchIdentityResolver})">
+            <summary>
+            creates an instance of SketchIdentityResolver
+            </summary>
+            <param name="httpContextAccessor"></param>
+            <param name="dbContext"></param>
+            <param name="cache"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Foundry.Groups.Identity.SketchIdentityResolver.GetIdentityAsync">
+            <summary>
+            get identity
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Mapping.AccountProfile.#ctor">
+            <summary>
+            create a new instance of account profile
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Mapping.GroupProfile.#ctor">
+            <summary>
+            create a new instance of group profile
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Mapping.GroupRequestProfile.#ctor">
+            <summary>
+            create a new instance of group request profile
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Mapping.MemberProfile.#ctor">
+            <summary>
+            create a new instance of member profile
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Mapping.MemberRequestProfile.#ctor">
+            <summary>
+            create a new instance of member request profile
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Program.Seed(Microsoft.AspNetCore.Hosting.IWebHost,Foundry.Groups.Data.GroupsDbContext)">
+            <summary>
+            seed
+            </summary>
+            <param name="webHost"></param>
+            <param name="db"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.Repositories.AccountRepository">
+            <summary>
+            account repository
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.AccountRepository.Exists(System.String)">
+            <summary>
+            check if id exists
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.AccountRepository.GetAll">
+            <summary>
+            get all accounts
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.AccountRepository.GetById(System.String)">
+            <summary>
+            get by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.AccountRepository.Delete(Foundry.Groups.Data.Account)">
+            <summary>
+            delete
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.AccountRepository.Update(Foundry.Groups.Data.Account)">
+            <summary>
+            update
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.Repositories.GroupRepository">
+            <summary>
+            group repository
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.GroupRepository.Exists(System.String)">
+            <summary>
+            check if id exists
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.GroupRepository.GetAll">
+            <summary>
+            get all groups
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.GroupRepository.GetById(System.String)">
+            <summary>
+            get by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.GroupRepository.IsChildGroup(System.String,System.String)">
+            <summary>
+            is child group
+            </summary>
+            <param name="parentGroupId"></param>
+            <param name="childGroupId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.GroupRepository.Delete(Foundry.Groups.Data.Group)">
+            <summary>
+            delete
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.GroupRepository.Update(Foundry.Groups.Data.Group)">
+            <summary>
+            update
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.Repositories.GroupRequestRepository">
+            <summary>
+            group repository
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.GroupRequestRepository.GetAll">
+            <summary>
+            get all group requests
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.GroupRequestRepository.GetByIds(System.String,System.String)">
+            <summary>
+            get group request
+            </summary>
+            <param name="parentGroupId"></param>
+            <param name="childGroupId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.GroupRequestRepository.GetAllByParentId(System.String)">
+            <summary>
+            get all group requests by parent
+            </summary>
+            <param name="parentGroupId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.GroupRequestRepository.GetAllByChildId(System.String)">
+            <summary>
+            get all group request by child
+            </summary>
+            <param name="childGroupId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.GroupRequestRepository.Delete(Foundry.Groups.Data.GroupRequest)">
+            <summary>
+            delete
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.GroupRequestRepository.Update(Foundry.Groups.Data.GroupRequest)">
+            <summary>
+            update
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.MemberRepository.Get(System.String,System.String)">
+            <summary>
+            get
+            </summary>
+            <param name="groupId"></param>
+            <param name="accountId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.MemberRepository.GetAll">
+            <summary>
+            get all members
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.MemberRepository.Delete(Foundry.Groups.Data.Member)">
+            <summary>
+            delete
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.MemberRepository.Update(Foundry.Groups.Data.Member)">
+            <summary>
+            update
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.Repositories.MemberRequestRepository">
+            <summary>
+            member request repository
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.MemberRequestRepository.GetAll">
+            <summary>
+            get all member requests
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.MemberRequestRepository.GetByIds(System.String,System.String)">
+            <summary>
+            get member request
+            </summary>
+            <param name="groupId"></param>
+            <param name="accountId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.MemberRequestRepository.GetAllByGroupId(System.String)">
+            <summary>
+            get all by group id
+            </summary>
+            <param name="groupId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Repositories.MemberRequestRepository.GetAllByAccountId(System.String)">
+            <summary>
+            get all by account id
+            </summary>
+            <param name="accountId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.Services.AccountService">
+            <summary>
+            account service
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Services.AccountService.#ctor(Stack.Http.Identity.IStackIdentityResolver,Foundry.Groups.Data.Repositories.IAccountRepository,AutoMapper.IMapper,Stack.Validation.Handlers.IValidationHandler)">
+            <summary>
+            create an instance of account service
+            </summary>
+            <param name="identityResolver"></param>
+            <param name="accountRepository"></param>
+            <param name="mapper"></param>
+            <param name="validationHandler"></param>
+        </member>
+        <member name="M:Foundry.Groups.Services.AccountService.GetAll(Foundry.Groups.ViewModels.AccountDataFilter)">
+            <summary>
+            get all accounts
+            </summary>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.AccountService.GetById(System.String)">
+            <summary>
+            get account by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.Services.Service`2">
+            <summary>
+            base service class to expose common methods
+            </summary>
+            <typeparam name="TRepository"></typeparam>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="P:Foundry.Groups.Services.Service`2.Mapper">
+            <summary>
+            injected Mapper configuration
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Services.Service`2.#ctor(Stack.Http.Identity.IStackIdentityResolver,`0,AutoMapper.IMapper,Stack.Validation.Handlers.IValidationHandler)">
+            <summary>
+            creates an instance of the base service class
+            </summary>
+            <param name="identityResolver"></param>
+            <param name="repository"></param>
+            <param name="mapper"></param>
+            <param name="validationHandler"></param>
+        </member>
+        <member name="M:Foundry.Groups.Services.Service`2.Map``1(System.Object)">
+            <summary>
+            map object to type
+            </summary>
+            <typeparam name="TType"></typeparam>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.Service`2.Map``1(System.Object,System.Action{AutoMapper.IMappingOperationOptions})">
+            <summary>
+            map object to type with operation options
+            </summary>
+            <typeparam name="TType"></typeparam>
+            <param name="source"></param>
+            <param name="opts"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.Service`2.PagedResult``2(System.Linq.IQueryable{``0},Stack.Patterns.Service.Models.IDataFilter{``0})">
+            <summary>
+            get a paged result by generic type and always add Identity for automapper options
+            </summary>
+            <typeparam name="TEntityModel"></typeparam>
+            <typeparam name="TViewModel"></typeparam>
+            <param name="query"></param>
+            <param name="dataFilter"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.Services.GroupRequestService">
+            <summary>
+            group request service
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupRequestService.GetAll(Foundry.Groups.ViewModels.GroupRequestDataFilter)">
+            <summary>
+            get all groups
+            </summary>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupRequestService.GetAllByParentId(System.String,Foundry.Groups.ViewModels.GroupRequestDataFilter)">
+            <summary>
+            get all group requests
+            </summary>
+            <param name="parentId"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupRequestService.GetByIds(System.String,System.String)">
+            <summary>
+            get by parent and child id
+            </summary>
+            <param name="parentGroupId"></param>
+            <param name="childGroupId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupRequestService.Update(Foundry.Groups.ViewModels.GroupRequestUpdate)">
+            <summary>
+            update group request
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupRequestService.Add(Foundry.Groups.ViewModels.GroupRequestCreate)">
+            <summary>
+            add group request
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupRequestService.Delete(Foundry.Groups.ViewModels.GroupRequestDelete)">
+            <summary>
+            delete group request
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.Services.GroupService">
+            <summary>
+            group service
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.#ctor(Stack.DomainEvents.IDomainEventDispatcher,Stack.Http.Identity.IStackIdentityResolver,Foundry.Groups.Data.Repositories.IGroupRepository,AutoMapper.IMapper,Stack.Validation.Handlers.IValidationHandler,Microsoft.Extensions.Logging.ILogger{Foundry.Groups.Services.GroupService})">
+            <summary>
+            create an instance of group service
+            </summary>
+            <param name="domainEventDispatcher"></param>
+            <param name="identityResolver"></param>
+            <param name="groupRepository"></param>
+            <param name="mapper"></param>
+            <param name="validationHandler"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.GetAll(Foundry.Groups.ViewModels.GroupDataFilter)">
+            <summary>
+            get all groups
+            </summary>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.GetAllGroupsByAccountId(System.String,Foundry.Groups.ViewModels.GroupDataFilter)">
+            <summary>
+            get groups by account id
+            </summary>
+            <param name="id"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.GetAllByParentId(System.String,Foundry.Groups.ViewModels.GroupDataFilter)">
+            <summary>
+            get all by parent id
+            </summary>
+            <param name="parentId"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.GetById(System.String)">
+            <summary>
+            get group by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.GetTree">
+            <summary>
+            get tree
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.MapChildren(System.String,System.Collections.Generic.List{Foundry.Groups.Data.Group})">
+            <summary>
+            recursive map children
+            </summary>
+            <param name="parentId"></param>
+            <param name="all"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.Add(Foundry.Groups.ViewModels.GroupCreate)">
+            <summary>
+            add group
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.Update(Foundry.Groups.ViewModels.GroupUpdate)">
+            <summary>
+            update group
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.DeleteById(System.String)">
+            <summary>
+            delete by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.UpdateKey(Foundry.Groups.Data.GroupsDbContext,Foundry.Groups.Data.Group)">
+            <summary>
+            update key
+            </summary>
+            <param name="db"></param>
+            <param name="group"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.AcceptGroupInvite(System.String,System.String)">
+            <summary>
+            accept group invite and update key
+            </summary>
+            <param name="code"></param>
+            <param name="groupId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.AcceptMemberInvite(System.String)">
+            <summary>
+            accept member invite
+            </summary>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.SetDescendentKeys(Foundry.Groups.Data.Group,System.Collections.Generic.IEnumerable{Foundry.Groups.Data.Group})">
+            <summary>
+            set ancestor keys
+            </summary>
+            <param name="group"></param>
+            <param name="children"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.GetByMemberInviteCode(System.String)">
+            <summary>
+            get group by invite code
+            </summary>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.GetMemberInviteCodeById(System.String)">
+            <summary>
+            get invite code for group by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.UpdateMemberInviteCodeById(System.String)">
+            <summary>
+            re generate invite code
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.DeleteMemberInviteCodeById(System.String)">
+            <summary>
+            delete invite code
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.GetByGroupInviteCode(System.String)">
+            <summary>
+            get group by group invite code
+            </summary>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.GetGroupInviteCodeById(System.String)">
+            <summary>
+            get group invite code for group by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.UpdateGroupInviteCodeById(System.String)">
+            <summary>
+            re generate group invite code
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.GroupService.DeleteGroupInviteCodeById(System.String)">
+            <summary>
+            delete group invite code
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.Services.MemberRequestService">
+            <summary>
+            member request service
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Services.MemberRequestService.#ctor(Stack.DomainEvents.IDomainEventDispatcher,Stack.Http.Identity.IStackIdentityResolver,Foundry.Groups.Data.Repositories.IMemberRequestRepository,AutoMapper.IMapper,Stack.Validation.Handlers.IValidationHandler,Microsoft.Extensions.Logging.ILogger{Foundry.Groups.Services.MemberRequestService})">
+            <summary>
+            create an instance of member request service
+            </summary>
+            <param name="domainEventDispatcher"></param>
+            <param name="identityResolver"></param>
+            <param name="memberRequestRepository"></param>
+            <param name="mapper"></param>
+            <param name="validationHandler"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Foundry.Groups.Services.MemberRequestService.GetAll(Foundry.Groups.ViewModels.MemberRequestDataFilter)">
+            <summary>
+            get all member requests
+            </summary>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.MemberRequestService.GetAllByGroupId(System.String,Foundry.Groups.ViewModels.MemberRequestDataFilter)">
+            <summary>
+            get all member requests
+            </summary>
+            <param name="groupId"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.MemberRequestService.GetByIds(System.String,System.String)">
+            <summary>
+            get by ids
+            </summary>
+            <param name="groupId"></param>
+            <param name="accountId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.MemberRequestService.Update(Foundry.Groups.ViewModels.MemberRequestUpdate)">
+            <summary>
+            update member request
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.MemberRequestService.Add(Foundry.Groups.ViewModels.MemberRequestCreate)">
+            <summary>
+            create a member request
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.MemberRequestService.Delete(Foundry.Groups.ViewModels.MemberRequestDelete)">
+            <summary>
+            delete member request
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.Services.MemberService">
+            <summary>
+            member service
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.Services.MemberService.#ctor(Stack.DomainEvents.IDomainEventDispatcher,Stack.Http.Identity.IStackIdentityResolver,Foundry.Groups.Data.Repositories.IMemberRepository,AutoMapper.IMapper,Stack.Validation.Handlers.IValidationHandler,Microsoft.Extensions.Logging.ILogger{Foundry.Groups.Services.MemberService})">
+            <summary>
+            create an instance of member service
+            </summary>
+            <param name="domainEventDispatcher"></param>
+            <param name="identityResolver"></param>
+            <param name="memberRepository"></param>
+            <param name="mapper"></param>
+            <param name="validationHandler"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Foundry.Groups.Services.MemberService.Get(System.String,System.String)">
+            <summary>
+            get member by group and account
+            </summary>
+            <param name="groupId"></param>
+            <param name="accountId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.MemberService.GetAllByGroupId(System.String,Foundry.Groups.ViewModels.MemberDataFilter)">
+            <summary>
+            get all members by group id
+            </summary>
+            <param name="groupId"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.MemberService.Add(Foundry.Groups.ViewModels.MemberCreate)">
+            <summary>
+            add member
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.MemberService.Add(Foundry.Groups.ViewModels.MemberCreate,Foundry.Groups.Data.GroupsDbContext)">
+            <summary>
+            create member for accounts
+            create account if it doesn't exist
+            </summary>
+            <param name="model"></param>
+            <param name="db"></param>
+            <returns></returns>
+            <remarks>referenced by GroupService</remarks>
+        </member>
+        <member name="M:Foundry.Groups.Services.MemberService.Update(Foundry.Groups.ViewModels.MemberUpdate)">
+            <summary>
+            update member
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.MemberService.Delete(Foundry.Groups.ViewModels.MemberDelete)">
+            <summary>
+            delete member
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Services.MigrationService.Migrate(Foundry.Groups.Services.MigrationService.LegacyDataFilter)">
+            <summary>
+            migrate 
+            </summary>
+            <param name="dataFilter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            the supported services
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.GroupExists">
+            <summary>
+            validate group exists
+            </summary>
+            <remarks>This may not be enforced</remarks>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupExists.Validate(Foundry.Groups.ViewModels.GroupUpdate)">
+            <summary>
+            validate update model
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupExists.Validate(Foundry.Groups.ViewModels.MemberCreate)">
+            <summary>
+            validate member create
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupExists.Validate(Foundry.Groups.ViewModels.MemberRequestCreate)">
+            <summary>
+            validate member request
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupExists.Validate(Foundry.Groups.ViewModels.MemberRequestUpdate)">
+            <summary>
+            validate member update
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupExists.Validate(Foundry.Groups.ViewModels.MemberDelete)">
+            <summary>
+            validate member delete
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupExists.Validate(Foundry.Groups.ViewModels.GroupInviteAccept)">
+            <summary>
+            valid group invite accept
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupExists.Validate(Foundry.Groups.ViewModels.MemberInviteAccept)">
+            <summary>
+            valid member invite accept
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.GroupIdIsValid">
+            <summary>
+            valid group id
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupIdIsValid.Validate(Foundry.Groups.ViewModels.GroupUpdate)">
+            <summary>
+            validate model
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.GroupInviteCodeIsValid">
+            <summary>
+            validate group invite
+            </summary>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.GroupLogoUrlIsRequired">
+            <summary>
+            validate logo url is valid
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupLogoUrlIsRequired.Validate(Foundry.Groups.ViewModels.GroupCreate)">
+            <summary>
+            validate create model
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupLogoUrlIsRequired.Validate(Foundry.Groups.ViewModels.GroupUpdate)">
+            <summary>
+            validate update model
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.GroupNameIsRequired">
+            <summary>
+            validate group name is entered
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupNameIsRequired.Validate(Foundry.Groups.ViewModels.GroupCreate)">
+            <summary>
+            validate create model
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupNameIsRequired.Validate(Foundry.Groups.ViewModels.GroupUpdate)">
+            <summary>
+            validate update model
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.GroupNameIsUnique">
+            <summary>
+            validate group name is unique
+            </summary>
+            <remarks>This may not be enforced</remarks>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupNameIsUnique.Validate(Foundry.Groups.ViewModels.GroupCreate)">
+            <summary>
+            validate create model
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupNameIsUnique.Validate(Foundry.Groups.ViewModels.GroupUpdate)">
+            <summary>
+            validate update model
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.GroupParentIsValid">
+            <summary>
+            validate parent is valid
+            </summary>
+            <remarks>This may not be enforced</remarks>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupParentIsValid.Validate(Foundry.Groups.ViewModels.GroupUpdate)">
+            <summary>
+            validate update model
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.ChildGroupExists">
+            <summary>
+            validate child group exists
+            </summary>
+            <remarks>This may not be enforced</remarks>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.ChildGroupExists.Validate(Foundry.Groups.ViewModels.GroupRequestCreate)">
+            <summary>
+            validate create model
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.GroupIsNotChild">
+            <summary>
+            validate child group exists
+            </summary>
+            <remarks>This may not be enforced</remarks>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupIsNotChild.Validate(Foundry.Groups.ViewModels.GroupRequestCreate)">
+            <summary>
+            validate create model
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupIsNotChild.Validate(Foundry.Groups.ViewModels.GroupInviteAccept)">
+            <summary>
+            validate invite model
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.GroupRequestDoesNotExist">
+            <summary>
+            validate child group request does not exist
+            </summary>
+            <remarks>This may not be enforced</remarks>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.GroupRequestDoesNotExist.Validate(Foundry.Groups.ViewModels.GroupRequestCreate)">
+            <summary>
+            validate create model
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.ParentGroupExists">
+            <summary>
+            validate parent group exists
+            </summary>
+            <remarks>This may not be enforced</remarks>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.ParentGroupExists.Validate(Foundry.Groups.ViewModels.GroupRequestCreate)">
+            <summary>
+            validate create model
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.MemberDoesNotExist">
+            <summary>
+            validate member exists
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.MemberDoesNotExist.Validate(Foundry.Groups.ViewModels.MemberRequestCreate)">
+            <summary>
+            validate member request create
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.MemberDoesNotExist.Validate(Foundry.Groups.ViewModels.MemberCreate)">
+            <summary>
+            validate member create
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.MemberDoesNotExist.Validate(Foundry.Groups.ViewModels.MemberInviteAccept)">
+            <summary>
+            validate member invite accept
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.MemberExists">
+            <summary>
+            validate member exists
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.MemberExists.Validate(Foundry.Groups.ViewModels.MemberUpdate)">
+            <summary>
+            validate member update
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.MemberExists.Validate(Foundry.Groups.ViewModels.MemberDelete)">
+            <summary>
+            validate member delete
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.MemberIsNotLastOwner">
+            <summary>
+            validate member is not the last owner of a group
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.MemberIsNotLastOwner.Validate(Foundry.Groups.ViewModels.MemberUpdate)">
+            <summary>
+            validate member update
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.MemberIsNotLastOwner.Validate(Foundry.Groups.ViewModels.MemberDelete)">
+            <summary>
+            validate member delete
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.MemberRequestDoesNotExist">
+            <summary>
+            validate member request does not exists
+            </summary>
+            <remarks>This may not be enforced</remarks>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.MemberRequestDoesNotExist.Validate(Foundry.Groups.ViewModels.MemberRequestCreate)">
+            <summary>
+            validate model
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ValidationRules.MemberRequestExists">
+            <summary>
+            validate member request exists
+            </summary>
+            <remarks>This may not be enforced</remarks>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.MemberRequestExists.Validate(Foundry.Groups.ViewModels.MemberRequestUpdate)">
+            <summary>
+            validate member request update
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Foundry.Groups.ValidationRules.MemberRequestExists.Validate(Foundry.Groups.ViewModels.MemberRequestDelete)">
+            <summary>
+            validate member request delete
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ViewModels.AccountDataFilter">
+            <summary>
+            account data filter
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.ViewModels.AccountDataFilter.FilterQuery(System.Linq.IQueryable{Foundry.Groups.Data.Account},Stack.Http.Identity.IStackIdentity)">
+            <summary>
+            filter query
+            </summary>
+            <param name="query"></param>
+            <param name="identity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ViewModels.GroupDataFilter">
+            <summary>
+            group data filter
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.ViewModels.GroupDataFilter.FilterQuery(System.Linq.IQueryable{Foundry.Groups.Data.Group},Stack.Http.Identity.IStackIdentity)">
+            <summary>
+            TODO: move market group data filters in
+            </summary>
+            <param name="query"></param>
+            <param name="identity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ViewModels.GroupRequestDataFilter">
+            <summary>
+            group request data filter
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.ViewModels.GroupRequestDataFilter.FilterQuery(System.Linq.IQueryable{Foundry.Groups.Data.GroupRequest},Stack.Http.Identity.IStackIdentity)">
+            <summary>
+            filter group request query
+            </summary>
+            <param name="query"></param>
+            <param name="identity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Foundry.Groups.ViewModels.MemberRequestDataFilter">
+            <summary>
+            member request data filter
+            </summary>
+        </member>
+        <member name="M:Foundry.Groups.ViewModels.MemberRequestDataFilter.FilterQuery(System.Linq.IQueryable{Foundry.Groups.Data.MemberRequest},Stack.Http.Identity.IStackIdentity)">
+            <summary>
+            filter member request query
+            </summary>
+            <param name="query"></param>
+            <param name="identity"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

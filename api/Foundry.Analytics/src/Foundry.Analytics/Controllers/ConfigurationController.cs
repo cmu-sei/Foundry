@@ -37,7 +37,7 @@ namespace Foundry.Analytics.Controllers
             get
             {
                 var request = HttpContext.Request;
-                return string.Format("{0}://{1}{2}", request.Scheme, request.Host, request.Path);
+                return string.Format("{0}://{1}{2}{3}", request.Scheme, request.Host, request.PathBase, request.Path);
             }
         }
 
@@ -98,4 +98,3 @@ namespace Foundry.Analytics.Controllers
         }
     }
 }
-
