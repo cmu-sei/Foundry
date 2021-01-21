@@ -14,8 +14,9 @@ CMD ["npm", "serve"]
 #
 #multi-stage target: prod
 #
-FROM nginx:1.17-alpine
+FROM nginx:alpine
 WORKDIR /var/www
-COPY --from=dev /app/angular-nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=dev /app/nginx-custom.conf /etc/nginx/conf.d/default.conf
+COPY --from=dev /app/nginx-basehref.sh /docker-entrypoint.d/90-basehref.sh
 COPY --from=dev /app/dist .
 EXPOSE 80
